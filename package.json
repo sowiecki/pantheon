@@ -23,6 +23,7 @@
     "koa-router": "^7.0.1",
     "node-hue-api": "^2.2.0",
     "nodemon": "^1.9.2",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "serialport": "^3.1.2"
   }
 }
