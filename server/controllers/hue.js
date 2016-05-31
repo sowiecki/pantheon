@@ -1,31 +1,25 @@
-import hue, { HueApi, lightState } from 'node-hue-api';
+import hue from 'node-hue-api';
 
-import { config } from '../environment';
-
-// TODO wew
-const userId = config.users[Object.keys(config.users)[0]];
-
-// TODO move to Redux state
-const state = {};
-const l = lightState.create();
-const api = () => new HueApi(state.bridge.ipaddress, userId);
+import { EMIT_REGISTER_BRIDGE,
+         EMIT_TURN_ON_LIGHT,
+         EMIT_TURN_OFF_LIGHT } from '../ducks/devices';
+import store from '../store';
 
 export const hueController = {
-  logBridges(bridge) {
-    console.info(bridge);
-  },
-
   initialize() {
     hue.nupnpSearch().then(([bridge]) => {
-      state.bridge = bridge;
+      store.dispatch({
+        type: EMIT_REGISTER_BRIDGE,
+        bridge
+      })
     }).done();
   },
 
   on() {
-    api().setLightState(2, l.on());
+    store.dispatch({ type: EMIT_TURN_ON_LIGHT });
   },
 
   off() {
-    api().setLightState(2, l.off());
+    store.dispatch({ type: EMIT_TURN_OFF_LIGHT });
   }
 };
