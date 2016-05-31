@@ -1,9 +1,10 @@
 import serialport, { SerialPort } from 'serialport';
 
+import { config } from '../environment';
 import { EMIT_SERIAL_DATA_CHANGE } from '../ducks/devices';
 import store from '../store';
 
-const serial = new SerialPort('/dev/cu.usbmodem1421', {
+const serial = new SerialPort(config.serial, {
   baudrate: 9600,
   parser: serialport.parsers.readline('\n')
 });
