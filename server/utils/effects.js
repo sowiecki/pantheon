@@ -1,10 +1,10 @@
 import { getPositions } from './devices';
 
-export const cylonEye = (strip) => {
+export const cylonEye = (strip, stripLength) => {
   const FPS = 120;
   const UP = 'UP';
   const DOWN = 'DOWN';
-  const positions = getPositions(strip.length);
+  const positions = getPositions(stripLength);
 
   let red = 100;
   let green = 0;
@@ -41,7 +41,7 @@ export const cylonEye = (strip) => {
       red--;
     }
 
-    if (valueToLight >= STRIP_LENGTH - 1) {
+    if (valueToLight >= stripLength - 1) {
       direction = DOWN;
     }
 

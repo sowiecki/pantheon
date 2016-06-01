@@ -12,17 +12,19 @@ export const jFiveController = {
       repl: false
     });
 
+    const STRIP_LENGTH = 60;
+
     board.on('ready', () => {
       const strip = new pixel.Strip({
         data: 6,
-        length: 60,
+        length: STRIP_LENGTH,
         color_order: pixel.COLOR_ORDER.GRB,
         board: board,
         controller: 'FIRMATA',
       });
 
       strip.on('ready', () => {
-        cylonEye(strip);
+        cylonEye(strip, STRIP_LENGTH);
       });
     });
   }
