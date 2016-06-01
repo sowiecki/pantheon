@@ -29,16 +29,12 @@ const devicesReducer = (state = initialState, action) => {
       const STRIP_LENGTH = 60;
 
       state.board.on('ready', () => {
-        const strip = new pixel.Strip({
+        state.strip = new pixel.Strip({
           data: 6,
           length: STRIP_LENGTH,
           color_order: pixel.COLOR_ORDER.GRB,
           board: state.board,
           controller: 'FIRMATA',
-        });
-
-        strip.on('ready', () => {
-          cylonEye.start(strip, STRIP_LENGTH);
         });
       });
 
@@ -67,8 +63,10 @@ const devicesReducer = (state = initialState, action) => {
       state.hueBridge.getLightStatus(2).then((lightStatus) => {
         if (lightStatus.state.on) {
           reducers.EMIT_TURN_OFF_LIGHT();
+          cylonEye.stop();
         } else {
           reducers.EMIT_TURN_ON_LIGHT();
+          cylonEye.start(state.strip, 60);
         }
       });
 
