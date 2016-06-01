@@ -4,7 +4,7 @@ import { config } from '../environment';
 import { EMIT_SERIAL_DATA_CHANGE } from '../ducks/devices';
 import store from '../store';
 
-const serial = new SerialPort(config.boards.serial, {
+const serial = new SerialPort(config.ports.serial, {
   baudrate: 9600,
   parser: serialport.parsers.readline('\n')
 });
