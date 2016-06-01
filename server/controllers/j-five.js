@@ -3,11 +3,14 @@ import pixel from 'node-pixel';
 
 import { config } from '../environment';
 
-// TODO maybe move this to devices reducer?
-const board = new five.Board({ port: config.boards.jFive });
-
-const jFiveController = {
+export const jFiveController = {
   initialize() {
+    // TODO maybe move this to devices reducer?
+    const board = new five.Board({
+      port: config.boards.jFive,
+      repl: false
+    });
+
     const UP = 'UP';
     const DOWN = 'DOWN';
     const STRIP_LENGTH = 60;
@@ -25,32 +28,6 @@ const jFiveController = {
 
     board.on('ready', () => {
       console.log(`Connected to ${board.id}`);
-
-      const piezo = new five.Piezo(4);
-
-      piezo.play({
-        song: [
-          ['C4', 1 / 4],
-          ['D4', 1 / 4],
-          ['F4', 1 / 4],
-          ['D4', 1 / 4],
-          ['A4', 1 / 4],
-          [null, 1 / 4],
-          ['A4', 1],
-          ['G4', 1],
-          [null, 1 / 2],
-          ['C4', 1 / 4],
-          ['D4', 1 / 4],
-          ['F4', 1 / 4],
-          ['D4', 1 / 4],
-          ['G4', 1 / 4],
-          [null, 1 / 4],
-          ['G4', 1],
-          ['F4', 1],
-          [null, 1 / 2]
-        ],
-        tempo: 100
-      });
 
       const strip = new pixel.Strip({
         data: 6,
