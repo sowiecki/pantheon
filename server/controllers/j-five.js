@@ -24,7 +24,7 @@ export const jFiveController = {
       });
 
       strip.on('ready', () => {
-        cylonEye(strip, STRIP_LENGTH);
+        cylonEye.start(strip, STRIP_LENGTH);
       });
     });
   }
