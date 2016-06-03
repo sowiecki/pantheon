@@ -52,7 +52,7 @@ const devicesReducer = (state = initialState, action) => {
 
       if (!state[LIGHT_STRIP_PRIMARY] || !authorized) {
         unauthorizedFlash(state[LIGHT_STRIP_PRIMARY]);
-        return;
+        return state;
       }
 
       state.hueBridge.getLightStatus(2).then((lightStatus) => {
