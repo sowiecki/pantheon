@@ -1,12 +1,13 @@
 import { HueApi, lightState } from 'node-hue-api';
-import five from 'johnny-five';
-import pixel from 'node-pixel';
 
 import { hueController } from '../controllers';
 import { config } from '../environment';
 import { handleAction, cylonEye } from '../utils';
 
-export const EMIT_REGISTER_BOARD = 'EMIT_REGISTER_BOARD';
+import { LIGHT_STRIP_PRIMARY,
+         LIGHT_STRIP_PRIMARY_LENGTH } from '../constants';
+
+export const EMIT_REGISTER_ACCESSORIES = 'EMIT_REGISTER_ACCESSORIES';
 export const EMIT_REGISTER_BRIDGE = 'EMIT_REGISTER_BRIDGE';
 export const EMIT_TURN_ON_LIGHT = 'EMIT_TURN_ON_LIGHT';
 export const EMIT_TURN_OFF_LIGHT = 'EMIT_TURN_OFF_LIGHT';
@@ -20,22 +21,9 @@ const initialState = {
 
 const devicesReducer = (state = initialState, action) => {
   const reducers = {
-    [EMIT_REGISTER_BOARD]() {
-      state.board = new five.Board({
-        port: config.ports.jFive,
-        repl: false
-      });
-
-      const STRIP_LENGTH = 60;
-
-      state.board.on('ready', () => {
-        state.strip = new pixel.Strip({
-          data: 6,
-          length: STRIP_LENGTH,
-          color_order: pixel.COLOR_ORDER.GRB,
-          board: state.board,
-          controller: 'FIRMATA',
-        });
+    [EMIT_REGISTER_ACCESSORIES]() {
+      Object.keys(action.accessories).forEach((accessoryKey) => {
+        state[accessoryKey] = action.accessories[accessoryKey];
       });
 
       return state;
@@ -66,7 +54,7 @@ const devicesReducer = (state = initialState, action) => {
           cylonEye.stop();
         } else {
           reducers.EMIT_TURN_ON_LIGHT();
-          cylonEye.start(state.strip, 60);
+          cylonEye.start(state[LIGHT_STRIP_PRIMARY], LIGHT_STRIP_PRIMARY_LENGTH);
         }
       });
 
