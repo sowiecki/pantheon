@@ -53,7 +53,7 @@ const devicesReducer = (state = initialState, action) => {
       const authorized = config.users.nfc.indexOf(parseInt(action.data)) > -1;
 
       if (!authorized) {
-        unauthorizedFlash(state[LIGHT_STRIP_PRIMARY]);
+        // unauthorizedFlash(state[LIGHT_STRIP_PRIMARY]);
         return state;
       }
 
