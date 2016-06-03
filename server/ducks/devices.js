@@ -49,12 +49,12 @@ const devicesReducer = (state = initialState, action) => {
     },
 
     [EMIT_SERIAL_DATA_CHANGE]() {
-      if (!state.strip) return state; // TODO
+      if (!state[LIGHT_STRIP_PRIMARY]) return state; // TODO
 
       state.hueBridge.getLightStatus(2).then((lightStatus) => {
         if (lightStatus.state.on) {
           reducers.EMIT_TURN_OFF_LIGHT();
-          cylonEye.stopg(state[LIGHT_STRIP_PRIMARY]);
+          cylonEye.stop(state[LIGHT_STRIP_PRIMARY]);
         } else {
           reducers.EMIT_TURN_ON_LIGHT();
           cylonEye.start(state[LIGHT_STRIP_PRIMARY], LIGHT_STRIP_PRIMARY_LENGTH);
