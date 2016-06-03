@@ -2,7 +2,7 @@
 import { HueApi, lightState } from 'node-hue-api';
 
 import { config } from '../environment';
-import { handleAction, cylonEye } from '../utils';
+import { handleAction, cylonEye, unauthorizedFlash } from '../utils';
 
 import { LIGHT_STRIP_PRIMARY,
          LIGHT_STRIP_PRIMARY_LENGTH } from '../constants';
@@ -48,7 +48,12 @@ const devicesReducer = (state = initialState, action) => {
     },
 
     [EMIT_SERIAL_DATA_CHANGE]() {
-      if (!state[LIGHT_STRIP_PRIMARY]) return state; // TODO
+      const authorized = config.users.nfc.indexOf(action.data);
+
+      if (!state[LIGHT_STRIP_PRIMARY] || !authorized) {
+        unauthorizedFlash(state[LIGHT_STRIP_PRIMARY]);
+        return;
+      }
 
       state.hueBridge.getLightStatus(2).then((lightStatus) => {
         if (lightStatus.state.on) {

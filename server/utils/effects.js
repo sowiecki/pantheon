@@ -1,6 +1,6 @@
-/* globals setInterval, clearInterval */
+/* globals setInterval, clearInterval, setTimeout */
 import { getPositions } from './devices';
-import { BLACK } from '../constants';
+import { BLACK, RED } from '../constants';
 
 export const cylonEye = {
   start(strip, stripLength) {
@@ -68,4 +68,20 @@ export const cylonEye = {
     strip.color(BLACK);
     clearInterval(this.interval);
   }
+};
+
+export const unauthorizedFlash = (strip) => {
+  let red = true;
+
+  const flash = setInterval(() => {
+    if (red) {
+      strip.color(RED);
+      red = false;
+    } else {
+      strip.color(BLACK);
+      red = true;
+    }
+  }, 300);
+
+  setTimeout(() => clearInterval(flash), 2000);
 };
