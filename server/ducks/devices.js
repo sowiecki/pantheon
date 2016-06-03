@@ -13,7 +13,6 @@ export const EMIT_TURN_ON_LIGHT = 'EMIT_TURN_ON_LIGHT';
 export const EMIT_TURN_OFF_LIGHT = 'EMIT_TURN_OFF_LIGHT';
 export const EMIT_SERIAL_DATA_CHANGE = 'EMIT_SERIAL_DATA_CHANGE';
 
-const STRIP_LENGTH = 60;
 const initialState = {
   ports: config.ports,
   lightState: lightState.create(),
@@ -24,7 +23,6 @@ const devicesReducer = (state = initialState, action) => {
   const reducers = {
     [EMIT_REGISTER_ACCESSORIES]() {
       Object.keys(action.accessories).forEach((accessoryKey) => {
-        console.log(accessoryKey)
         state[accessoryKey] = action.accessories[accessoryKey];
       });
 
