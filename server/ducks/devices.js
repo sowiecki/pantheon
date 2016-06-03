@@ -13,7 +13,12 @@ export const EMIT_TURN_ON_LIGHT = 'EMIT_TURN_ON_LIGHT';
 export const EMIT_TURN_OFF_LIGHT = 'EMIT_TURN_OFF_LIGHT';
 export const EMIT_SERIAL_DATA_CHANGE = 'EMIT_SERIAL_DATA_CHANGE';
 
+const STRIP_LENGTH = 60;
 const initialState = {
+  board: new five.Board({
+    port: config.ports.jFive,
+    repl: false
+  }),
   ports: config.ports,
   lightState: lightState.create(),
   hueUserId: config.users[Object.keys(config.users)[0]]
@@ -48,10 +53,12 @@ const devicesReducer = (state = initialState, action) => {
     },
 
     [EMIT_SERIAL_DATA_CHANGE]() {
+      if (!state.strip) return state; // TODO
+
       state.hueBridge.getLightStatus(2).then((lightStatus) => {
         if (lightStatus.state.on) {
           reducers.EMIT_TURN_OFF_LIGHT();
-          cylonEye.stop();
+          cylonEye.stop(state[LIGHT_STRIP_PRIMARY]);
         } else {
           reducers.EMIT_TURN_ON_LIGHT();
           cylonEye.start(state[LIGHT_STRIP_PRIMARY], LIGHT_STRIP_PRIMARY_LENGTH);

@@ -1,5 +1,6 @@
 /* globals setInterval, clearInterval */
 import { getPositions } from './devices';
+import { BLACK } from '../constants';
 
 export const cylonEye = {
   start(strip, stripLength) {
@@ -16,7 +17,7 @@ export const cylonEye = {
     let valueToLight = 0;
 
     this.interval = setInterval(() => {
-      strip.color('#000');
+      strip.color(BLACK);
 
       if (blue >= 255) {
         blueDirection = DOWN;
@@ -63,7 +64,8 @@ export const cylonEye = {
     }, 1000 / FPS);
   },
 
-  stop() {
+  stop(strip) {
+    strip.color(BLACK);
     clearInterval(this.interval);
   }
 };
