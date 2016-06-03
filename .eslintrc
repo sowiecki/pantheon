@@ -1,0 +1,34 @@
+{
+  "plugins": ["react", "filenames"],
+  "extends": ["airbnb"],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "modules": true
+    }
+  },
+  "ecmaFeatures": {
+    "experimentalObjectRestSpread": true
+  },
+  "env": {
+    "es6": true
+  },
+  "rules": {
+    "strict": 0,
+    "global-require": 0,
+    "import/no-unresolved": 0,
+    "quotes": [2, "single"],
+    "arrow-body-style": ["error", "as-needed"],
+    "indent": [2, 2, {"SwitchCase": 1}],
+    "no-invalid-this": 0,
+    "valid-jsdoc": 0,
+    "comma-dangle": 0,
+    "no-param-reassign": 0,
+    "consistent-return": 0,
+    "default-case": 0,
+    "no-extra-parens": 0
+  },
+  "globals": {
+    "require": true
+  }
+}

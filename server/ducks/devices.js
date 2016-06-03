@@ -1,6 +1,6 @@
+/* eslint new-cap:0 */
 import { HueApi, lightState } from 'node-hue-api';
 
-import { hueController } from '../controllers';
 import { config } from '../environment';
 import { handleAction, cylonEye } from '../utils';
 

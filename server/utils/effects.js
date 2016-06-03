@@ -9,7 +9,6 @@ export const cylonEye = {
     const positions = getPositions(stripLength);
 
     let red = 100;
-    let green = 0;
     let blue = 0;
     let blueDirection = UP;
     let redDirection = DOWN;

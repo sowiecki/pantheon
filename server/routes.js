@@ -4,11 +4,7 @@ import { hueController } from './controllers';
 
 const router = new Router();
 
-router.get('/', (ctx, next) => {
-  console.log('Hello, world!');
-})
-
-router.get('/on', (ctx, next) => hueController.on());
-router.get('/off', (ctx, next) => hueController.off());
+router.get('/on', () => hueController.on());
+router.get('/off', () => hueController.off());
 
 export default router;

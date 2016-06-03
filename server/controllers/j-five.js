@@ -3,9 +3,10 @@ import pixel from 'node-pixel';
 
 import { EMIT_REGISTER_ACCESSORIES } from '../ducks/devices';
 import { LIGHT_STRIP_PRIMARY,
-         MIC_PIN,
          LIGHT_STRIP_PRIMARY_PIN,
-         LIGHT_STRIP_PRIMARY_LENGTH } from '../constants';
+         LIGHT_STRIP_PRIMARY_LENGTH,
+         MIC_PRIMARY,
+         MIC_PIN } from '../constants';
 import { config } from '../environment';
 import store from '../store';
 

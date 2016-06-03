@@ -11,7 +11,7 @@ export const hueController = {
       store.dispatch({
         type: EMIT_REGISTER_BRIDGE,
         bridge
-      })
+      });
     }).done();
   },
 
