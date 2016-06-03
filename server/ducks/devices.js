@@ -48,11 +48,13 @@ const devicesReducer = (state = initialState, action) => {
     },
 
     [EMIT_SERIAL_DATA_CHANGE]() {
+      if (!state[LIGHT_STRIP_PRIMARY]) return state;
+
       const authorized = config.users.nfc.indexOf(action.data);
 
-      if (!state[LIGHT_STRIP_PRIMARY] || !authorized) {
+      if (!authorized) {
         unauthorizedFlash(state[LIGHT_STRIP_PRIMARY]);
-        return;
+        return state;
       }
 
       state.hueBridge.getLightStatus(2).then((lightStatus) => {
