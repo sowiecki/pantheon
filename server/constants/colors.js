@@ -1,2 +1,2 @@
-export const BLACK = '#000000';
-export const RED = '#FF0000';
+export const BLACK = 'rgb(0, 0, 0)';
+export const RED = 'rgb(255, 0, 0)';

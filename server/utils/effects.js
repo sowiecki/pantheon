@@ -71,17 +71,11 @@ export const cylonEye = {
 };
 
 export const unauthorizedFlash = (strip) => {
-  let red = true;
+  strip.color(RED);
+  strip.show();
 
-  const flash = setInterval(() => {
-    if (red) {
-      strip.color(RED);
-      red = false;
-    } else {
-      strip.color(BLACK);
-      red = true;
-    }
-  }, 300);
-
-  setTimeout(() => clearInterval(flash), 2000);
+  setTimeout(() => {
+    strip.color(BLACK);
+    strip.show();
+  }, 1000);
 };
