@@ -30,10 +30,10 @@ export const jFiveController = {
 
       store.dispatch({
         type: EMIT_REGISTER_ACCESSORIES,
-        accessories: [
-          { [LIGHT_STRIP_PRIMARY]: strip },
-          { [MIC_PRIMARY]: mic }
-        ]
+        accessories: {
+          [LIGHT_STRIP_PRIMARY]: strip,
+          [MIC_PRIMARY]: mic
+        }
       });
     });
   }

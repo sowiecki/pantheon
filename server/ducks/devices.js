@@ -24,6 +24,7 @@ const devicesReducer = (state = initialState, action) => {
   const reducers = {
     [EMIT_REGISTER_ACCESSORIES]() {
       Object.keys(action.accessories).forEach((accessoryKey) => {
+        console.log(accessoryKey)
         state[accessoryKey] = action.accessories[accessoryKey];
       });
 
