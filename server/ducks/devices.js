@@ -1,4 +1,5 @@
 /* eslint new-cap:0 */
+/* globals setTimeout */
 import { HueApi, lightState } from 'node-hue-api';
 
 import { config } from '../environment';
@@ -26,6 +27,8 @@ const devicesReducer = (state = initialState, action) => {
         state[accessoryKey] = action.accessories[accessoryKey];
       });
 
+      cylonEye.start(state[LIGHT_STRIP_PRIMARY], LIGHT_STRIP_PRIMARY_LENGTH);
+
       return state;
     },
 
@@ -48,22 +51,24 @@ const devicesReducer = (state = initialState, action) => {
     },
 
     [EMIT_SERIAL_DATA_CHANGE]() {
-      if (!state[LIGHT_STRIP_PRIMARY]) return state;
+      const strip = state[LIGHT_STRIP_PRIMARY];
 
-      const authorized = config.users.nfc.indexOf(parseInt(action.data)) > -1;
+      if (!strip) return state;
+
+      const authorized = config.users.nfc.indexOf(parseInt(action.data, 10)) > -1;
 
       if (!authorized) {
-        // unauthorizedFlash(state[LIGHT_STRIP_PRIMARY]);
+        cylonEye.stop(strip);
+        unauthorizedFlash(strip);
+        setTimeout(() => cylonEye.start(strip, LIGHT_STRIP_PRIMARY_LENGTH), 500);
         return state;
       }
 
       state.hueBridge.getLightStatus(2).then((lightStatus) => {
         if (lightStatus.state.on) {
           reducers.EMIT_TURN_OFF_LIGHT();
-          cylonEye.stop(state[LIGHT_STRIP_PRIMARY]);
         } else {
           reducers.EMIT_TURN_ON_LIGHT();
-          cylonEye.start(state[LIGHT_STRIP_PRIMARY], LIGHT_STRIP_PRIMARY_LENGTH);
         }
       });
 
