@@ -3,10 +3,11 @@
 import { HueApi, lightState } from 'node-hue-api';
 
 import { config } from '../environment';
-import { handleAction, cylonEye, unauthorizedFlash } from '../utils';
+import { handleAction, cylonEye, unauthorizedFlash, sing } from '../utils';
 
 import { LIGHT_STRIP_PRIMARY,
-         LIGHT_STRIP_PRIMARY_LENGTH } from '../constants';
+         LIGHT_STRIP_PRIMARY_LENGTH,
+         PIEZO_PRIMARY } from '../constants';
 
 export const EMIT_REGISTER_ACCESSORIES = 'EMIT_REGISTER_ACCESSORIES';
 export const EMIT_REGISTER_BRIDGE = 'EMIT_REGISTER_BRIDGE';
@@ -64,6 +65,8 @@ const devicesReducer = (state = initialState, action) => {
         setTimeout(() => cylonEye.start(strip, LIGHT_STRIP_PRIMARY_LENGTH), 500);
         return state;
       }
+
+      sing(state[PIEZO_PRIMARY]);
 
       state.hueBridge.getLightStatus(2).then((lightStatus) => {
         if (lightStatus.state.on) {
