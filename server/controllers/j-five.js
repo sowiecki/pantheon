@@ -1,12 +1,15 @@
 import five from 'johnny-five';
 import pixel from 'node-pixel';
 
-import { EMIT_REGISTER_ACCESSORIES } from '../ducks/devices';
+import { EMIT_REGISTER_ACCESSORIES,
+         EMIT_MIC_VALUE_CHANGE } from '../ducks/devices';
 import { LIGHT_STRIP_PRIMARY,
          LIGHT_STRIP_PRIMARY_PIN,
          LIGHT_STRIP_PRIMARY_LENGTH,
          MIC_PRIMARY,
-         MIC_PIN } from '../constants';
+         MIC_PIN,
+         PIEZO_PRIMARY,
+         PIEZO_PIN } from '../constants';
 import { config } from '../environment';
 import store from '../store';
 
@@ -27,14 +30,21 @@ export const jFiveController = {
       });
 
       const mic = new five.Sensor(MIC_PIN);
+      const piezo = new five.Sensor(PIEZO_PIN);
 
       store.dispatch({
         type: EMIT_REGISTER_ACCESSORIES,
         accessories: {
           [LIGHT_STRIP_PRIMARY]: strip,
-          [MIC_PRIMARY]: mic
+          [MIC_PRIMARY]: mic,
+          [PIEZO_PRIMARY]: piezo
         }
       });
+
+      mic.on('ready', (value) => store.dispatch({
+        type: EMIT_MIC_VALUE_CHANGE,
+        value
+      }));
     });
   }
 };

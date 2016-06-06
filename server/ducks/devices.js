@@ -13,6 +13,7 @@ export const EMIT_REGISTER_BRIDGE = 'EMIT_REGISTER_BRIDGE';
 export const EMIT_TURN_ON_LIGHT = 'EMIT_TURN_ON_LIGHT';
 export const EMIT_TURN_OFF_LIGHT = 'EMIT_TURN_OFF_LIGHT';
 export const EMIT_SERIAL_DATA_CHANGE = 'EMIT_SERIAL_DATA_CHANGE';
+export const EMIT_MIC_VALUE_CHANGE = 'EMIT_MIC_VALUE_CHANGE';
 
 const initialState = {
   ports: config.ports,
@@ -73,6 +74,10 @@ const devicesReducer = (state = initialState, action) => {
       });
 
       return state;
+    },
+
+    [EMIT_MIC_VALUE_CHANGE]() {
+      // TODO stuff
     }
   };
 
