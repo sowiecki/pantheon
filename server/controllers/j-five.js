@@ -30,7 +30,7 @@ export const jFiveController = {
       });
 
       const mic = new five.Sensor(MIC_PIN);
-      const piezo = new five.Sensor(PIEZO_PIN);
+      const piezo = new five.Piezo(PIEZO_PIN);
 
       store.dispatch({
         type: EMIT_REGISTER_ACCESSORIES,
