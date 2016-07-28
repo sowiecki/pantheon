@@ -80,26 +80,24 @@ export const unauthorizedFlash = (strip) => {
   }, 1000);
 };
 
-export const sing = (piezo) => piezo.play({
+export const buzz = (piezo) => piezo.play({
   song: [
-    ['C4', 1 / 4],
-    ['D4', 1 / 4],
-    ['F4', 1 / 4],
-    ['D4', 1 / 4],
-    ['A4', 1 / 4],
-    [null, 1 / 4],
-    ['A4', 1],
-    ['G4', 1],
-    [null, 1 / 2],
-    ['C4', 1 / 4],
-    ['D4', 1 / 4],
-    ['F4', 1 / 4],
-    ['D4', 1 / 4],
-    ['G4', 1 / 4],
-    [null, 1 / 4],
-    ['G4', 1],
-    ['F4', 1],
-    [null, 1 / 2]
+    ['C4', 1],
+    [null, 1],
+    ['D4', 1],
+    [null, 1],
+    ['C4', 1]
   ],
-  tempo: 100
+  tempo: 1000
+});
+
+export const doot = (piezo) => piezo.play({
+  song: [
+    ['C4', 1],
+    [null, 1],
+    ['D4', 1],
+    [null, 1],
+    ['C4', 1]
+  ],
+  tempo: 1000
 });
