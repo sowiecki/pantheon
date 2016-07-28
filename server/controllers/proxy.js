@@ -2,24 +2,22 @@
 /* globals console */
 import WebSocket from 'ws';
 
-import buzzerController from './buzz';
-import { proxyHost } from '../environment';
+import { buzzerController } from './buzzer';
+import { config } from '../environment';
 import { WEBSOCKET_PROTOCOL,
          WEBSOCKET_RECONNECT_INTERVAL,
          HANDSHAKE,
          RECONNECTED,
+         FORWARD,
          BUZZ } from '../constants';
 
 let interval;
 let webSocket;
 
-/**
- * Handles maintaining a connection as a client to proxy's WebSocket server.
- */
-const proxyController = {
+export const proxyController = {
   initialize() {
     clearInterval(interval);
-    webSocket = new WebSocket(proxyHost, WEBSOCKET_PROTOCOL);
+    webSocket = new WebSocket(config.proxyHost, WEBSOCKET_PROTOCOL);
 
     webSocket.onopen = this.handleConnection;
     webSocket.onmessage = this.parseEvent;
@@ -27,7 +25,8 @@ const proxyController = {
   },
 
   handleConnection() {
-    webSocket.send(JSON.stringify({ event: HANDSHAKE }));
+    const payload = { id: config.id };
+    webSocket.send(JSON.stringify({ event: HANDSHAKE, payload }));
   },
 
   parseEvent({ data }) {
@@ -40,6 +39,10 @@ const proxyController = {
 
       [RECONNECTED]() {
         console.log(payload.message);
+      },
+
+      [FORWARD]() {
+        console.log(event, payload);
       },
 
       [BUZZ]() {
@@ -60,5 +63,3 @@ const proxyController = {
     }, WEBSOCKET_RECONNECT_INTERVAL);
   }
 };
-
-export default proxyController;

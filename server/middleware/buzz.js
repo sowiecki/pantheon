@@ -2,18 +2,22 @@
 /* eslint no-console: 0 */
 import http from 'http';
 
-import { buzzer } from '../environment';
+import { config } from '../environment';
 import { BUZZER_API } from '../constants';
 
-const buzz = (action, next) => {
+const buzz = (action) => {
+  const payload = JSON.stringify({
+    code: action.code
+  });
+
   const options = {
-    hostname: buzzer.hostname,
-    port: buzzer.port,
+    hostname: config.buzzer.hostname,
+    port: config.buzzer.port,
     path: BUZZER_API,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      code: action.code
+      'Content-Length': payload.length
     }
   };
 
@@ -28,9 +32,8 @@ const buzz = (action, next) => {
     console.log(`Problem with request: ${message}`);
   });
 
+  request.write(payload);
   request.end();
-
-  next();
 };
 
 export default buzz;

@@ -27,7 +27,8 @@
     "node-pixel": "^0.6.1",
     "nodemon": "^1.9.2",
     "redux": "^3.5.2",
-    "serialport": "^3.1.2"
+    "serialport": "^3.1.2",
+    "ws": "^1.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",
