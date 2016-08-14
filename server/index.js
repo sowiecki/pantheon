@@ -5,6 +5,8 @@ import Koa from 'koa';
 import router from './routes';
 import * as controllers from './controllers';
 
+import { getControllerName } from './utils';
+
 const server = new Koa();
 const port = process.env.PORT || 4000;
 
@@ -13,7 +15,22 @@ server.use(router.routes());
 const run = async() => {
   console.log(`Listening on port ${port}`);
 
-  Object.keys(controllers).forEach((key) => controllers[key].initialize());
+  Object.keys(controllers).forEach((key) => {
+    const hasInitializeMethod = typeof controllers[key]().initialize === 'function';
+    const controllerName = getControllerName(controllers[key]);
+
+    if (hasInitializeMethod) {
+      console.log(`Initializing ${controllerName}`);
+
+      try {
+        controllers[key]().initialize();
+
+        console.log(`${controllerName} successfully initialized`);
+      } catch (e) {
+        console.log(`${controllerName} initialization failed`);
+      }
+    }
+  });
 
   await server.listen(port);
 };

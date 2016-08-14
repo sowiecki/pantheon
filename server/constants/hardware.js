@@ -1,9 +1,19 @@
-export const LIGHT_STRIP_PRIMARY = 'LIGHT_STRIP_PRIMARY';
-export const LIGHT_STRIP_PRIMARY_PIN = 6;
-export const LIGHT_STRIP_PRIMARY_LENGTH = 60;
+export const DESK_LIGHT_STRIP_PRIMARY = 'DESK_LIGHT_STRIP_PRIMARY';
+export const DESK_LIGHT_STRIP_PRIMARY_PIN = 6;
+export const DESK_LIGHT_STRIP_PRIMARY_LENGTH = 60;
 
-export const MIC_PRIMARY = 'MIC_PRIMARY';
-export const MIC_PIN = 'A0';
+export const DESK_MIC_PRIMARY = 'MIC_PRIMARY';
+export const DESK_MIC_PIN = 'A0';
 
-export const PIEZO_PRIMARY = 'PIEZO_PRIMARY';
-export const PIEZO_PIN = 4;
+export const DESK_PIEZO_PRIMARY = 'PIEZO_PRIMARY';
+export const DESK_PIEZO_PIN = 4;
+
+export const DEADBOLT_PUSH_BUTTON = 'DEADBOLT_PUSH_BUTTON';
+export const DEADBOLT_PUSH_BUTTON_PIN = 'A0';
+export const DEADBOLT_NFC_BUTTON = 'DEADBOLT_NFC_BUTTON';
+export const DEADBOLT_NFC_BUTTON_PIN = 'D1';
+export const DEADBOLT_LED = 'DEADBOLT_LED';
+export const DEADBOLT_LED_PIN = 'D4';
+export const DEADBOLT_LED_TIMEOUT = 500;
+export const DEADBOLT_SERVO = 'DEADBOLT_SERVO';
+export const DEADBOLT_SERVO_PIN = 'D0';

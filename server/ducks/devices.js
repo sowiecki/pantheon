@@ -1,36 +1,71 @@
 /* eslint new-cap:0 */
 /* globals setTimeout */
 import { HueApi, lightState } from 'node-hue-api';
+import { merge } from 'lodash';
 
 import { config } from '../environment';
-import { handleAction, cylonEye, unauthorizedFlash, buzz, doot } from '../utils';
+import { handleAction, cylonEye } from '../utils';
 
 import { LIGHT_STRIP_PRIMARY,
          LIGHT_STRIP_PRIMARY_LENGTH,
-         PIEZO_PRIMARY } from '../constants';
+         DEADBOLT_LED,
+         DEADBOLT_LED_TIMEOUT,
+         DEADBOLT_SERVO } from '../constants';
 
-export const EMIT_REGISTER_ACCESSORIES = 'EMIT_REGISTER_ACCESSORIES';
+export const EMIT_REGISTER_DESK_ACCESSORIES = 'EMIT_REGISTER_DESK_ACCESSORIES';
 export const EMIT_REGISTER_BRIDGE = 'EMIT_REGISTER_BRIDGE';
-export const EMIT_TURN_ON_LIGHT = 'EMIT_TURN_ON_LIGHT';
-export const EMIT_TURN_OFF_LIGHT = 'EMIT_TURN_OFF_LIGHT';
+
+export const EMIT_LR_LIGHT_ON = 'EMIT_LR_LIGHT_ON';
+export const EMIT_LR_LIGHT_OFF = 'EMIT_LR_LIGHT_OFF';
+export const EMIT_DR_LIGHT_ON = 'EMIT_DR_LIGHT_ON';
+export const EMIT_DR_LIGHT_OFF = 'EMIT_DR_LIGHT_OFF';
+
 export const EMIT_SERIAL_DATA_CHANGE = 'EMIT_SERIAL_DATA_CHANGE';
-export const EMIT_MIC_VALUE_CHANGE = 'EMIT_MIC_VALUE_CHANGE';
+export const EMIT_DESK_MIC_VALUE_CHANGE = 'EMIT_MIC_VALUE_CHANGE';
 export const EMIT_BUZZ = 'EMIT_BUZZ';
+
+export const EMIT_REGISTER_DEADBOLT_ACCESSORIES = 'EMIT_REGISTER_DEADBOLT_ACCESSORIES';
+export const EMIT_DEADBOLT_PUSH_BUTTON_PRESS = 'EMIT_DEADBOLT_PUSH_BUTTON_PRESS';
+export const EMIT_DEADBOLT_NFC_BUTTON_PRESS = 'EMIT_DEADBOLT_NFC_BUTTON_PRESS';
 
 const initialState = {
   ports: config.ports,
   lightState: lightState.create(),
-  hueUserId: config.users[Object.keys(config.users)[0]]
+  hueUserId: config.users[Object.keys(config.users)[0]],
+  isDeadboltLocked: false
+};
+
+const toggleDeadboltState = (state) => { // TODO move to util file
+  if (state.isDeadboltLocked) {
+    state[DEADBOLT_SERVO].to(0);
+  } else {
+    state[DEADBOLT_SERVO].to(180);
+  }
+
+  state[DEADBOLT_LED].on();
+  setTimeout(() => state[DEADBOLT_LED].off(), DEADBOLT_LED_TIMEOUT);
+
+  return merge(state, {
+    isDeadboltLocked: !state.isDeadboltLocked
+  });
 };
 
 const devicesReducer = (state = initialState, action) => {
   const reducers = {
-    [EMIT_REGISTER_ACCESSORIES]() {
+    [EMIT_REGISTER_DESK_ACCESSORIES]() {
       Object.keys(action.accessories).forEach((accessoryKey) => {
         state[accessoryKey] = action.accessories[accessoryKey];
       });
 
       cylonEye.start(state[LIGHT_STRIP_PRIMARY], LIGHT_STRIP_PRIMARY_LENGTH);
+
+      return state;
+    },
+
+    [EMIT_REGISTER_DEADBOLT_ACCESSORIES]() {
+      Object.keys(action.accessories).forEach((accessoryKey) => {
+        state[accessoryKey] = action.accessories[accessoryKey];
+      });
 
       return state;
     },
@@ -41,49 +76,44 @@ const devicesReducer = (state = initialState, action) => {
       return state;
     },
 
-    [EMIT_TURN_ON_LIGHT]() {
+    [EMIT_DR_LIGHT_ON]() {
+      state.hueBridge.setLightState(1, state.lightState.on());
+
+      return state;
+    },
+
+    [EMIT_DR_LIGHT_OFF]() {
+      state.hueBridge.setLightState(1, state.lightState.off());
+
+      return state;
+    },
+
+    [EMIT_LR_LIGHT_ON]() {
       state.hueBridge.setLightState(2, state.lightState.on());
 
       return state;
     },
 
-    [EMIT_TURN_OFF_LIGHT]() {
+    [EMIT_LR_LIGHT_OFF]() {
       state.hueBridge.setLightState(2, state.lightState.off());
 
       return state;
     },
 
     [EMIT_SERIAL_DATA_CHANGE]() {
-      const strip = state[LIGHT_STRIP_PRIMARY];
-      const piezo = state[PIEZO_PRIMARY];
-
-      if (!strip || !piezo) return state;
-
-      const authorized = config.users.nfc.indexOf(parseInt(action.data, 10)) > -1;
-
-      if (!authorized) {
-        buzz(piezo);
-        cylonEye.stop(strip);
-        unauthorizedFlash(strip);
-        setTimeout(() => cylonEye.start(strip, LIGHT_STRIP_PRIMARY_LENGTH), 500);
-        return state;
-      }
-
-      // doot(piezo);
-
-      state.hueBridge.getLightStatus(2).then((lightStatus) => {
-        if (lightStatus.state.on) {
-          reducers.EMIT_TURN_OFF_LIGHT();
-        } else {
-          reducers.EMIT_TURN_ON_LIGHT();
-        }
-      });
-
-      return state;
+      return state; // TODO stuff
     },
 
-    [EMIT_MIC_VALUE_CHANGE]() {
-      // TODO stuff
+    [EMIT_DESK_MIC_VALUE_CHANGE]() {
+      return state; // TODO stuff
+    },
+
+    [EMIT_DEADBOLT_PUSH_BUTTON_PRESS]() {
+      return toggleDeadboltState(state);
+    },
+
+    [EMIT_DEADBOLT_NFC_BUTTON_PRESS]() {
+      return toggleDeadboltState(state);
     }
   };
 

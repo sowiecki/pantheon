@@ -1,6 +1,6 @@
 {
   "name": "moirai",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "",
   "private": true,
   "engines": {
@@ -26,6 +26,7 @@
     "node-hue-api": "^2.2.0",
     "node-pixel": "^0.6.1",
     "nodemon": "^1.9.2",
+    "particle-io": "^0.12.0",
     "redux": "^3.5.2",
     "serialport": "^3.1.2",
     "ws": "^1.1.1"

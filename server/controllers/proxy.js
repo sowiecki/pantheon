@@ -14,7 +14,7 @@ import { WEBSOCKET_PROTOCOL,
 let interval;
 let webSocket;
 
-export const proxyController = {
+export const proxyController = () => ({
   initialize() {
     clearInterval(interval);
     webSocket = new WebSocket(config.proxyHost, WEBSOCKET_PROTOCOL);
@@ -62,4 +62,4 @@ export const proxyController = {
       proxyController.initialize();
     }, WEBSOCKET_RECONNECT_INTERVAL);
   }
-};
+});

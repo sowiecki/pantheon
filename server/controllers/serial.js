@@ -9,7 +9,7 @@ const serial = new SerialPort(config.ports.serial, {
   parser: serialport.parsers.readline('\n')
 });
 
-export const serialController = {
+export const serialController = () => ({
   initialize() {
     serial.on('open', () => {
       serial.on('data', (data) => {
@@ -20,4 +20,4 @@ export const serialController = {
       });
     });
   }
-};
+});
