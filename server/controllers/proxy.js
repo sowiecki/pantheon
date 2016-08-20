@@ -46,7 +46,7 @@ export const proxyController = () => ({
       },
 
       [BUZZ]() {
-        buzzerController.buzz();
+        buzzerController().buzz();
       },
 
       [undefined]() {
@@ -59,7 +59,7 @@ export const proxyController = () => ({
 
   reconnect() {
     interval = setInterval(() => {
-      proxyController.initialize();
+      proxyController().initialize();
     }, WEBSOCKET_RECONNECT_INTERVAL);
   }
 });
