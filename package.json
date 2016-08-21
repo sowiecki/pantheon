@@ -14,6 +14,9 @@
     "lint": "eslint --format=node_modules/eslint-formatter-pretty --ext .js,.jsx *.js server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "moirai": "./index.js"
+  },
   "author": "Sean Owiecki",
   "license": "MIT",
   "dependencies": {
