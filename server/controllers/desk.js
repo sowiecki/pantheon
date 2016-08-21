@@ -20,7 +20,7 @@ export const deskController = () => ({
     });
 
     board.on('fail', () => {
-      throw new Error('FOOBAR');
+      throw new Error('Board connection failed');
     });
 
     board.on('ready', () => {
