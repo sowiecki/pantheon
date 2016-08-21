@@ -37,9 +37,9 @@ const initialState = {
 
 const toggleDeadboltState = (state) => { // TODO move to util file
   if (state.isDeadboltLocked) {
-    state[DEADBOLT_SERVO].to(0);
+    state[DEADBOLT_SERVO].to(80);
   } else {
-    state[DEADBOLT_SERVO].to(180);
+    state[DEADBOLT_SERVO].to(0);
   }
 
   state[DEADBOLT_LED].on();
