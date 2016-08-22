@@ -5,8 +5,8 @@ import { HueApi, lightState } from 'node-hue-api';
 import { config } from '../environment';
 import { handleAction, registerAccessories, cylonEye } from '../utils';
 
-import { LIGHT_STRIP_PRIMARY,
-         LIGHT_STRIP_PRIMARY_LENGTH } from '../constants';
+import { DESK_LIGHT_STRIP_PRIMARY,
+         DESK_LIGHT_STRIP_PRIMARY_LENGTH } from '../constants';
 
 export const EMIT_REGISTER_DESK_ACCESSORIES = 'EMIT_REGISTER_DESK_ACCESSORIES';
 export const EMIT_REGISTER_BRIDGE = 'EMIT_REGISTER_BRIDGE';
@@ -36,7 +36,7 @@ const devicesReducer = (state = initialState, action) => {
     [EMIT_REGISTER_DESK_ACCESSORIES]() {
       const newState = registerAccessories(state, action.accessories);
 
-      cylonEye.start(state[LIGHT_STRIP_PRIMARY], LIGHT_STRIP_PRIMARY_LENGTH);
+      cylonEye.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
 
       return newState;
     },
