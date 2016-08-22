@@ -1,10 +1,12 @@
 /* globals setInterval, clearInterval, setTimeout */
+import { map } from 'lodash';
+
 import { getPositions } from './devices';
 import { BLACK, RED } from '../constants';
 
 export const cylonEye = {
   start(strip, stripLength) {
-    const FPS = 120;
+    const FPS = 160;
     const UP = 'UP';
     const DOWN = 'DOWN';
     const positions = getPositions(stripLength);
@@ -62,6 +64,31 @@ export const cylonEye = {
       strip.pixel(positions[valueToLight]).color(color);
       strip.show();
     }, 1000 / FPS);
+  },
+
+  stop(strip) {
+    strip.color(BLACK);
+    clearInterval(this.interval);
+  }
+};
+
+export const rain = {
+  start(strip, stripLength) {
+    const random = () => Math.floor(Math.random() * 60) + 1;
+    const positionsToLight = new Array(10).fill().map(() => ({ intensity: random(), position: random() }));
+
+    this.interval = setInterval(() => {
+      strip.color(BLACK);
+
+      map(positionsToLight, (positionToLight) => {
+        strip.pixel(positionToLight).color(rgb(50, 50, 255));
+        strip.show();
+
+        positionToLight.intensity = positionToLight.intensity - 1;
+
+        return positionToLight;
+      });
+    });
   },
 
   stop(strip) {

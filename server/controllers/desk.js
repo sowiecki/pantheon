@@ -9,7 +9,8 @@ import { DESK_LIGHT_STRIP_PRIMARY,
          DESK_MIC_PRIMARY,
          DESK_MIC_PIN,
          DESK_PIEZO_PRIMARY,
-         DESK_PIEZO_PIN } from '../constants';
+         DESK_PIEZO_PIN,
+         CIRCUIT_PIN } from '../constants';
 import store from '../store';
 
 export const deskController = () => ({

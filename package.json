@@ -23,6 +23,7 @@
     "babel-register": "^6.9.0",
     "koa": "^2.0.0",
     "koa-router": "^7.0.1",
+    "lodash": "^4.15.0",
     "node-hue-api": "^2.2.0",
     "node-pixel": "^0.6.1",
     "nodemon": "^1.9.2",

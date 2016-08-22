@@ -6,8 +6,8 @@ import { merge } from 'lodash';
 import { config } from '../environment';
 import { handleAction, cylonEye } from '../utils';
 
-import { LIGHT_STRIP_PRIMARY,
-         LIGHT_STRIP_PRIMARY_LENGTH,
+import { DESK_LIGHT_STRIP_PRIMARY,
+         DESK_LIGHT_STRIP_PRIMARY_LENGTH,
          DEADBOLT_LED,
          DEADBOLT_LED_TIMEOUT,
          DEADBOLT_SERVO } from '../constants';
@@ -57,7 +57,7 @@ const devicesReducer = (state = initialState, action) => {
         state[accessoryKey] = action.accessories[accessoryKey];
       });
 
-      cylonEye.start(state[LIGHT_STRIP_PRIMARY], LIGHT_STRIP_PRIMARY_LENGTH);
+      cylonEye.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
 
       return state;
     },
