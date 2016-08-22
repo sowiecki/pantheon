@@ -3,6 +3,7 @@
 #include <SPI.h>
 
 #include <Servo.h>
+#include "authorized-ids.h"
 
 #define IRQ 6
 #define RESET 8
@@ -13,9 +14,6 @@ const int LOCKED_POS = 45;
 const int UNLOCKED_POS = -10;
 const int BUTTON_PIN = 2;
 const int LED_PIN = 13;
-const unsigned long int authorizedIDs[5] = {
-
-};
 
 int buttonState = 0;
 bool locked = true;
