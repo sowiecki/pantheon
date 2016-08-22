@@ -59,7 +59,7 @@ export const cylonEye = {
         valueToLight--;
       }
 
-      const color = `rgb(${red}, ${50}, ${blue})`;
+      const color = `rgb(${red}, ${255}, ${blue})`;
 
       strip.pixel(positions[valueToLight]).color(color);
       strip.show();
