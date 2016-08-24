@@ -6,6 +6,8 @@ import { config } from '../environment';
 import { BUZZER_API } from '../constants';
 
 const buzz = (action) => {
+  action.next.body = 200;
+
   const payload = JSON.stringify({
     code: action.code
   });

@@ -6,7 +6,10 @@ import { config } from '../environment';
 import { handleAction, registerAccessories, cylonEye } from '../utils';
 
 import { DESK_LIGHT_STRIP_PRIMARY,
-         DESK_LIGHT_STRIP_PRIMARY_LENGTH } from '../constants';
+         DESK_LIGHT_STRIP_PRIMARY_LENGTH,
+         DEADBOLT_LED,
+         DEADBOLT_PUSH_BUTTON,
+         BUTTON_PRESS_TIMEOUT } from '../constants';
 
 export const EMIT_REGISTER_DESK_ACCESSORIES = 'EMIT_REGISTER_DESK_ACCESSORIES';
 export const EMIT_REGISTER_BRIDGE = 'EMIT_REGISTER_BRIDGE';
@@ -76,8 +79,29 @@ const devicesReducer = (state = initialState, action) => {
       return state;
     },
 
-    [EMIT_DESK_MIC_VALUE_CHANGE]() {
-      return state; // TODO stuff
+    [EMIT_DEADBOLT_SENSOR_CHANGE]() {
+      if (action.value) {
+        state[DEADBOLT_LED].fadeIn();
+
+        setTimeout(() => state[DEADBOLT_LED].fadeOut(), 500);
+      }
+
+      return state;
+    },
+
+    [EMIT_DEADBOLT_PUSH_BUTTON_PRESS]() {
+      if (action.passcode === config.id) {
+        action.next.body = 200;
+        state[DEADBOLT_PUSH_BUTTON].high();
+
+        setTimeout(() => {
+          state[DEADBOLT_PUSH_BUTTON].low();
+        }, BUTTON_PRESS_TIMEOUT);
+      } else {
+        action.next.body = 401;
+      }
+
+      return state;
     }
   };
 
