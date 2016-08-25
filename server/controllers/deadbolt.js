@@ -21,11 +21,7 @@ export const deadboltController = (next) => ({
     });
 
     board.on('ready', () => {
-      const sensor = new five.Sensor.Digital({
-        pin: DEADBOLT_SENSOR_BUTTON_PIN,
-        // freq: DEADBOLT_SENSOR_BUTTON_FREQ,
-        // threshold: 5
-      });
+      const sensor = new five.Sensor.Digital(DEADBOLT_SENSOR_BUTTON_PIN);
       const deadboltButton = new five.Pin({
         pin: DEADBOLT_PUSH_BUTTON_PIN,
         mode: 1
