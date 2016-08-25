@@ -3,13 +3,15 @@
 import WebSocket from 'ws';
 
 import { buzzerController } from './buzzer';
+import { deadboltController } from './deadbolt';
 import { config } from '../environment';
 import { WEBSOCKET_PROTOCOL,
          WEBSOCKET_RECONNECT_INTERVAL,
          HANDSHAKE,
          RECONNECTED,
          FORWARD,
-         BUZZ } from '../constants';
+         BUZZ,
+         TOGGLE_DEADBOLT } from '../constants';
 
 let interval;
 let webSocket;
@@ -47,6 +49,10 @@ export const proxyController = () => ({
 
       [BUZZ]() {
         buzzerController().buzz();
+      },
+
+      [TOGGLE_DEADBOLT]() {
+        deadboltController().toggle(payload.id);
       },
 
       [undefined]() {
