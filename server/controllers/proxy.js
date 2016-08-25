@@ -12,6 +12,7 @@ import { WEBSOCKET_PROTOCOL,
          FORWARD,
          BUZZ,
          TOGGLE_DEADBOLT } from '../constants';
+import { handleEvent } from '../utils';
 
 let interval;
 let webSocket;
@@ -60,7 +61,7 @@ export const proxyController = () => ({
       }
     };
 
-    handlers[event]();
+    handleEvent(event, handlers);
   },
 
   reconnect() {

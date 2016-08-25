@@ -10,3 +10,10 @@ export const handleAction = (state, action, reducers) => {
 
   return newState || state;
 };
+
+
+export const handleEvent = (event, handlers) => {
+  const handler = handlers[event] || handlers[undefined];
+
+  handler();
+};
