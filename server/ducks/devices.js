@@ -39,7 +39,7 @@ const devicesReducer = (state = initialState, action) => {
     [EMIT_REGISTER_DESK_ACCESSORIES]() {
       const newState = registerAccessories(state, action.accessories);
 
-      cylonEye.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
+      cylonEye.start(newState[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
 
       return newState;
     },
