@@ -2,7 +2,8 @@
 /* globals console */
 import WebSocket from 'ws';
 
-import { buzzerController, deadboltController } from './buzzer';
+import { buzzerController } from './buzzer';
+import { deadboltController } from './deadbolt';
 import { config } from '../environment';
 import { WEBSOCKET_PROTOCOL,
          WEBSOCKET_RECONNECT_INTERVAL,
