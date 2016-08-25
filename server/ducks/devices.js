@@ -3,7 +3,7 @@
 import { HueApi, lightState } from 'node-hue-api';
 
 import { config } from '../environment';
-import { handleAction, registerAccessories, cylonEye } from '../utils';
+import { handleAction, registerAccessories, cylonEye, setResponse } from '../utils';
 
 import { DESK_LIGHT_STRIP_PRIMARY,
          DESK_LIGHT_STRIP_PRIMARY_LENGTH,
@@ -90,15 +90,18 @@ const devicesReducer = (state = initialState, action) => {
     },
 
     [EMIT_DEADBOLT_PUSH_BUTTON_PRESS]() {
-      if (action.passcode === config.id) {
-        action.next.body = 200;
+      const isAuthorized = action.passcode === config.id;
+
+      if (isAuthorized) {
         state[DEADBOLT_PUSH_BUTTON].high();
 
         setTimeout(() => {
           state[DEADBOLT_PUSH_BUTTON].low();
         }, BUTTON_PRESS_TIMEOUT);
+
+        setResponse(200);
       } else {
-        action.next.body = 401;
+        setResponse(401);
       }
 
       return state;
