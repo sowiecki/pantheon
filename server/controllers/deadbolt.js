@@ -1,5 +1,6 @@
 import five from 'johnny-five';
 import Particle from 'particle-io';
+import { get } from 'lodash';
 
 import { EMIT_REGISTER_DEADBOLT_ACCESSORIES,
          EMIT_DEADBOLT_SENSOR_CHANGE,
@@ -46,10 +47,10 @@ export const deadboltController = (next) => ({
     });
   },
 
-  toggle() {
+  toggle(id = get(next, 'request.header.id')) {
     store.dispatch({
       type: EMIT_DEADBOLT_PUSH_BUTTON_PRESS,
-      passcode: next.request.header.id,
+      passcode: id,
       next
     });
   }

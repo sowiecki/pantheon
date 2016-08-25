@@ -52,7 +52,7 @@ export const proxyController = () => ({
       },
 
       [TOGGLE_DEADBOLT]() {
-        deadboltController().toggle();
+        deadboltController().toggle(payload.id);
       },
 
       [undefined]() {
