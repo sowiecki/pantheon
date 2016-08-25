@@ -52,12 +52,16 @@ void setup() {
   pinMode(ALERT_PIN, OUTPUT);
 }
 
-void flashLed() {
+void feedback(alert) {
   digitalWrite(LED_PIN, HIGH);
-  digitalWrite(ALERT_PIN, HIGH);
+  if (alert) {
+    digitalWrite(ALERT_PIN, HIGH);
+  }
   delay(1000);
   digitalWrite(LED_PIN, LOW);
-  digitalWrite(ALERT_PIN, LOW);
+  if (alert) {
+    digitalWrite(ALERT_PIN, LOW);
+  }
 }
 
 void toggle(bool lockedState) {
@@ -77,7 +81,7 @@ void loop() {
 
   if (buttonState == HIGH) {
     toggle(locked);
-    flashLed();
+    feedback(false);
   }
   
   uint8_t success;
@@ -110,7 +114,7 @@ void loop() {
 
     if (isAuthorized) {
       toggle(locked);
-      flashLed();
+      feedback();
     }
   }
 }
