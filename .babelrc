@@ -2,6 +2,13 @@
   "presets": ["es2015"],
   "plugins": [
     "transform-async-to-generator",
-    "transform-object-rest-spread"
+    "transform-object-rest-spread",
+    ["module-alias", [
+      { "src": "./server/environment", "expose": "environment" },
+      { "src": "./server/controllers", "expose": "controllers" },
+      { "src": "./server/ducks", "expose": "ducks" },
+      { "src": "./server/constants", "expose": "constants" },
+      { "src": "./server/utils", "expose": "utils" }
+    ]]
   ]
 }

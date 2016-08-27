@@ -2,8 +2,8 @@
 /* eslint no-console: 0 */
 import http from 'http';
 
-import { config } from '../environment';
-import { BUZZER_API } from '../constants';
+import { config } from 'environment';
+import { BUZZER_API } from 'constants';
 
 const buzz = (action) => {
   action.next.body = 200;

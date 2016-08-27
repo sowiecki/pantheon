@@ -4,15 +4,15 @@ import WebSocket from 'ws';
 
 import { buzzerController } from './buzzer';
 import { deadboltController } from './deadbolt';
-import { config } from '../environment';
+import { config } from 'environment';
 import { WEBSOCKET_PROTOCOL,
          WEBSOCKET_RECONNECT_INTERVAL,
          HANDSHAKE,
          RECONNECTED,
          FORWARD,
          BUZZ,
-         TOGGLE_DEADBOLT } from '../constants';
-import { handleEvent } from '../utils';
+         TOGGLE_DEADBOLT } from 'constants';
+import { handleEvent } from 'utils';
 
 let interval;
 let webSocket;
