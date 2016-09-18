@@ -4,14 +4,14 @@ import { get } from 'lodash';
 
 import { EMIT_REGISTER_DEADBOLT_ACCESSORIES,
          EMIT_DEADBOLT_SENSOR_CHANGE,
-         EMIT_DEADBOLT_PUSH_BUTTON_PRESS } from '../ducks/devices';
+         EMIT_DEADBOLT_PUSH_BUTTON_PRESS } from 'ducks/devices';
 import { DEADBOLT_SENSOR_BUTTON_PIN,
          DEADBOLT_PUSH_BUTTON_PIN,
          DEADBOLT_LED_PIN,
          DEADBOLT_SENSOR_BUTTON,
          DEADBOLT_PUSH_BUTTON,
-         DEADBOLT_LED } from '../constants';
-import { config } from '../environment';
+         DEADBOLT_LED } from 'constants';
+import { config } from 'environment';
 import store from '../store';
 
 export const deadboltController = (next) => ({

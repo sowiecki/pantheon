@@ -2,7 +2,7 @@
 import { map } from 'lodash';
 
 import { getPositions } from './devices';
-import { BLACK, RED } from '../constants';
+import { BLACK, RED } from 'constants';
 
 export const cylonEye = {
   start(strip, stripLength) {

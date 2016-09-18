@@ -1,4 +1,4 @@
-import { handleAction } from '../utils';
+import { handleAction } from 'utils';
 
 export const EMIT_ADD_USER = 'EMIT_ADD_USER';
 

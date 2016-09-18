@@ -11,7 +11,7 @@
 Servo servo;
 
 const int LOCKED_POS = 45;
-const int UNLOCKED_POS = -10;
+const int UNLOCKED_POS = 0;
 const int BUTTON_PIN = 7;
 const int ALERT_PIN = 1;
 const int LED_PIN = 13;
@@ -52,7 +52,7 @@ void setup() {
   pinMode(ALERT_PIN, OUTPUT);
 }
 
-void feedback(alert) {
+void feedback(bool alert) {
   digitalWrite(LED_PIN, HIGH);
   if (alert) {
     digitalWrite(ALERT_PIN, HIGH);
@@ -68,11 +68,11 @@ void toggle(bool lockedState) {
   if (lockedState) {
     servo.write(UNLOCKED_POS);
     locked = false;
-    delay(300);
+    delay(500);
   } else {
     servo.write(LOCKED_POS);
     locked = true;
-    delay(300);
+    delay(500);
   }
 }
 
@@ -114,7 +114,7 @@ void loop() {
 
     if (isAuthorized) {
       toggle(locked);
-      feedback();
+      feedback(false);
     }
   }
 }

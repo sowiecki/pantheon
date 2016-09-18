@@ -1,12 +1,12 @@
-import serialport, { SerialPort } from 'serialport';
+import { parsers, SerialPort } from 'serialport';
 
-import { config } from '../environment';
-import { EMIT_SERIAL_DATA_CHANGE } from '../ducks/devices';
+import { config } from 'environment';
+import { EMIT_SERIAL_DATA_CHANGE } from 'ducks/devices';
 import store from '../store';
 
 const serial = new SerialPort(config.ports.serial, {
   baudrate: 9600,
-  parser: serialport.parsers.readline('\n')
+  parser: parsers.readline('\n')
 });
 
 export const serialController = () => ({
