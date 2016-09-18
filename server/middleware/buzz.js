@@ -4,9 +4,10 @@ import http from 'http';
 
 import { config } from '../environment';
 import { BUZZER_API } from '../constants';
+import { setResponse } from '../utils';
 
 const buzz = (action) => {
-  action.next.body = 200;
+  setResponse(200);
 
   const payload = JSON.stringify({
     code: action.code
