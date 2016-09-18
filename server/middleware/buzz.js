@@ -2,9 +2,9 @@
 /* eslint no-console: 0 */
 import http from 'http';
 
-import { config } from '../environment';
-import { BUZZER_API } from '../constants';
-import { setResponse } from '../utils';
+import { setResponse } from 'utils';
+import { config } from 'environment';
+import { BUZZER_API } from 'constants';
 
 const buzz = (action) => {
   setResponse(200);

@@ -2,7 +2,7 @@ import hue from 'node-hue-api';
 
 import { EMIT_REGISTER_BRIDGE,
          EMIT_LR_LIGHT_ON,
-         EMIT_LR_LIGHT_OFF } from '../ducks/devices';
+         EMIT_LR_LIGHT_OFF } from 'ducks/devices';
 import store from '../store';
 
 export const hueController = () => ({

@@ -2,14 +2,13 @@
 /* globals setTimeout */
 import { HueApi, lightState } from 'node-hue-api';
 
-import { config } from '../environment';
-import { handleAction, registerAccessories, cylonEye, setResponse } from '../utils';
-
+import { config } from 'environment';
+import { handleAction, registerAccessories, cylonEye, setResponse } from 'utils';
 import { DESK_LIGHT_STRIP_PRIMARY,
          DESK_LIGHT_STRIP_PRIMARY_LENGTH,
          DEADBOLT_LED,
          DEADBOLT_PUSH_BUTTON,
-         BUTTON_PRESS_TIMEOUT } from '../constants';
+         BUTTON_PRESS_TIMEOUT } from 'constants';
 
 export const EMIT_REGISTER_DESK_ACCESSORIES = 'EMIT_REGISTER_DESK_ACCESSORIES';
 export const EMIT_REGISTER_BRIDGE = 'EMIT_REGISTER_BRIDGE';
@@ -81,12 +80,14 @@ const devicesReducer = (state = initialState, action) => {
 
     [EMIT_DEADBOLT_SENSOR_CHANGE]() {
       if (action.value) {
-        state[DEADBOLT_LED].fadeIn();
+        state.hueBridge.setLightState(2, state.lightState.on());
+        setTimeout(() => state.hueBridge.setLightState(1, state.lightState.on()), 3000);
 
+        state[DEADBOLT_LED].fadeIn();
         setTimeout(() => state[DEADBOLT_LED].fadeOut(), 500);
       }
 
-      return state;
+      return reducers[EMIT_DR_LIGHT_ON]();
     },
 
     [EMIT_DEADBOLT_PUSH_BUTTON_PRESS]() {

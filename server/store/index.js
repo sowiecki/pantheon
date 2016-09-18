@@ -2,7 +2,7 @@ import { createStore,
          applyMiddleware,
          combineReducers } from 'redux';
 
-import reducers from '../ducks';
+import reducers from 'ducks';
 import api from '../middleware/api';
 
 const rootReducer = combineReducers(reducers);

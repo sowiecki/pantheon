@@ -1,5 +1,5 @@
 import buzz from './buzz';
-import { EMIT_BUZZ } from '../ducks/devices';
+import { EMIT_BUZZ } from 'ducks/devices';
 
 export default () => (next) => (action) => {
   switch (action.type) {

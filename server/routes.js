@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 
-import { hueController, buzzerController, deadboltController } from './controllers';
+import { hueController, buzzerController, deadboltController } from 'controllers';
 
 const router = new Router();
 
