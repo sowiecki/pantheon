@@ -11,7 +11,7 @@ import { WEBSOCKET_PROTOCOL,
          RECONNECTED,
          FORWARD,
          BUZZ,
-         TOGGLE_DEADBOLT } from 'constants';
+         DEADBOLT_COM } from 'constants';
 import { handleEvent } from 'utils';
 
 let interval;
@@ -52,7 +52,7 @@ export const proxyController = () => ({
         buzzerController().buzz();
       },
 
-      [TOGGLE_DEADBOLT]() {
+      [DEADBOLT_COM]() {
         deadboltController().toggle(payload.id);
       },
 

@@ -1,11 +1,12 @@
 /* eslint no-console:0 */
 /* globals console */
 import Koa from 'koa';
+import colors from 'colors/safe';
 
 import router from './routes';
 import * as controllers from './controllers';
 
-import { getControllerName } from './utils';
+import { getControllerName } from 'utils';
 
 const server = new Koa();
 const port = process.env.PORT || 4000;
@@ -25,9 +26,9 @@ const run = async() => {
       try {
         controllers[key]().initialize();
 
-        console.log(`${controllerName} successfully initialized`);
+        console.log(`${colors.bold(controllerName)} initialization: ${colors.bgGreen.bold('success')}`);
       } catch (e) {
-        console.log(`${controllerName} initialization failed`);
+        console.log(`${colors.bold(controllerName)} initialization: ${colors.bgRed.bold('fail')}`);
       }
     }
   });
