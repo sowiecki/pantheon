@@ -27,13 +27,16 @@ export const EMIT_BUZZ_RESPONSE = 'EMIT_BUZZ_RESPONSE';
 export const EMIT_PC_ON = 'EMIT_PC_ON';
 export const EMIT_PC_RESPONSE = 'EMIT_PC_RESPONSE';
 
+export const EMIT_SOUND_COM = 'EMIT_SOUND_COM';
+export const EMIT_SOUND_COM_RESPONSE = 'EMIT_SOUND_COM_RESPONSE';
+
 export const EMIT_REGISTER_DEADBOLT_ACCESSORIES = 'EMIT_REGISTER_DEADBOLT_ACCESSORIES';
 export const EMIT_DEADBOLT_PUSH_BUTTON_PRESS = 'EMIT_DEADBOLT_PUSH_BUTTON_PRESS';
 export const EMIT_DEADBOLT_SENSOR_CHANGE = 'EMIT_DEADBOLT_SENSOR_CHANGE';
 
 const initialState = {
   ports: config.ports,
-  lightState: lightState,
+  lightState,
   hueUserId: config.users[Object.keys(config.users)[0]],
   isDeadboltLocked: false,
   isDoorClosed: false

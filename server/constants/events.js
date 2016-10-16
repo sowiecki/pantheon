@@ -7,4 +7,6 @@ export const PC_ON = 'PC_ON';
 export const PC_ON_RESPONSE = 'PC_ON_RESPONSE';
 export const LIGHTS_COM = 'LIGHTS_COM';
 export const LIGHTS_COM_RESPONSE = 'LIGHTS_COM_RESPONSE';
+export const SOUND_COM = 'SOUND_COM';
+export const SOUND_COM_RESPONSE = 'SOUND_COM_RESPONSE';
 export const DEADBOLT_COM = 'DEADBOLT_COM';

@@ -12,6 +12,7 @@ import { WEBSOCKET_PROTOCOL,
          BUZZ,
          PC_ON,
          LIGHTS_COM,
+         SOUND_COM,
          DEADBOLT_COM } from 'constants';
 import { handleEvent } from 'utils';
 
@@ -67,6 +68,10 @@ export const proxyController = () => ({
 
       [LIGHTS_COM]() {
         hueController().parseCom(payload.body.payload);
+      },
+
+      [SOUND_COM]() {
+        deskController().parseSoundCom(payload.body.payload);
       },
 
       [undefined]() {
