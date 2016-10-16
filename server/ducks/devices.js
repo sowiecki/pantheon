@@ -1,4 +1,4 @@
-/* eslint new-cap:0 */
+/* eslint new-cap:0, no-console:0 */
 /* globals setTimeout */
 import { HueApi, lightState } from 'node-hue-api';
 
