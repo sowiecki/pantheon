@@ -34,6 +34,7 @@
     "node-hue-api": "^2.2.0",
     "node-pixel": "^0.6.1",
     "nodemon": "^1.9.2",
+    "particle-api-js": "^6.0.7",
     "particle-io": "^0.14.0",
     "redux": "^3.5.2",
     "serialport": "^3.1.2",

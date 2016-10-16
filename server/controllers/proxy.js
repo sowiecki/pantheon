@@ -2,8 +2,7 @@
 /* globals console */
 import WebSocket from 'ws';
 
-import { buzzerController } from './buzzer';
-import { deadboltController } from './deadbolt';
+import { buzzerController, deadboltController, deskController } from './';
 import { config } from 'environment';
 import { WEBSOCKET_PROTOCOL,
          WEBSOCKET_RECONNECT_INTERVAL,
@@ -11,6 +10,7 @@ import { WEBSOCKET_PROTOCOL,
          RECONNECTED,
          FORWARD,
          BUZZ,
+         PC_ON,
          DEADBOLT_COM } from 'constants';
 import { handleEvent } from 'utils';
 
@@ -58,6 +58,10 @@ export const proxyController = () => ({
 
       [DEADBOLT_COM]() {
         deadboltController().toggle(payload.id);
+      },
+
+      [PC_ON]() {
+        deskController().pcOn();
       },
 
       [undefined]() {
