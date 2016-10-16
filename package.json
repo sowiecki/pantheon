@@ -9,7 +9,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node ./index.js",
+    "start": "nodejs-dashboard node ./index.js",
     "dev": "nodemon ./index.js",
     "lint": "eslint --format=node_modules/eslint-formatter-pretty --ext .js,.jsx *.js server",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -48,6 +48,7 @@
     "eslint-plugin-import": "^1.8.1",
     "eslint-plugin-jsx-a11y": "^1.2.3",
     "eslint-plugin-react": "^5.1.1",
-    "nodemon": "^1.10.2"
+    "nodemon": "^1.10.2",
+    "nodejs-dashboard": "^0.1.1"
   }
 }

@@ -32,6 +32,10 @@ export const proxyController = () => ({
     webSocket.send(JSON.stringify({ event: HANDSHAKE, payload }));
   },
 
+  send(event, payload) {
+    webSocket.send(JSON.stringify({ event, payload }));
+  },
+
   parseEvent({ data }) {
     const { event, payload } = JSON.parse(data);
 

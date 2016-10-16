@@ -91,6 +91,11 @@ const devicesReducer = (state = initialState, action) => {
     },
 
     [EMIT_DEADBOLT_PUSH_BUTTON_PRESS]() {
+      if (!state[DEADBOLT_PUSH_BUTTON]) {
+        console.log('Deadbolt device is disconnected');
+        return;
+      }
+
       const isAuthorized = action.passcode === config.id;
 
       if (isAuthorized) {

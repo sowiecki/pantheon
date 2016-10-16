@@ -18,7 +18,7 @@ const run = async() => {
 
   Object.keys(controllers).forEach((key) => {
     const hasInitializeMethod = typeof controllers[key]().initialize === 'function';
-    const controllerName = getControllerName(controllers[key]);
+    const controllerName = colors.bold(getControllerName(controllers[key]));
 
     if (hasInitializeMethod) {
       console.log(`Initializing ${controllerName}`);
@@ -26,9 +26,9 @@ const run = async() => {
       try {
         controllers[key]().initialize();
 
-        console.log(`${colors.bold(controllerName)} initialization: ${colors.bgGreen.bold('success')}`);
+        console.log(`${controllerName} initialization: ${colors.bgGreen.bold('success')}`);
       } catch (e) {
-        console.log(`${colors.bold(controllerName)} initialization: ${colors.bgRed.bold('fail')}`);
+        console.log(`${controllerName} initialization: ${colors.bgRed.bold('fail')}`);
       }
     }
   });

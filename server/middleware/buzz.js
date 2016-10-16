@@ -4,10 +4,11 @@ import http from 'http';
 
 import { setResponse } from 'utils';
 import { config } from 'environment';
+import { EMIT_BUZZ_RESPONSE } from 'ducks/devices';
 import { BUZZER_API } from 'constants';
 
-const buzz = (action) => {
-  setResponse(200);
+const buzz = (action, next) => {
+  setResponse(action, 200);
 
   const payload = JSON.stringify({
     code: action.code
@@ -28,6 +29,11 @@ const buzz = (action) => {
     response.setEncoding('utf8');
     response.on('data', (chunk) => {
       console.log(`Buzz response: ${chunk}`);
+
+      next({
+        type: EMIT_BUZZ_RESPONSE,
+        status: JSON.parse(chunk).status
+      });
     });
   });
 

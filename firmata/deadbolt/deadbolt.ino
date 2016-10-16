@@ -24,9 +24,8 @@ char val = 0;
 Adafruit_PN532 nfc(IRQ, RESET);
 
 void setup() {
-  
-//  Serial.begin(9600);
- 
+  Serial.begin(9600);
+
   servo.attach(9);
 
   nfc.begin();
@@ -83,7 +82,7 @@ void loop() {
     toggle(locked);
     feedback(false);
   }
-  
+
   uint8_t success;
   uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 }; // Buffer to store the returned UID
   uint8_t uidLength; // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
