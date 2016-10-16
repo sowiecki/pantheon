@@ -12,7 +12,7 @@ void setup() {
 }
 
 int pcPower(String command) {
-  if (command == "power") {
+  if (command == "togglePower") {
     digitalWrite(moboPower, HIGH);
     delay(100);
     digitalWrite(moboPower, LOW);

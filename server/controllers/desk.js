@@ -2,7 +2,8 @@ import five from 'johnny-five';
 import pixel from 'node-pixel';
 
 import { EMIT_REGISTER_DESK_ACCESSORIES,
-         EMIT_DESK_MIC_VALUE_CHANGE } from 'ducks/devices';
+         EMIT_DESK_MIC_VALUE_CHANGE,
+         EMIT_PC_ON } from 'ducks/devices';
 import { DESK_LIGHT_STRIP_PRIMARY,
          DESK_LIGHT_STRIP_PRIMARY_PIN,
          DESK_LIGHT_STRIP_PRIMARY_LENGTH,
@@ -12,7 +13,7 @@ import { DESK_LIGHT_STRIP_PRIMARY,
          DESK_PIEZO_PIN } from 'constants';
 import store from '../store';
 
-export const deskController = () => ({
+export const deskController = (next) => ({
   initialize() {
     const board = new five.Board({
       repl: false
@@ -47,6 +48,13 @@ export const deskController = () => ({
         type: EMIT_DESK_MIC_VALUE_CHANGE,
         value
       }));
+    });
+  },
+
+  pcOn() {
+    store.dispatch({
+      type: EMIT_PC_ON,
+      next
     });
   }
 });
