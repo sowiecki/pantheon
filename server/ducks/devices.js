@@ -20,6 +20,7 @@ export const EMIT_DR_LIGHT_OFF = 'EMIT_DR_LIGHT_OFF';
 
 export const EMIT_DESK_MIC_VALUE_CHANGE = 'EMIT_MIC_VALUE_CHANGE';
 export const EMIT_BUZZ = 'EMIT_BUZZ';
+export const EMIT_BUZZ_RESPONSE = 'EMIT_BUZZ_RESPONSE';
 
 export const EMIT_PC_ON = 'EMIT_PC_ON';
 export const EMIT_PC_RESPONSE = 'EMIT_PC_RESPONSE';
