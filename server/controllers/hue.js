@@ -24,7 +24,6 @@ export const hueController = () => ({
   },
 
   parseCom({ loc, com }) {
-    console.log(loc, com)
     const type = `EMIT_${loc}_LIGHT_${com}`;
 
     store.dispatch({ type });
