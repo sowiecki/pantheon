@@ -2,7 +2,7 @@
 /* globals console */
 import WebSocket from 'ws';
 
-import { buzzerController, deadboltController, deskController } from './';
+import { buzzerController, deadboltController, deskController, hueController } from './';
 import { config } from 'environment';
 import { WEBSOCKET_PROTOCOL,
          WEBSOCKET_RECONNECT_INTERVAL,
@@ -11,6 +11,7 @@ import { WEBSOCKET_PROTOCOL,
          FORWARD,
          BUZZ,
          PC_ON,
+         LIGHTS_COM,
          DEADBOLT_COM } from 'constants';
 import { handleEvent } from 'utils';
 
@@ -62,6 +63,10 @@ export const proxyController = () => ({
 
       [PC_ON]() {
         deskController().pcOn();
+      },
+
+      [LIGHTS_COM]() {
+        hueController().parseCom(payload.body.payload);
       },
 
       [undefined]() {
