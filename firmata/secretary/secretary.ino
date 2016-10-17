@@ -1,14 +1,8 @@
 #include "IRTransmitter/IRTransmitter.h"
+#include "codes.h"
 
 #define IR_PIN D6
 #define IRLED_PIN D7
-#define MUTE
-
-// Raw data can be sniffed using an IR-receiver and e.g. https://github.com/z3t0/Arduino-IRremote/blob/master/examples/IRrecvDumpV2/IRrecvDumpV2.ino
-unsigned int volumeUp[77] = {4500,4500, 500,500, 500,500, 500,500, 500,500, 500,1500, 500,1500, 500,500, 500,500, 500,1500, 500,1500, 500,1500, 500,1500, 550,500, 500,500, 500,500, 500,500, 500,4500, 500,500, 500,500, 500,500, 500,500, 500,1500, 500,1500, 500,1500, 500,500, 500,1500, 500,1500, 500,1500, 500,500, 500,500, 500,500, 500,500, 550,1500, 500,500, 500,500, 500,500, 500,1500, 500};  // UNKNOWN CF2F9DAB
-unsigned int volumeDown[77] = {4500,4500, 500,500, 500,500, 500,500, 500,500, 500,1500, 500,1500, 500,500, 500,500, 500,1550, 500,1500, 500,1500, 500,1500, 500,500, 500,500, 500,500, 500,500, 500,4500, 500,500, 500,500, 500,500, 500,500, 500,500, 500,500, 500,500, 500,1500, 500,1500, 550,1500, 500,1500, 500,500, 500,1500, 500,1500, 500,1500, 500,500, 500,500, 500,500, 500,500, 500,1500, 500};  // UNKNOWN B2BBAC69
-unsigned int mute[77] = {4500,4500, 500,500, 500,500, 500,500, 500,500, 500,1550, 450,1500, 500,500, 500,500, 500,1500, 500,1500, 550,1500, 500,1500, 500,500, 500,500, 500,500, 500,500, 500,4500, 500,500, 500,500, 500,500, 500,500, 500,1500, 500,500, 500,500, 500,500, 500,1500, 500,1500, 500,1500, 500,500, 550,500, 500,1500, 500,1500, 500,1500, 500,500, 500,500, 500,500, 500,1500, 500};  // UNKNOWN 123CD34B
-unsigned int togglePower[77] = {4500,4500, 500,500, 500,500, 500,500, 500,500, 500,1500, 500,1500, 500,500, 500,500, 500,1500, 500,1500, 500,1500, 500,1550, 500,500, 500,500, 500,500, 500,500, 500,4500, 500,500, 500,500, 500,500, 500,500, 500,500, 500,500, 500,500, 500,500, 500,1500, 500,1500, 500,1500, 500,500, 500,1500, 500,1500, 500,1500, 500,1500, 500,500, 500,500, 550,500, 500,1500, 500};  // UNKNOWN CA31DA45
 
 IRTransmitter transmitter(IR_PIN, IRLED_PIN);
 
@@ -23,17 +17,32 @@ void setup() {
   Particle.subscribe("hook-response/Acheron", handleEvent , MY_DEVICES);
 
   Particle.function("pc-sound", pcSound);
+  Particle.function("ht-sound", htSound);
 }
 
 int pcSound(String command) {
   if (command == "mute") {
-    transmitter.Transmit(mute, sizeof(mute) / sizeof(mute[0]));
+    transmitter.Transmit(pcMute, sizeof(pcMute) / sizeof(pcMute[0]));
   } else if (command == "volumeUp") {
-    transmitter.Transmit(volumeUp, sizeof(volumeUp) / sizeof(volumeUp[0]));
+    transmitter.Transmit(pcVolumeUp, sizeof(pcVolumeUp) / sizeof(pcVolumeUp[0]));
   } else if (command == "volumeDown") {
-    transmitter.Transmit(volumeDown, sizeof(volumeDown) / sizeof(volumeDown[0]));
+    transmitter.Transmit(pcVolumeDown, sizeof(pcVolumeDown) / sizeof(pcVolumeDown[0]));
   } else if (command == "togglePower") {
-    transmitter.Transmit(togglePower, sizeof(togglePower) / sizeof(togglePower[0]));
+    transmitter.Transmit(pcTogglePower, sizeof(pcTogglePower) / sizeof(pcTogglePower[0]));
+  }
+
+  return 1;
+}
+
+int htSound(String command) {
+  if (command == "mute") {
+    transmitter.Transmit(htMute, sizeof(htMute) / sizeof(htMute[0]));
+  } else if (command == "volumeUp") {
+    transmitter.Transmit(htVolumeUp, sizeof(htVolumeUp) / sizeof(htVolumeUp[0]));
+  } else if (command == "volumeDown") {
+    transmitter.Transmit(htVolumeDown, sizeof(htVolumeDown) / sizeof(htVolumeDown[0]));
+  } else if (command == "togglePower") {
+    transmitter.Transmit(htTogglePower, sizeof(htTogglePower) / sizeof(htTogglePower[0]));
   }
 
   return 1;
