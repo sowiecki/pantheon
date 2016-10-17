@@ -16,40 +16,40 @@ import store from '../store';
 
 export const deskController = (next) => ({
   initialize() {
-    // const board = new five.Board({
-    //   repl: false
-    // });
+    const board = new five.Board({
+      repl: false
+    });
 
-    // board.on('fail', () => {
-    //   throw new Error('Board connection failed');
-    // });
+    board.on('fail', () => {
+      throw new Error('Board connection failed');
+    });
 
-    // board.on('ready', () => {
-    //   const strip = new pixel.Strip({
-    //     data: DESK_LIGHT_STRIP_PRIMARY_PIN,
-    //     length: DESK_LIGHT_STRIP_PRIMARY_LENGTH,
-    //     color_order: pixel.COLOR_ORDER.GRB,
-    //     controller: 'FIRMATA',
-    //     board
-    //   });
+    board.on('ready', () => {
+      const strip = new pixel.Strip({
+        data: DESK_LIGHT_STRIP_PRIMARY_PIN,
+        length: DESK_LIGHT_STRIP_PRIMARY_LENGTH,
+        color_order: pixel.COLOR_ORDER.GRB,
+        controller: 'FIRMATA',
+        board
+      });
 
-    //   const mic = new five.Sensor(DESK_MIC_PIN);
-    //   const piezo = new five.Piezo(DESK_PIEZO_PIN);
+      const mic = new five.Sensor(DESK_MIC_PIN);
+      const piezo = new five.Piezo(DESK_PIEZO_PIN);
 
-    //   store.dispatch({
-    //     type: EMIT_REGISTER_DESK_ACCESSORIES,
-    //     accessories: {
-    //       [DESK_LIGHT_STRIP_PRIMARY]: strip,
-    //       [DESK_MIC_PRIMARY]: mic,
-    //       [DESK_PIEZO_PRIMARY]: piezo
-    //     }
-    //   });
+      store.dispatch({
+        type: EMIT_REGISTER_DESK_ACCESSORIES,
+        accessories: {
+          [DESK_LIGHT_STRIP_PRIMARY]: strip,
+          [DESK_MIC_PRIMARY]: mic,
+          [DESK_PIEZO_PRIMARY]: piezo
+        }
+      });
 
-    //   mic.on('ready', (value) => store.dispatch({
-    //     type: EMIT_DESK_MIC_VALUE_CHANGE,
-    //     value
-    //   }));
-    // });
+      mic.on('ready', (value) => store.dispatch({
+        type: EMIT_DESK_MIC_VALUE_CHANGE,
+        value
+      }));
+    });
   },
 
   pcOn() {
