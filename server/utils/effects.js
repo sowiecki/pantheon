@@ -116,11 +116,11 @@ export const rain = {
         }
 
         const tunedDown = Math.max(drop.intensity - 50, 0);
-        if (drop.rgbBiases === RED) {
+        if (drop.rgbBiases === 'RED') {
           drop.color = generateColor(drop.intensity, tunedDown, tunedDown);
-        } else if (drop.rgbBias === GREEN) {
+        } else if (drop.rgbBias === 'GREEN') {
           drop.color = generateColor(tunedDown, drop.intensity, tunedDown);
-        } else if (drop.rgbBias === BLUE) {
+        } else if (drop.rgbBias === 'BLUE') {
           drop.color = generateColor(tunedDown, tunedDown, drop.intensity);
         }
       });
