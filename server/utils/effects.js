@@ -1,8 +1,8 @@
 /* globals setInterval, clearInterval, setTimeout */
-import { map } from 'lodash';
-
 import { getPositions } from './devices';
-import { BLACK, RED } from 'constants';
+import { BLACK, RESET_DESK_LIGHT_STRIP_TIMEOUT } from 'constants';
+
+const random = (cap) => Math.floor(Math.random() * (cap - 1)) + 1;
 
 export const cylonEye = {
   start(strip, stripLength) {
@@ -74,21 +74,58 @@ export const cylonEye = {
 
 export const rain = {
   start(strip, stripLength) {
-    const random = () => Math.floor(Math.random() * 60) + 1;
-    const positionsToLight = new Array(10).fill().map(() => ({ intensity: random(), position: random() }));
+    const UP = 'UP';
+    const DOWN = 'DOWN';
+    const rgbBiases = [ 'RED', 'BLUE' ];
+    const generateColor = (r, g, b) => `rgb(${r}, ${0}, ${b})`;
+    const generateRGBBias = () => rgbBiases[random(rgbBiases.length + 1) - 1];
+    const createDrop = () => ({
+      color: generateColor(0, 0, 0),
+      rgbBias: generateRGBBias(),
+      intensity: random(255),
+      position: random(stripLength),
+      direction: UP
+    });
+    const FPS = 90;
+    const positions = getPositions(stripLength);
+
+    const drops = [];
+
+    for (let i of Array(10).keys()) { // eslint-disable-line no-unused-vars, prefer-const
+      drops.push(createDrop(stripLength));
+    }
 
     this.interval = setInterval(() => {
-      strip.color(BLACK);
+      strip.show();
 
-      map(positionsToLight, (positionToLight) => {
-        strip.pixel(positionToLight).color(rgb(50, 50, 255));
-        strip.show();
+      drops.forEach((drop, index) => {
+        strip.pixel(positions[drop.position]).color(drop.color);
 
-        positionToLight.intensity = positionToLight.intensity - 1;
+        if (drop.direction === UP) {
+          drop.intensity = drop.intensity + 6;
+        } else if (drop.direction === DOWN) {
+          drop.intensity = drop.intensity - 6;
+        }
 
-        return positionToLight;
+        if (drop.intensity >= 255) {
+          drop.direction = DOWN;
+        } else if (drop.intensity <= 0) {
+          drop.direction = UP;
+          drop.position = random(stripLength);
+          drop.rgbBias = generateRGBBias();
+        }
+
+        const tunedDown = Math.max(drop.intensity - 50, 0);
+        if (drop.rgbBiases === RED) {
+          drop.color = generateColor(drop.intensity, tunedDown, tunedDown);
+        } else if (drop.rgbBias === GREEN) {
+          drop.color = generateColor(tunedDown, drop.intensity, tunedDown);
+        } else if (drop.rgbBias === BLUE) {
+          drop.color = generateColor(tunedDown, tunedDown, drop.intensity);
+        }
       });
-    });
+
+    }, 100 / FPS);
   },
 
   stop(strip) {
@@ -97,14 +134,16 @@ export const rain = {
   }
 };
 
-export const unauthorizedFlash = (strip) => {
-  strip.color(RED);
+export const flashColor = (strip, color, callback) => {
+  strip.color(color);
   strip.show();
 
   setTimeout(() => {
     strip.color(BLACK);
     strip.show();
-  }, 1000);
+
+    callback();
+  }, RESET_DESK_LIGHT_STRIP_TIMEOUT);
 };
 
 export const buzz = (piezo) => piezo.play({
