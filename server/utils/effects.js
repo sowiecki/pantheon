@@ -1,6 +1,6 @@
 /* globals setInterval, clearInterval, setTimeout */
 import { getPositions } from './devices';
-import { FPS, UP, DOWN, GREEN, BLACK, RESET_DESK_LIGHT_STRIP_TIMEOUT } from 'constants';
+import { FPS, UP, DOWN, BLACK, RESET_DESK_LIGHT_STRIP_TIMEOUT } from 'constants';
 
 const random = (cap) => Math.floor(Math.random() * (cap - 1)) + 1;
 
@@ -68,7 +68,7 @@ export const cylonEye = {
 
 export const rain = {
   start(strip, stripLength) {
-    const rgbBiases = [ 'RED', 'BLUE' ];
+    const rgbBiases = ['RED', 'BLUE'];
     const generateColor = (r, g, b) => `rgb(${r}, ${0}, ${b})`;
     const generateRGBBias = () => rgbBiases[random(rgbBiases.length + 1) - 1];
     const createDrop = () => ({
@@ -89,7 +89,7 @@ export const rain = {
     interval = setInterval(() => {
       strip.show();
 
-      drops.forEach((drop, index) => {
+      drops.forEach((drop) => {
         strip.pixel(positions[drop.position]).color(drop.color);
 
         if (drop.direction === UP) {
@@ -115,7 +115,6 @@ export const rain = {
           drop.color = generateColor(tunedDown, tunedDown, drop.intensity);
         }
       });
-
     }, 1000 / FPS);
   }
 };
