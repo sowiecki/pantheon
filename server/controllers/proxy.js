@@ -36,7 +36,11 @@ export const proxyController = () => ({
   },
 
   send(event, payload) {
-    webSocket.send(JSON.stringify({ event, payload }));
+    if (webSocket.readyState) {
+      webSocket.send(JSON.stringify({ event, payload }));
+    } else {
+      console.log('WebSocket is not currently open');
+    }
   },
 
   parseEvent({ data }) {
