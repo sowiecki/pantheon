@@ -5,7 +5,7 @@ import { HueApi, lightState } from 'node-hue-api';
 import { config } from 'environment';
 import { handleAction,
          registerAccessories,
-         flashColor,
+         flashAuthorized,
          rain,
          setResponse,
          toggleLights } from 'utils';
@@ -13,8 +13,7 @@ import { DESK_LIGHT_STRIP_PRIMARY,
          DESK_LIGHT_STRIP_PRIMARY_LENGTH,
          DEADBOLT_LED,
          DEADBOLT_PUSH_BUTTON,
-         BUTTON_PRESS_TIMEOUT,
-         GREEN } from 'constants';
+         BUTTON_PRESS_TIMEOUT } from 'constants';
 
 export const EMIT_REGISTER_DESK_ACCESSORIES = 'EMIT_REGISTER_DESK_ACCESSORIES';
 export const EMIT_REGISTER_BRIDGE = 'EMIT_REGISTER_BRIDGE';
@@ -49,6 +48,7 @@ const initialState = {
 };
 
 const devicesReducer = (state = initialState, action) => {
+  console.log(action.type);
   const reducers = {
     [EMIT_REGISTER_DESK_ACCESSORIES]() {
       const newState = registerAccessories(state, action.accessories);
@@ -102,8 +102,14 @@ const devicesReducer = (state = initialState, action) => {
     },
 
     [EMIT_BUZZ]() {
-      flashColor(state[DESK_LIGHT_STRIP_PRIMARY], GREEN, () => {
-        rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH)
+      flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], () => {
+        rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
+      });
+    },
+
+    [EMIT_PC_ON]() {
+      flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], () => {
+        rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
       });
     },
 

@@ -1,14 +1,13 @@
 /* globals setInterval, clearInterval, setTimeout */
 import { getPositions } from './devices';
-import { BLACK, RESET_DESK_LIGHT_STRIP_TIMEOUT } from 'constants';
+import { FPS, UP, DOWN, GREEN, BLACK, RESET_DESK_LIGHT_STRIP_TIMEOUT } from 'constants';
 
 const random = (cap) => Math.floor(Math.random() * (cap - 1)) + 1;
 
+let interval;
+
 export const cylonEye = {
   start(strip, stripLength) {
-    const FPS = 160;
-    const UP = 'UP';
-    const DOWN = 'DOWN';
     const positions = getPositions(stripLength);
 
     let red = 100;
@@ -18,7 +17,7 @@ export const cylonEye = {
     let direction = UP;
     let valueToLight = 0;
 
-    this.interval = setInterval(() => {
+    interval = setInterval(() => {
       strip.color(BLACK);
 
       if (blue >= 255) {
@@ -64,18 +63,11 @@ export const cylonEye = {
       strip.pixel(positions[valueToLight]).color(color);
       strip.show();
     }, 1000 / FPS);
-  },
-
-  stop(strip) {
-    strip.color(BLACK);
-    clearInterval(this.interval);
   }
 };
 
 export const rain = {
   start(strip, stripLength) {
-    const UP = 'UP';
-    const DOWN = 'DOWN';
     const rgbBiases = [ 'RED', 'BLUE' ];
     const generateColor = (r, g, b) => `rgb(${r}, ${0}, ${b})`;
     const generateRGBBias = () => rgbBiases[random(rgbBiases.length + 1) - 1];
@@ -86,7 +78,6 @@ export const rain = {
       position: random(stripLength),
       direction: UP
     });
-    const FPS = 90;
     const positions = getPositions(stripLength);
 
     const drops = [];
@@ -95,7 +86,7 @@ export const rain = {
       drops.push(createDrop(stripLength));
     }
 
-    this.interval = setInterval(() => {
+    interval = setInterval(() => {
       strip.show();
 
       drops.forEach((drop, index) => {
@@ -125,23 +116,35 @@ export const rain = {
         }
       });
 
-    }, 100 / FPS);
-  },
-
-  stop(strip) {
-    strip.color(BLACK);
-    clearInterval(this.interval);
+    }, 1000 / FPS);
   }
 };
 
-export const flashColor = (strip, color, callback) => {
-  strip.color(color);
-  strip.show();
+export const flashAuthorized = (strip, callback) => {
+  let intensity = 0;
+  let direction = UP;
+
+  clearInterval(interval);
+  strip.clear();
+
+  interval = setInterval(() => {
+    if (direction === UP) {
+      intensity = intensity + 5;
+    } else {
+      intensity = intensity - 5;
+    }
+
+    if (intensity >= 255) {
+      direction = DOWN;
+    }
+
+    strip.color(`rgb(0, ${intensity}, 0)`);
+    strip.show();
+  }, 1000 / FPS);
 
   setTimeout(() => {
-    strip.color(BLACK);
-    strip.show();
-
+    clearInterval(interval);
+    strip.clear();
     callback();
   }, RESET_DESK_LIGHT_STRIP_TIMEOUT);
 };
