@@ -12,10 +12,10 @@ import { BUZZ_RESPONSE, PC_ON_RESPONSE, SOUND_COM_RESPONSE } from 'constants';
 import { proxyController } from 'controllers/proxy';
 
 export default () => (next) => (action) => {
-  console.log(action)
   switch (action.type) {
     case EMIT_BUZZ:
       buzz(action, next);
+
       break;
     case EMIT_BUZZ_RESPONSE:
       proxyController().send({
@@ -25,10 +25,10 @@ export default () => (next) => (action) => {
         }
       });
 
-      next(action);
       break;
     case EMIT_PC_ON:
       pcOn(action, next);
+
       break;
     case EMIT_PC_ON_RESPONSE:
       proxyController().send({
@@ -38,11 +38,10 @@ export default () => (next) => (action) => {
         }
       });
 
-      next(action);
       break;
-
     case EMIT_SOUND_COM:
       soundCom(action, next);
+
       break;
     case EMIT_SOUND_COM_RESPONSE:
       proxyController().send({
@@ -52,10 +51,8 @@ export default () => (next) => (action) => {
         }
       });
 
-      next(action);
-      break;
-    default:
-      next(action);
       break;
   }
+
+  next(action);
 };

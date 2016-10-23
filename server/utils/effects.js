@@ -1,14 +1,13 @@
 /* globals setInterval, clearInterval, setTimeout */
-import { map } from 'lodash';
-
 import { getPositions } from './devices';
-import { BLACK, RED } from 'constants';
+import { FPS, UP, DOWN, GREEN, BLACK, RESET_DESK_LIGHT_STRIP_TIMEOUT } from 'constants';
+
+const random = (cap) => Math.floor(Math.random() * (cap - 1)) + 1;
+
+let interval;
 
 export const cylonEye = {
   start(strip, stripLength) {
-    const FPS = 160;
-    const UP = 'UP';
-    const DOWN = 'DOWN';
     const positions = getPositions(stripLength);
 
     let red = 100;
@@ -18,7 +17,7 @@ export const cylonEye = {
     let direction = UP;
     let valueToLight = 0;
 
-    this.interval = setInterval(() => {
+    interval = setInterval(() => {
       strip.color(BLACK);
 
       if (blue >= 255) {
@@ -64,47 +63,90 @@ export const cylonEye = {
       strip.pixel(positions[valueToLight]).color(color);
       strip.show();
     }, 1000 / FPS);
-  },
-
-  stop(strip) {
-    strip.color(BLACK);
-    clearInterval(this.interval);
   }
 };
 
 export const rain = {
   start(strip, stripLength) {
-    const random = () => Math.floor(Math.random() * 60) + 1;
-    const positionsToLight = new Array(10).fill().map(() => ({ intensity: random(), position: random() }));
-
-    this.interval = setInterval(() => {
-      strip.color(BLACK);
-
-      map(positionsToLight, (positionToLight) => {
-        strip.pixel(positionToLight).color(rgb(50, 50, 255));
-        strip.show();
-
-        positionToLight.intensity = positionToLight.intensity - 1;
-
-        return positionToLight;
-      });
+    const rgbBiases = [ 'RED', 'BLUE' ];
+    const generateColor = (r, g, b) => `rgb(${r}, ${0}, ${b})`;
+    const generateRGBBias = () => rgbBiases[random(rgbBiases.length + 1) - 1];
+    const createDrop = () => ({
+      color: generateColor(0, 0, 0),
+      rgbBias: generateRGBBias(),
+      intensity: random(255),
+      position: random(stripLength),
+      direction: UP
     });
-  },
+    const positions = getPositions(stripLength);
 
-  stop(strip) {
-    strip.color(BLACK);
-    clearInterval(this.interval);
+    const drops = [];
+
+    for (let i of Array(10).keys()) { // eslint-disable-line no-unused-vars, prefer-const
+      drops.push(createDrop(stripLength));
+    }
+
+    interval = setInterval(() => {
+      strip.show();
+
+      drops.forEach((drop, index) => {
+        strip.pixel(positions[drop.position]).color(drop.color);
+
+        if (drop.direction === UP) {
+          drop.intensity = drop.intensity + 6;
+        } else if (drop.direction === DOWN) {
+          drop.intensity = drop.intensity - 6;
+        }
+
+        if (drop.intensity >= 255) {
+          drop.direction = DOWN;
+        } else if (drop.intensity <= 0) {
+          drop.direction = UP;
+          drop.position = random(stripLength);
+          drop.rgbBias = generateRGBBias();
+        }
+
+        const tunedDown = Math.max(drop.intensity - 50, 0);
+        if (drop.rgbBiases === 'RED') {
+          drop.color = generateColor(drop.intensity, tunedDown, tunedDown);
+        } else if (drop.rgbBias === 'GREEN') {
+          drop.color = generateColor(tunedDown, drop.intensity, tunedDown);
+        } else if (drop.rgbBias === 'BLUE') {
+          drop.color = generateColor(tunedDown, tunedDown, drop.intensity);
+        }
+      });
+
+    }, 1000 / FPS);
   }
 };
 
-export const unauthorizedFlash = (strip) => {
-  strip.color(RED);
-  strip.show();
+export const flashAuthorized = (strip, callback) => {
+  let intensity = 0;
+  let direction = UP;
+
+  clearInterval(interval);
+  strip.clear();
+
+  interval = setInterval(() => {
+    if (direction === UP) {
+      intensity = intensity + 5;
+    } else {
+      intensity = intensity - 5;
+    }
+
+    if (intensity >= 255) {
+      direction = DOWN;
+    }
+
+    strip.color(`rgb(0, ${intensity}, 0)`);
+    strip.show();
+  }, 1000 / FPS);
 
   setTimeout(() => {
-    strip.color(BLACK);
-    strip.show();
-  }, 1000);
+    clearInterval(interval);
+    strip.clear();
+    callback();
+  }, RESET_DESK_LIGHT_STRIP_TIMEOUT);
 };
 
 export const buzz = (piezo) => piezo.play({

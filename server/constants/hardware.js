@@ -17,3 +17,8 @@ export const DEADBOLT_PUSH_BUTTON_PIN = 'D1';
 export const DEADBOLT_LED = 'DEADBOLT_LED';
 export const DEADBOLT_LED_PIN = 'D3';
 export const DEADBOLT_LED_TIMEOUT = 500;
+
+export const RESET_DESK_LIGHT_STRIP_TIMEOUT = 2000;
+export const FPS = 90;
+export const UP = 'UP';
+export const DOWN = 'DOWN';

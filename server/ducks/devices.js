@@ -3,7 +3,12 @@
 import { HueApi, lightState } from 'node-hue-api';
 
 import { config } from 'environment';
-import { handleAction, registerAccessories, cylonEye, setResponse, toggleLights } from 'utils';
+import { handleAction,
+         registerAccessories,
+         flashAuthorized,
+         rain,
+         setResponse,
+         toggleLights } from 'utils';
 import { DESK_LIGHT_STRIP_PRIMARY,
          DESK_LIGHT_STRIP_PRIMARY_LENGTH,
          DEADBOLT_LED,
@@ -43,11 +48,12 @@ const initialState = {
 };
 
 const devicesReducer = (state = initialState, action) => {
+  console.log(action.type);
   const reducers = {
     [EMIT_REGISTER_DESK_ACCESSORIES]() {
       const newState = registerAccessories(state, action.accessories);
 
-      cylonEye.start(newState[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
+      rain.start(newState[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
 
       return newState;
     },
@@ -93,6 +99,18 @@ const devicesReducer = (state = initialState, action) => {
 
     [EMIT_LR_LIGHT_TOGGLE]() {
       toggleLights(state, 2);
+    },
+
+    [EMIT_BUZZ]() {
+      flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], () => {
+        rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
+      });
+    },
+
+    [EMIT_PC_ON]() {
+      flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], () => {
+        rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
+      });
     },
 
     [EMIT_DEADBOLT_SENSOR_CHANGE]() {
