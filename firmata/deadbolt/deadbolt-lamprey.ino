@@ -1,27 +1,28 @@
-const int BUTTON_PIN = D0;
-const int LED_PIN = D1;
-const int SPEAKER_PIN = A0;
+#define NFC_ALERT_PIN D0
+#define TRIGGER_PIN D1
 
-void setup() {
-  pinMode(BUTTON_PIN, INPUT);
-  pinMode(LED_PIN, OUTPUT);
+int handleToggle(String pw) {
+  if (pw == "") {
+    digitalWrite(TRIGGER_PIN, HIGH);
+    delay(100);
+    digitalWrite(TRIGGER_PIN, LOW);
+    return 1;
+  }
 
-  Particle.subscribe("hook-response/Acheron", handleEvent , MY_DEVICES);
+  return 0;
 }
 
-void handleEvent(const char *event, const char *data) {
-  Particle.publish(event, data);
+void setup() {
+  pinMode(TRIGGER_PIN, INPUT);
+
+  Particle.function("toggle", handleToggle);
 }
 
 void loop() {
-  bool pressed = digitalRead(BUTTON_PIN);
+  bool insidePressed = digitalRead(NFC_ALERT_PIN);
 
-  if (pressed) {
-      Particle.publish("BUZZ");
-      digitalWrite(LED_PIN, HIGH);
-  }
-  else {
-      digitalWrite(LED_PIN, LOW);
+  if (insidePressed) {
+    Particle.publish("DEADBOLT_INSIDE_PRESSED");
   }
 
   delay(100);

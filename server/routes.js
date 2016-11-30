@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 
-import { hueController, buzzerController, deadboltController, deskController } from 'controllers';
+import { hueController, buzzerController, deskController } from 'controllers';
 
 const router = new Router();
 
@@ -9,7 +9,7 @@ router.get('/off', () => hueController().off());
 
 router.post('/buzzer', (next) => buzzerController(next).buzz());
 
-router.post('/deadbolt', (next) => deadboltController(next).toggle());
+// router.post('/deadbolt', (next) => deadboltController(next).toggle());
 
 router.post('/secretary', (next) => deskController(next).pcOn());
 

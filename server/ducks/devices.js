@@ -36,8 +36,6 @@ export const EMIT_SOUND_COM = 'EMIT_SOUND_COM';
 export const EMIT_SOUND_COM_RESPONSE = 'EMIT_SOUND_COM_RESPONSE';
 
 export const EMIT_REGISTER_DEADBOLT_ACCESSORIES = 'EMIT_REGISTER_DEADBOLT_ACCESSORIES';
-export const EMIT_DEADBOLT_PUSH_BUTTON_PRESS = 'EMIT_DEADBOLT_PUSH_BUTTON_PRESS';
-export const EMIT_DEADBOLT_SENSOR_CHANGE = 'EMIT_DEADBOLT_SENSOR_CHANGE';
 
 const initialState = {
   ports: config.ports,
@@ -111,41 +109,6 @@ const devicesReducer = (state = initialState, action) => {
       flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], () => {
         rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
       });
-    },
-
-    [EMIT_DEADBOLT_SENSOR_CHANGE]() {
-      if (action.value) {
-        state.hueBridge.setLightState(2, state.lightState.on());
-        setTimeout(() => state.hueBridge.setLightState(1, state.lightState.on()), 3000);
-
-        state[DEADBOLT_LED].fadeIn();
-        setTimeout(() => state[DEADBOLT_LED].fadeOut(), 500);
-      }
-
-      return reducers[EMIT_DR_LIGHT_ON]();
-    },
-
-    [EMIT_DEADBOLT_PUSH_BUTTON_PRESS]() {
-      if (!state[DEADBOLT_PUSH_BUTTON]) {
-        console.log('Deadbolt device is disconnected');
-        return;
-      }
-
-      const isAuthorized = action.passcode === config.id;
-
-      if (isAuthorized) {
-        state[DEADBOLT_PUSH_BUTTON].high();
-
-        setTimeout(() => {
-          state[DEADBOLT_PUSH_BUTTON].low();
-        }, BUTTON_PRESS_TIMEOUT);
-
-        setResponse(200);
-      } else {
-        setResponse(401);
-      }
-
-      return state;
     }
   };
 
