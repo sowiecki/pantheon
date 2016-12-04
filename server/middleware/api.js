@@ -59,6 +59,10 @@ export default () => (next) => (action) => {
     case FETCH_UNIFIED_ID:
       fetchUnified(action, next);
 
+      setInterval(() => {
+        fetchUnified(action, next);
+      }, 60000);
+
       break;
 
     case SEND_UNIFIED_COMMAND:
