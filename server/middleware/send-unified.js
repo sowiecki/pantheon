@@ -2,7 +2,8 @@
 /* eslint no-console: 0 */
 import http from 'http';
 
-import { setResponse, sendText } from 'utils';
+import { setResponse } from 'utils';
+import { sendText } from './unified/commands';
 import { config } from 'environment';
 import store from '../store';
 

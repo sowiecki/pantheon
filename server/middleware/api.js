@@ -10,7 +10,9 @@ import { EMIT_BUZZ,
          EMIT_PC_ON_RESPONSE,
          EMIT_SOUND_COM,
          EMIT_SOUND_COM_RESPONSE } from 'ducks/devices';
-import { FETCH_UNIFIED_ID, SEND_UNIFIED_COMMAND } from 'ducks/unified';
+import { FETCH_UNIFIED_ID,
+         SEND_UNIFIED_COMMAND,
+         BATCH_UNIFIED_COMMANDS } from 'ducks/unified';
 import { BUZZ_RESPONSE, PC_ON_RESPONSE, SOUND_COM_RESPONSE } from 'constants';
 import { proxyController } from 'controllers/proxy';
 
@@ -59,14 +61,21 @@ export default () => (next) => (action) => {
     case FETCH_UNIFIED_ID:
       fetchUnified(action, next);
 
-      setInterval(() => {
-        fetchUnified(action, next);
-      }, 60000);
-
       break;
 
     case SEND_UNIFIED_COMMAND:
       sendUnified(action, next);
+
+      break;
+
+    case BATCH_UNIFIED_COMMANDS:
+      action.commands.forEach((command) => {
+        const batchCommands = async() => {
+
+        };
+
+        batchCommands();
+      });
 
       break;
   }
