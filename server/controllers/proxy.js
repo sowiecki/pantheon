@@ -9,7 +9,6 @@ import { WEBSOCKET_PROTOCOL,
          WEBSOCKET_RECONNECT_INTERVAL,
          HANDSHAKE,
          RECONNECTED,
-         FORWARD,
          BUZZ,
          PC_ON,
          LIGHTS_COM,
@@ -44,7 +43,7 @@ export const proxyController = () => ({
   },
 
   parseEvent({ data }) {
-    const { event, payload } = JSON.parse(data);
+    const { payload } = JSON.parse(data);
 
     const handlers = {
       [HANDSHAKE]() {
@@ -53,10 +52,6 @@ export const proxyController = () => ({
 
       [RECONNECTED]() {
         console.log(payload.message);
-      },
-
-      [FORWARD]() {
-        console.log(event, payload);
       },
 
       [BUZZ]() {
@@ -84,7 +79,7 @@ export const proxyController = () => ({
       }
     };
 
-    handleEvent(event, handlers);
+    handleEvent(payload.event, handlers);
   },
 
   reconnect() {
