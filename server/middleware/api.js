@@ -1,6 +1,7 @@
 import buzz from './buzz';
 import pcOn from './pc-on';
 import soundCom from './sound-com';
+import fetchUnified from './fetch-unified';
 
 import { EMIT_BUZZ,
          EMIT_BUZZ_RESPONSE,
@@ -8,6 +9,7 @@ import { EMIT_BUZZ,
          EMIT_PC_ON_RESPONSE,
          EMIT_SOUND_COM,
          EMIT_SOUND_COM_RESPONSE } from 'ducks/devices';
+import { FETCH_UNIFIED_ID } from 'ducks/unified';
 import { BUZZ_RESPONSE, PC_ON_RESPONSE, SOUND_COM_RESPONSE } from 'constants';
 import { proxyController } from 'controllers/proxy';
 
@@ -50,6 +52,11 @@ export default () => (next) => (action) => {
           status: 200
         }
       });
+
+      break;
+
+    case FETCH_UNIFIED_ID:
+      fetchUnified(action, next);
 
       break;
   }

@@ -7,13 +7,9 @@ import { handleAction,
          registerAccessories,
          flashAuthorized,
          rain,
-         setResponse,
          toggleLights } from 'utils';
 import { DESK_LIGHT_STRIP_PRIMARY,
-         DESK_LIGHT_STRIP_PRIMARY_LENGTH,
-         DEADBOLT_LED,
-         DEADBOLT_PUSH_BUTTON,
-         BUTTON_PRESS_TIMEOUT } from 'constants';
+         DESK_LIGHT_STRIP_PRIMARY_LENGTH } from 'constants';
 
 export const EMIT_REGISTER_DESK_ACCESSORIES = 'EMIT_REGISTER_DESK_ACCESSORIES';
 export const EMIT_REGISTER_BRIDGE = 'EMIT_REGISTER_BRIDGE';
@@ -46,7 +42,6 @@ const initialState = {
 };
 
 const devicesReducer = (state = initialState, action) => {
-  console.log(action.type);
   const reducers = {
     [EMIT_REGISTER_DESK_ACCESSORIES]() {
       const newState = registerAccessories(state, action.accessories);

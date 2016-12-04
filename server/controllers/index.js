@@ -4,3 +4,4 @@ export * from './deadbolt';
 export * from './desk';
 export * from './proxy';
 // export * from './serial';
+export * from './unified';
