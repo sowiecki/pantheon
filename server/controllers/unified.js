@@ -21,10 +21,10 @@ export const unifiedController = (next) => ({
     });
   },
 
-  batch(commands) {
+  batch(body) {
     store.dispatch({
       type: BATCH_UNIFIED_COMMANDS,
-      commands,
+      body,
       next
     });
   }

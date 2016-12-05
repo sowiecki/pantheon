@@ -4,19 +4,25 @@ import http from 'http';
 
 import { setResponse } from 'utils';
 import { config } from 'environment';
-import store from '../store';
 import { EMIT_REGISTER_UNIFIED_ID } from 'ducks/unified';
 import { UNIFIED_REMOTE_PORT } from 'constants';
 
 /**
- * Hacked together Unified Remote connection,
- * based on snooping UR's web client connections.
+ * A hacked together, reverse-engineered Unified Remote (UR) connection implementation,
+ * based solely on snooping the UR web client source and network activity.
+ * Credit to https://www.unifiedremote.com/ for an awesome application.
+ * (A REST API would be even more awesome...)
  *
- * Main requirements for establishing a useful UR connection:
- * 1) GET request to receive a UR-Connection-ID (unifiedID) for all future requests
- * 2) POST request to declare capabilities for unifiedID session
+ * As best as it could be ascertained,
+ * these seem to be the only requirements for establishing a useful UR connection:
+ * 1) GET request to receive a UR-Connection-ID (unifiedID) for all future requests.
+ * 2) POST request to declare capabilities for unifiedID session.
  *
- * After #1 and #2, POST requests can be sent requesting certain events, see ./send-unified.js
+ * UR seems to keep alive/refresh sessions with a setInterval function.
+ * It may not be necessary to constantly generate a new UR-Connection-ID,
+ * but it doesn't seem harmful, and it maintains an active session for the application.
+ *
+ * With an active session, POST requests can be sent to trigger events (see ./send-unified.js)
  */
 
 const declareCapabilities = (unifiedID) => {

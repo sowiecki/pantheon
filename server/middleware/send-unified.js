@@ -3,7 +3,7 @@
 import http from 'http';
 
 import { setResponse } from 'utils';
-import { sendText } from './unified/commands';
+import * as commands from './unified/commands';
 import { config } from 'environment';
 import store from '../store';
 
@@ -15,11 +15,11 @@ import { UNIFIED_REMOTE_PORT } from 'constants';
  * using a session established by ./fetch-unified.js
  */
 
-const sendUnified = (action, next) => {
+const sendUnified = (command, action, next) => {
   const { hostname } = config.unified;
   const { unifiedID } = store.getState().unifiedReducer;
 
-  const command = sendText('BizzBazz');
+  const commandObject = commands[command.name](command);
 
   const options = {
     hostname,
@@ -34,14 +34,8 @@ const sendUnified = (action, next) => {
   const request = http.request(options, (response) => {
     response.setEncoding('utf8');
 
-    response.on('data', (data) => {
+    response.on('data', () => {
       setResponse(action, 200);
-
-      console.log(data);
-
-      // next({
-      //   type:
-      // });
     });
   });
 
@@ -49,7 +43,7 @@ const sendUnified = (action, next) => {
     console.log(`Problem with request: ${message}`);
   });
 
-  request.write(command);
+  request.write(commandObject);
   request.end();
 };
 

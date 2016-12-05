@@ -1,9 +1,12 @@
+import { get } from 'lodash';
+
 import buzz from './buzz';
 import pcOn from './pc-on';
 import soundCom from './sound-com';
 import fetchUnified from './fetch-unified';
 import sendUnified from './send-unified';
 
+import { sequences } from '../environment';
 import { EMIT_BUZZ,
          EMIT_BUZZ_RESPONSE,
          EMIT_PC_ON,
@@ -13,6 +16,7 @@ import { EMIT_BUZZ,
 import { FETCH_UNIFIED_ID,
          SEND_UNIFIED_COMMAND,
          BATCH_UNIFIED_COMMANDS } from 'ducks/unified';
+import { sleep } from 'utils';
 import { BUZZ_RESPONSE, PC_ON_RESPONSE, SOUND_COM_RESPONSE } from 'constants';
 import { proxyController } from 'controllers/proxy';
 
@@ -69,13 +73,21 @@ export default () => (next) => (action) => {
       break;
 
     case BATCH_UNIFIED_COMMANDS:
-      action.commands.forEach((command) => {
-        const batchCommands = async() => {
+      const { body } = action;
+      const batchCommands = async() => {
+        const commands = body.predefined ? sequences[body.sequenceKey] : body.commands;
 
-        };
+        for (const command of commands) {
+          const duplicate = get(command, 'duplicate', 1);
 
-        batchCommands();
-      });
+          for (let i = 0; i < duplicate; i++) {
+            await sleep(command.delay);
+            await sendUnified(command, action, next);
+          }
+        }
+      };
+
+      batchCommands();
 
       break;
   }
