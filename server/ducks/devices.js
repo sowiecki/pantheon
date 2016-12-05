@@ -118,15 +118,17 @@ const devicesReducer = (state = initialState, action) => {
     },
 
     [BATCH_UNIFIED_COMMANDS]() {
-      action.body.followup_events.forEach((event) => {
-        if (event.color && colorGenerators[event.color]) {
-          flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], colorGenerators[event.color], () => {
-            rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
-          });
-        }
+      if (action.body.followup_events) {
+        action.body.followup_events.forEach((event) => {
+          if (event.color && colorGenerators[event.color]) {
+            flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], colorGenerators[event.color], () => {
+              rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
+            });
+          }
 
-        handleAction(state, { type: event.type }, reducers);
-      });
+          handleAction(state, { type: event.type }, reducers);
+        });
+      }
     }
   };
 
