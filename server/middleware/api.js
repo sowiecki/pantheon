@@ -74,6 +74,7 @@ export default () => (next) => (action) => {
 
     case BATCH_UNIFIED_COMMANDS:
       const { body } = action;
+
       const batchCommands = async() => {
         const commands = body.predefined ? sequences[body.sequenceKey] : body.commands;
 
