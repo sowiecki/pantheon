@@ -76,7 +76,7 @@ export const proxyController = () => ({
       },
 
       [UNIFIED_BATCH]() {
-        unifiedController().batch(payload.body);
+        unifiedController().batch(payload);
       },
 
       [undefined]() {

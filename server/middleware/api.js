@@ -6,7 +6,7 @@ import soundCom from './sound-com';
 import fetchUnified from './fetch-unified';
 import sendUnified from './send-unified';
 
-import { sequences } from '../environment';
+import { config, sequences } from '../environment';
 import { EMIT_BUZZ,
          EMIT_BUZZ_RESPONSE,
          EMIT_PC_ON,
@@ -73,7 +73,7 @@ export default () => (next) => (action) => {
       break;
 
     case BATCH_UNIFIED_COMMANDS:
-      const { body } = action;
+      const { body, id } = action.payload;
 
       const batchCommands = async() => {
         const commands = body.predefined ? sequences[body.sequenceKey] : body.commands;
@@ -88,7 +88,9 @@ export default () => (next) => (action) => {
         }
       };
 
-      batchCommands();
+      if (id === config.id) {
+        batchCommands();
+      }
 
       break;
   }

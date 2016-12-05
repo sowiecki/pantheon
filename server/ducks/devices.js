@@ -118,8 +118,10 @@ const devicesReducer = (state = initialState, action) => {
     },
 
     [BATCH_UNIFIED_COMMANDS]() {
-      if (action.body.followup_events) {
-        action.body.followup_events.forEach((event) => {
+      const { id, body } = action.payload;
+console.log(id)
+      if (id === config.id && body.followup_events) {
+        body.followup_events.forEach((event) => {
           if (event.color && colorGenerators[event.color]) {
             flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], colorGenerators[event.color], () => {
               rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
