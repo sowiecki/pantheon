@@ -24,6 +24,7 @@ export const toggleLights = (state, light) => {
       state.hueBridge.setLightState(light, state.lightState.create().off());
     } else {
       state.hueBridge.setLightState(light, state.lightState.create().on());
+      state.hueBridge.setLightState(light, state.lightState.create().bri(255));
     }
   });
 };
