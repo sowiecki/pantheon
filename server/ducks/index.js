@@ -1,7 +1,9 @@
-import usersReducer from './users';
 import devicesReducer from './devices';
+import unifiedReducer from './unified';
+import usersReducer from './users';
 
 export default {
-  usersReducer,
-  devicesReducer
+  devicesReducer,
+  unifiedReducer,
+  usersReducer
 };

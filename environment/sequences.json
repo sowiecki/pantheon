@@ -1,0 +1,27 @@
+{
+  "playlist-s": [
+    {
+      "name": "triggerCommand",
+      "value": 3
+    },
+    {
+      "name": "sendText",
+      "value": "TAB",
+      "delay": 8000
+    },
+    {
+      "name": "sendText",
+      "value": "F11",
+      "delay": 500
+    },
+    {
+      "name": "sendText",
+      "value": "TAB",
+      "duplicate": 10
+    },
+    {
+      "name": "sendText",
+      "value": "ENTER"
+    }
+  ]
+}

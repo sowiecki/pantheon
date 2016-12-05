@@ -2,7 +2,7 @@
 /* globals console */
 import WebSocket from 'ws';
 
-import { buzzerController, deskController, hueController } from './';
+import { buzzerController, deskController, hueController, unifiedController } from './';
 import { deadboltController } from './deadbolt';
 import { config } from 'environment';
 import { WEBSOCKET_PROTOCOL,
@@ -13,7 +13,8 @@ import { WEBSOCKET_PROTOCOL,
          PC_ON,
          LIGHTS_COM,
          SOUND_COM,
-         DEADBOLT_COM } from 'constants';
+         DEADBOLT_COM,
+         UNIFIED_BATCH } from 'constants';
 import { handleEvent } from 'utils';
 
 let interval;
@@ -72,6 +73,10 @@ export const proxyController = () => ({
 
       [SOUND_COM]() {
         deskController().parseSoundCom(payload.body.payload);
+      },
+
+      [UNIFIED_BATCH]() {
+        unifiedController().batch(payload.body);
       },
 
       [undefined]() {

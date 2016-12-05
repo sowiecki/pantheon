@@ -119,7 +119,15 @@ export const rain = {
   }
 };
 
-export const flashAuthorized = (strip, callback) => {
+export const colorGenerators = {
+  red: (intensity) => `rgb(${intensity}, 0, 0)`,
+  green: (intensity) => `rgb(0, ${intensity}, 0)`,
+  blue: (intensity) => `rgb(0, 0, ${intensity})`,
+  purple: (intensity) => `rgb(${intensity}, 0, ${intensity})`
+};
+
+
+export const flashAuthorized = (strip, getColor, callback) => {
   let intensity = 0;
   let direction = UP;
 
@@ -137,7 +145,7 @@ export const flashAuthorized = (strip, callback) => {
       direction = DOWN;
     }
 
-    strip.color(`rgb(0, ${intensity}, 0)`);
+    strip.color(getColor(intensity));
     strip.show();
   }, 1000 / FPS);
 
