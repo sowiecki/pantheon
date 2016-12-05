@@ -1,17 +1,5 @@
 {
-  "play-music-1": [
-    {
-      "name": "launchGoogleMusic"
-    },
-    {
-      "name": "focusAddress"
-    },
-    {
-      "name": "sendText",
-      "value": "https://play.google.com/music/listen?u=0#/pl/AMaBXymovt_Is8xMh78sAoTJw62CjBHtjhdTHwH30n7hCDqW67bUCVyfjudTrFJzJ8nBOtxSPK1OigzpoZBK0WRS6ZbYgNJkSw%3D%3D"
-    }
-  ],
-  "play-music-3": [
+  "playlist-s": [
     {
       "name": "triggerCommand",
       "value": 3
@@ -34,21 +22,6 @@
     {
       "name": "sendText",
       "value": "ENTER"
-    }
-  ],
-  "type-hello-world": [
-    {
-      "name": "sendText",
-      "value": "Hello"
-    },
-    {
-      "name": "sendText",
-      "value": ", ",
-      "delay": 2000
-    },
-    {
-      "name": "sendText",
-      "value": "world!"
     }
   ]
 }
