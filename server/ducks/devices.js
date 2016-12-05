@@ -7,6 +7,7 @@ import { handleAction,
          registerAccessories,
          flashAuthorized,
          rain,
+         colorGenerators,
          toggleLights } from 'utils';
 import { DESK_LIGHT_STRIP_PRIMARY,
          DESK_LIGHT_STRIP_PRIMARY_LENGTH } from 'constants';
@@ -105,20 +106,26 @@ const devicesReducer = (state = initialState, action) => {
     },
 
     [EMIT_BUZZ]() {
-      flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], () => {
+      flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], colorGenerators.green, () => {
         rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
       });
     },
 
     [EMIT_PC_ON]() {
-      flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], () => {
+      flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], colorGenerators.green, () => {
         rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
       });
     },
 
     [BATCH_UNIFIED_COMMANDS]() {
       action.body.followup_events.forEach((event) => {
-        handleAction(state, { type: event }, reducers);
+        if (event.color && colorGenerators[event.color]) {
+          flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], colorGenerators[event.color], () => {
+            rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
+          });
+        }
+
+        handleAction(state, { type: event.type }, reducers);
       });
     }
   };
