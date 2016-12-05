@@ -7,7 +7,6 @@ import * as commands from './unified/commands';
 import { config } from 'environment';
 import store from '../store';
 
-// import { EMIT_REGISTER_UNIFIED_ID } from 'ducks/unified';
 import { UNIFIED_REMOTE_PORT } from 'constants';
 
 /**
@@ -15,7 +14,7 @@ import { UNIFIED_REMOTE_PORT } from 'constants';
  * using a session established by ./fetch-unified.js
  */
 
-const sendUnified = (command, action, next) => {
+const sendUnified = (command, action) => {
   const { hostname } = config.unified;
   const { unifiedID } = store.getState().unifiedReducer;
 

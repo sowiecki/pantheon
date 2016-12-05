@@ -1,5 +1,5 @@
 import store from '../store';
-import { FETCH_UNIFIED_ID, SEND_UNIFIED_COMMAND, BATCH_UNIFIED_COMMANDS } from 'ducks/unified';
+import { FETCH_UNIFIED_ID, BATCH_UNIFIED_COMMANDS } from 'ducks/unified';
 import { UNIFIED_KEEP_ALIVE_INTERVAL } from 'constants';
 
 export const unifiedController = (next) => ({
@@ -12,13 +12,6 @@ export const unifiedController = (next) => ({
     keepAlive();
 
     setInterval(keepAlive, UNIFIED_KEEP_ALIVE_INTERVAL);
-  },
-
-  command() {
-    store.dispatch({
-      type: SEND_UNIFIED_COMMAND,
-      next
-    });
   },
 
   batch(payload) {

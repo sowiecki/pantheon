@@ -3,5 +3,4 @@ export * from './hue';
 export * from './deadbolt';
 export * from './desk';
 export * from './proxy';
-// export * from './serial';
 export * from './unified';

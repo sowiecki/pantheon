@@ -37,11 +37,3 @@ export const triggerCommand = ({ value }) => JSON.stringify({
     Name: `command${value}`
   }
 });
-
-export const raw = () => JSON.stringify({
-  'ID':'Unified.Command','Action':7,'Request':7,'Run':{'Name':'address'},'Source':'web-b15db286-19e0-4ad2-a73a-ecda926cdc55'
-})
-
-// export const sendText = () => JSON.stringify({
-//   'ID':'Unified.Chrome','Action':7,'Request':7,'Run':{'Name':'address'},'Source':'web-b15db286-19e0-4ad2-a73a-ecda926cdc55'
-// });

@@ -1,6 +1,5 @@
 const five = require('johnny-five');
 const pixel = require('node-pixel');
-const map = require('lodash/map');
 
 const DESK_LIGHT_STRIP_PRIMARY_LENGTH = 60;
 const DESK_LIGHT_STRIP_PRIMARY_PIN = 6;
@@ -13,14 +12,10 @@ const board = new five.Board({
   port: new SerialPort('/dev/cu.usbmodem1421', {
     baudrate: 9600
   })
-  // port: '/dev/ttyACM0',
-  // repl: false
 });
 
 const rain = {
   start(strip, stripLength) {
-    const random = () => Math.floor(Math.random() * 59) + 1;
-
     const FPS = 60;
     const UP = 'UP';
     const DOWN = 'DOWN';
@@ -98,6 +93,6 @@ board.on('ready', () => {
   });
 
   strip.on('ready', () => {
-    rain.start(strip, DESK_LIGHT_STRIP_PRIMARY_LENGTH)
+    rain.start(strip, DESK_LIGHT_STRIP_PRIMARY_LENGTH);
   });
 });

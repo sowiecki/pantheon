@@ -16,63 +16,60 @@ import { EMIT_BUZZ,
 import { FETCH_UNIFIED_ID,
          SEND_UNIFIED_COMMAND,
          BATCH_UNIFIED_COMMANDS } from 'ducks/unified';
-import { sleep } from 'utils';
+import { sleep, handleAction } from 'utils';
 import { BUZZ_RESPONSE, PC_ON_RESPONSE, SOUND_COM_RESPONSE } from 'constants';
 import { proxyController } from 'controllers/proxy';
 
-export default () => (next) => (action) => {
-  switch (action.type) {
-    case EMIT_BUZZ:
+export default (state) => (next) => (action) => {
+  const reducers = {
+    [EMIT_BUZZ]() {
       buzz(action, next);
+    },
 
-      break;
-    case EMIT_BUZZ_RESPONSE:
+    [EMIT_BUZZ_RESPONSE]() {
       proxyController().send({
         BUZZ_RESPONSE,
         payload: {
           status: 200
         }
       });
+    },
 
-      break;
-    case EMIT_PC_ON:
+    [EMIT_PC_ON]() {
       pcOn(action, next);
+    },
 
-      break;
-    case EMIT_PC_ON_RESPONSE:
+    [EMIT_PC_ON_RESPONSE]() {
       proxyController().send({
         PC_ON_RESPONSE,
         payload: {
           status: 200
         }
       });
+    },
 
-      break;
-    case EMIT_SOUND_COM:
+    [EMIT_SOUND_COM]() {
       soundCom(action, next);
+    },
 
-      break;
-    case EMIT_SOUND_COM_RESPONSE:
+    [EMIT_SOUND_COM_RESPONSE]() {
       proxyController().send({
         SOUND_COM_RESPONSE,
         payload: {
           status: 200
         }
       });
+    },
 
-      break;
-
-    case FETCH_UNIFIED_ID:
+    [FETCH_UNIFIED_ID]() {
       fetchUnified(action, next);
+    },
 
-      break;
-
-    case SEND_UNIFIED_COMMAND:
+    [SEND_UNIFIED_COMMAND]() {
       sendUnified(action, next);
+    },
 
-      break;
-
-    case BATCH_UNIFIED_COMMANDS:
+    [BATCH_UNIFIED_COMMANDS]() {
       const { body, id } = action.payload;
 
       const batchCommands = async() => {
@@ -91,9 +88,10 @@ export default () => (next) => (action) => {
       if (id === config.id) {
         batchCommands();
       }
+    }
+  };
 
-      break;
-  }
+  handleAction(state, action, reducers);
 
   next(action);
 };
