@@ -119,7 +119,7 @@ const devicesReducer = (state = initialState, action) => {
 
     [BATCH_UNIFIED_COMMANDS]() {
       const { id, body } = action.payload;
-console.log(id)
+
       if (id === config.id && body.followup_events) {
         body.followup_events.forEach((event) => {
           if (event.color && colorGenerators[event.color]) {
