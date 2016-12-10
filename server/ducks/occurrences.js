@@ -102,7 +102,7 @@ const occurrencesReducer = (state = initialState, action) => {
       const deskLight = action.devicesReducer[DESK_LIGHT_STRIP_PRIMARY];
 
       if (deskLight) {
-        const color = get(colorGenerators, '[action.color]', colorGenerators.red);
+        const color = colorGenerators[action.color] || colorGenerators.red;
 
         flashAuthorized(deskLight, color, () => {
           rain.start(deskLight, DESK_LIGHT_STRIP_PRIMARY_LENGTH);
