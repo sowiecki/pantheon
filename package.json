@@ -33,6 +33,7 @@
     "lodash": "^4.15.0",
     "node-hue-api": "^2.2.0",
     "node-pixel": "^0.8.2",
+    "nodejs-dashboard": "^0.2.1",
     "nodemon": "^1.9.2",
     "particle-api-js": "^6.4.0",
     "particle-io": "^0.14.0",
@@ -48,7 +49,6 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
-    "nodejs-dashboard": "^0.1.1",
     "nodemon": "^1.10.2",
     "serialport": "^4.0.6"
   }
