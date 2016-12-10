@@ -7,6 +7,8 @@ import { WEBSOCKET_PROTOCOL,
          WEBSOCKET_RECONNECT_INTERVAL,
          HANDSHAKE,
          RECONNECTED,
+         BUZZ,
+         BUZZ_EVENTS,
          BATCH_EVENTS } from 'constants';
 import { batchEvents, handleEvent } from 'utils';
 import store from '../store';
@@ -47,6 +49,16 @@ const proxyController = () => ({
 
       [RECONNECTED]() {
         console.log(payload.message);
+      },
+
+      /**
+       * Special snowflake handler for Particle Photon buzzer, because holy-fucking-shit
+       * their webhooks don't support custom request bodies
+       */
+      [BUZZ]() {
+        if (payload.id === config.id) {
+          batchEvents(store, BUZZ_EVENTS);
+        }
       },
 
       [BATCH_EVENTS]() {

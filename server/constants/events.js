@@ -1,3 +1,5 @@
+import { EMIT_DESK_LIGHT_COLOR_FLASH, EMIT_BUZZ } from 'ducks/occurrences';
+
 export const HANDSHAKE = 'HANDSHAKE';
 export const RECONNECTED = 'RECONNECTED';
 export const FORWARD = 'FORWARD';
@@ -12,3 +14,8 @@ export const SOUND_COM = 'SOUND_COM';
 export const SOUND_COM_RESPONSE = 'SOUND_COM_RESPONSE';
 export const DEADBOLT_COM = 'DEADBOLT_COM';
 export const UNIFIED_BATCH = 'UNIFIED_BATCH';
+
+export const BUZZ_EVENTS = [
+  { type: EMIT_DESK_LIGHT_COLOR_FLASH, color: 'green' },
+  { type: EMIT_BUZZ }
+];

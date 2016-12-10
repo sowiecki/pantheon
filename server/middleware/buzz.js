@@ -4,7 +4,7 @@ import http from 'http';
 
 import { setResponse } from 'utils';
 import { config } from 'environment';
-import { EMIT_BUZZ_RESPONSE } from 'ducks/devices';
+import { EMIT_BUZZ_RESPONSE } from 'ducks/occurrences';
 import { BUZZER_API } from 'constants';
 
 const buzz = (action, next) => {
