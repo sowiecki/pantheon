@@ -7,10 +7,8 @@ import { WEBSOCKET_PROTOCOL,
          WEBSOCKET_RECONNECT_INTERVAL,
          HANDSHAKE,
          RECONNECTED,
-         DISPATCH_EVENTS,
-         UNIFIED_BATCH } from 'constants';
-import { handleEvent } from 'utils';
-import { unifiedController } from './';
+         BATCH_EVENTS } from 'constants';
+import { batchEvents, handleEvent } from 'utils';
 import store from '../store';
 
 let interval;
@@ -51,20 +49,12 @@ const proxyController = () => ({
         console.log(payload.message);
       },
 
-      [DISPATCH_EVENTS]() {
+      [BATCH_EVENTS]() {
         if (payload.id === config.id) {
-          payload.body.forEach((event) => {
-            console.log('dispatching', event);
-            store.dispatch({
-              ...event,
-              devices: store.getState().devicesReducer
-            });
-          });
-        }
-      },
+          const events = payload.body;
 
-      [UNIFIED_BATCH]() {
-        unifiedController().batch(payload);
+          batchEvents(store, events);
+        }
       },
 
       [undefined]() {

@@ -11,12 +11,6 @@ const hueController = () => ({
         bridge
       });
     }).done();
-  },
-
-  parseCom({ loc, com }) {
-    const type = `EMIT_${loc}_LIGHT_${com}`;
-
-    store.dispatch({ type });
   }
 });
 

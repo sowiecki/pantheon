@@ -1,15 +1,13 @@
-import { get } from 'lodash';
 
+import { FETCH_UNIFIED_ID } from 'ducks/devices';
 import { EMIT_BUZZ,
          EMIT_BUZZ_RESPONSE,
          EMIT_PC_ON,
          EMIT_PC_ON_RESPONSE,
          EMIT_SOUND_COM,
          EMIT_SOUND_COM_RESPONSE,
-         FETCH_UNIFIED_ID,
-         SEND_UNIFIED_COMMAND,
-         BATCH_UNIFIED_COMMANDS } from 'ducks/devices';
-import { sleep, handleAction } from 'utils';
+         EMIT_SEND_UNIFIED_COMMAND } from 'ducks/occurrences';
+import { handleAction } from 'utils';
 import { BUZZ_RESPONSE, PC_ON_RESPONSE, SOUND_COM_RESPONSE } from 'constants';
 import { proxyController } from 'controllers';
 
@@ -19,7 +17,7 @@ import soundCom from './sound-com';
 import fetchUnified from './fetch-unified';
 import sendUnified from './send-unified';
 
-export default (state) => (next) => (action) => {
+export default (store) => (next) => (action) => {
   const reducers = {
     [EMIT_BUZZ]() {
       buzz(action, next);
@@ -64,29 +62,12 @@ export default (state) => (next) => (action) => {
       fetchUnified(action, next);
     },
 
-    [SEND_UNIFIED_COMMAND]() {
-      sendUnified(action, next);
-    },
-
-    [BATCH_UNIFIED_COMMANDS]() {
-      const { commands } = action;
-
-      const batchCommands = async () => {
-        for (const command of commands) {
-          const duplicate = get(command, 'duplicate', 1);
-
-          for (let i = 0; i < duplicate; i++) {
-            await sleep(command.delay);
-            await sendUnified(command, next);
-          }
-        }
-      };
-
-      batchCommands();
+    [EMIT_SEND_UNIFIED_COMMAND]() {
+      sendUnified(store, action, next);
     }
   };
 
-  handleAction(state, action, reducers);
+  handleAction(store, action, reducers);
 
   next(action);
 };

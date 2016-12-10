@@ -8,6 +8,7 @@ const BLACK = 'rgb(0, 0, 0)';
 const getPositions = (stripLength) => new Array(stripLength).fill(0).map((x, i) => i);
 
 const SerialPort = require('serialport').SerialPort;
+
 const board = new five.Board({
   port: new SerialPort('/dev/cu.usbmodem1421', {
     baudrate: 9600

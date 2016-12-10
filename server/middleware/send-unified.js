@@ -7,18 +7,17 @@ import { config } from 'environment';
 import { UNIFIED_REMOTE_PORT } from 'constants';
 
 import * as commands from './unified/commands';
-import store from '../store';
 
 /**
  * Send events to a Unified Remote server,
  * using a session established by ./fetch-unified.js
  */
 
-const sendUnified = (command, next) => {
+const sendUnified = (store, action, next) => {
   const { hostname } = config.unified;
   const { unifiedID } = store.getState().devicesReducer;
 
-  const commandObject = commands[command.name](command);
+  const commandObject = commands[action.name](action);
 
   const options = {
     hostname,

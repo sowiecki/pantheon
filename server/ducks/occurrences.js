@@ -32,6 +32,7 @@ export const EMIT_SOUND_COM = 'EMIT_SOUND_COM';
 export const EMIT_SOUND_COM_RESPONSE = 'EMIT_SOUND_COM_RESPONSE';
 
 export const EMIT_DEADBOLT_TOGGLE = 'EMIT_DEADBOLT_TOGGLE';
+export const EMIT_SEND_UNIFIED_COMMAND = 'EMIT_SEND_UNIFIED_COMMAND';
 
 const particle = new Particle();
 
@@ -41,8 +42,8 @@ const initialState = {
   isDoorClosed: false
 };
 
-const occurencesReducer = (state = initialState, action) => {
-  const hueBridge = get(action, 'devices.hueBridge');
+const occurrencesReducer = (state = initialState, action) => {
+  const hueBridge = get(action, 'devicesReducer.hueBridge');
 
   const reducers = {
     [EMIT_DR_LIGHT_ON]() {
@@ -98,15 +99,19 @@ const occurencesReducer = (state = initialState, action) => {
     },
 
     [EMIT_DESK_LIGHT_COLOR_FLASH]() {
-      const color = get(colorGenerators, '[action.color]', colorGenerators.red);
+      const deskLight = state[DESK_LIGHT_STRIP_PRIMARY];
 
-      flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], color, () => {
-        rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
-      });
+      if (deskLight) {
+        const color = get(colorGenerators, '[action.color]', colorGenerators.red);
+
+        flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], color, () => {
+          rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
+        });
+      }
     }
   };
 
   return handleAction(state, action, reducers);
 };
 
-export default occurencesReducer;
+export default occurrencesReducer;
