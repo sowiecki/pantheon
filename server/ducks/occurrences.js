@@ -99,13 +99,13 @@ const occurrencesReducer = (state = initialState, action) => {
     },
 
     [EMIT_DESK_LIGHT_COLOR_FLASH]() {
-      const deskLight = state[DESK_LIGHT_STRIP_PRIMARY];
+      const deskLight = action.devicesReducer[DESK_LIGHT_STRIP_PRIMARY];
 
       if (deskLight) {
         const color = get(colorGenerators, '[action.color]', colorGenerators.red);
 
-        flashAuthorized(state[DESK_LIGHT_STRIP_PRIMARY], color, () => {
-          rain.start(state[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
+        flashAuthorized(deskLight, color, () => {
+          rain.start(deskLight, DESK_LIGHT_STRIP_PRIMARY_LENGTH);
         });
       }
     }
