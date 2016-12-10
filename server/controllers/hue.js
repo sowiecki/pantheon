@@ -1,11 +1,9 @@
 import hue from 'node-hue-api';
 
-import { EMIT_REGISTER_BRIDGE,
-         EMIT_LR_LIGHT_ON,
-         EMIT_LR_LIGHT_OFF } from 'ducks/devices';
+import { EMIT_REGISTER_BRIDGE } from 'ducks/devices';
 import store from '../store';
 
-export const hueController = () => ({
+const hueController = () => ({
   initialize() {
     hue.nupnpSearch().then(([bridge]) => {
       store.dispatch({
@@ -15,17 +13,11 @@ export const hueController = () => ({
     }).done();
   },
 
-  on() {
-    store.dispatch({ type: EMIT_LR_LIGHT_ON });
-  },
-
-  off() {
-    store.dispatch({ type: EMIT_LR_LIGHT_OFF });
-  },
-
   parseCom({ loc, com }) {
     const type = `EMIT_${loc}_LIGHT_${com}`;
 
     store.dispatch({ type });
   }
 });
+
+export default hueController;

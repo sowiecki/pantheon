@@ -1,6 +1,7 @@
 export const HANDSHAKE = 'HANDSHAKE';
 export const RECONNECTED = 'RECONNECTED';
 export const FORWARD = 'FORWARD';
+export const DISPATCH_EVENTS = 'DISPATCH_EVENTS';
 export const BUZZ = 'BUZZ';
 export const BUZZ_RESPONSE = 'BUZZ_RESPONSE';
 export const PC_ON = 'PC_ON';

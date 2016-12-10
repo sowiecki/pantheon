@@ -1,7 +1,7 @@
 import devicesReducer from './devices';
-import unifiedReducer from './unified';
+import occurencesReducer from './occurences';
 
 export default {
   devicesReducer,
-  unifiedReducer
+  occurencesReducer
 };

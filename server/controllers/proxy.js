@@ -2,25 +2,21 @@
 /* globals console */
 import WebSocket from 'ws';
 
-import { buzzerController, deskController, hueController, unifiedController } from './';
-import { deadboltController } from './deadbolt';
 import { config } from 'environment';
 import { WEBSOCKET_PROTOCOL,
          WEBSOCKET_RECONNECT_INTERVAL,
          HANDSHAKE,
          RECONNECTED,
-         BUZZ,
-         PC_ON,
-         LIGHTS_COM,
-         SOUND_COM,
-         DEADBOLT_COM,
+         DISPATCH_EVENTS,
          UNIFIED_BATCH } from 'constants';
 import { handleEvent } from 'utils';
+import { unifiedController } from './';
+import store from '../store';
 
 let interval;
 let webSocket;
 
-export const proxyController = () => ({
+const proxyController = () => ({
   initialize() {
     clearInterval(interval);
     webSocket = new WebSocket(config.proxyHost, WEBSOCKET_PROTOCOL);
@@ -55,24 +51,16 @@ export const proxyController = () => ({
         console.log(payload.message);
       },
 
-      [BUZZ]() {
-        buzzerController().buzz();
-      },
-
-      [DEADBOLT_COM]() {
-        deadboltController().toggle(payload.id);
-      },
-
-      [PC_ON]() {
-        deskController().pcOn();
-      },
-
-      [LIGHTS_COM]() {
-        hueController().parseCom(payload.body.payload);
-      },
-
-      [SOUND_COM]() {
-        deskController().parseSoundCom(payload.body.payload);
+      [DISPATCH_EVENTS]() {
+        if (payload.id === config.id) {
+          payload.body.forEach((event) => {
+            console.log('dispatching', event);
+            store.dispatch({
+              ...event,
+              devices: store.getState().devicesReducer
+            });
+          });
+        }
       },
 
       [UNIFIED_BATCH]() {
@@ -80,7 +68,7 @@ export const proxyController = () => ({
       },
 
       [undefined]() {
-        console.log(JSON.parse(data));
+        console.log('Unhandled event', JSON.parse(data));
       }
     };
 
@@ -93,3 +81,5 @@ export const proxyController = () => ({
     }, WEBSOCKET_RECONNECT_INTERVAL);
   }
 });
+
+export default proxyController;

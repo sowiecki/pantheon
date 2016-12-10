@@ -18,13 +18,13 @@ export const handleEvent = (event, handlers) => {
   handler();
 };
 
-export const toggleLights = (state, light) => {
-  state.hueBridge.lightStatus(light).then((lightResult) => {
+export const toggleLights = (hueBridge, state, light) => {
+  hueBridge.lightStatus(light).then((lightResult) => {
     if (lightResult.state.on) {
-      state.hueBridge.setLightState(light, state.lightState.create().off());
+      hueBridge.setLightState(light, state.lightState.create().off());
     } else {
-      state.hueBridge.setLightState(light, state.lightState.create().on());
-      state.hueBridge.setLightState(light, state.lightState.create().bri(255));
+      hueBridge.setLightState(light, state.lightState.create().on());
+      hueBridge.setLightState(light, state.lightState.create().bri(255));
     }
   });
 };

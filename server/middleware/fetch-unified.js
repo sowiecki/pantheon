@@ -4,7 +4,7 @@ import http from 'http';
 
 import { setResponse } from 'utils';
 import { config } from 'environment';
-import { EMIT_REGISTER_UNIFIED_ID } from 'ducks/unified';
+import { EMIT_REGISTER_UNIFIED_ID } from 'ducks/devices';
 import { UNIFIED_REMOTE_PORT } from 'constants';
 
 /**
@@ -53,6 +53,10 @@ const declareCapabilities = (unifiedID) => {
   };
 
   const request = http.request(options);
+
+  request.on('data', () => {
+    console.log('Connected to Unified Server');
+  });
 
   request.on('error', ({ message }) => {
     console.log(`Problem with request: ${message}`);

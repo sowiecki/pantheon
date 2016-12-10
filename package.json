@@ -41,15 +41,15 @@
     "ws": "^1.1.1"
   },
   "devDependencies": {
-    "babel-eslint": "^6.0.4",
-    "eslint": "^2.11.1",
-    "eslint-config-airbnb": "^9.0.1",
-    "eslint-formatter-pretty": "^0.2.2",
-    "eslint-plugin-filenames": "^1.0.0",
-    "eslint-plugin-import": "^1.8.1",
-    "eslint-plugin-jsx-a11y": "^1.2.3",
-    "eslint-plugin-react": "^5.1.1",
-    "nodemon": "^1.10.2",
-    "nodejs-dashboard": "^0.1.1"
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.12.0",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-formatter-pretty": "^1.0.0",
+    "eslint-plugin-filenames": "^1.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.8.0",
+    "nodejs-dashboard": "^0.1.1",
+    "nodemon": "^1.10.2"
   }
 }

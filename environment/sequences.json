@@ -1,27 +1,44 @@
 {
+  "text": [
+    {
+      "type": "BATCH_UNIFIED_COMMANDS",
+      "commands": [{"name":"sendText","value":"Test"}]
+    },
+    {
+      "type": "EMIT_LR_LIGHT_ON"
+    }
+  ],
   "playlist-s": [
     {
-      "name": "triggerCommand",
-      "value": 3
+      "type": "BATCH_UNIFIED_COMMANDS",
+      "commands": [
+        {
+          "name": "triggerCommand",
+          "value": 3
+        },
+        {
+          "name": "sendText",
+          "value": "TAB",
+          "delay": 8000
+        },
+        {
+          "name": "sendText",
+          "value": "F11",
+          "delay": 500
+        },
+        {
+          "name": "sendText",
+          "value": "TAB",
+          "duplicate": 10
+        },
+        {
+          "name": "sendText",
+          "value": "ENTER"
+        }
+      ]
     },
     {
-      "name": "sendText",
-      "value": "TAB",
-      "delay": 8000
-    },
-    {
-      "name": "sendText",
-      "value": "F11",
-      "delay": 500
-    },
-    {
-      "name": "sendText",
-      "value": "TAB",
-      "duplicate": 10
-    },
-    {
-      "name": "sendText",
-      "value": "ENTER"
+      "type": "EMIT_LR_LIGHT_SOFT"
     }
   ]
 }

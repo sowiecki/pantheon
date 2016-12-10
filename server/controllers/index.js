@@ -1,6 +1,11 @@
-export * from './buzzer';
-export * from './hue';
-export * from './deadbolt';
-export * from './desk';
-export * from './proxy';
-export * from './unified';
+import hueController from './hue';
+import deskController from './desk';
+import proxyController from './proxy';
+import unifiedController from './unified';
+
+export default {
+  hueController,
+  deskController,
+  proxyController,
+  unifiedController
+};

@@ -1,24 +1,23 @@
 import { get } from 'lodash';
 
-import buzz from './buzz';
-import pcOn from './pc-on';
-import soundCom from './sound-com';
-import fetchUnified from './fetch-unified';
-import sendUnified from './send-unified';
-
-import { config, sequences } from '../environment';
 import { EMIT_BUZZ,
          EMIT_BUZZ_RESPONSE,
          EMIT_PC_ON,
          EMIT_PC_ON_RESPONSE,
          EMIT_SOUND_COM,
-         EMIT_SOUND_COM_RESPONSE } from 'ducks/devices';
-import { FETCH_UNIFIED_ID,
+         EMIT_SOUND_COM_RESPONSE,
+         FETCH_UNIFIED_ID,
          SEND_UNIFIED_COMMAND,
-         BATCH_UNIFIED_COMMANDS } from 'ducks/unified';
+         BATCH_UNIFIED_COMMANDS } from 'ducks/devices';
 import { sleep, handleAction } from 'utils';
 import { BUZZ_RESPONSE, PC_ON_RESPONSE, SOUND_COM_RESPONSE } from 'constants';
-import { proxyController } from 'controllers/proxy';
+import { proxyController } from 'controllers';
+
+import buzz from './buzz';
+import pcOn from './pc-on';
+import soundCom from './sound-com';
+import fetchUnified from './fetch-unified';
+import sendUnified from './send-unified';
 
 export default (state) => (next) => (action) => {
   const reducers = {
@@ -70,24 +69,20 @@ export default (state) => (next) => (action) => {
     },
 
     [BATCH_UNIFIED_COMMANDS]() {
-      const { body, id } = action.payload;
+      const { commands } = action;
 
-      const batchCommands = async() => {
-        const commands = body.predefined ? sequences[body.sequenceKey] : body.commands;
-
+      const batchCommands = async () => {
         for (const command of commands) {
           const duplicate = get(command, 'duplicate', 1);
 
           for (let i = 0; i < duplicate; i++) {
             await sleep(command.delay);
-            await sendUnified(command, action, next);
+            await sendUnified(command, next);
           }
         }
       };
 
-      if (id === config.id) {
-        batchCommands();
-      }
+      batchCommands();
     }
   };
 
