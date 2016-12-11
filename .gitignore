@@ -1,5 +1,4 @@
-config.json
-sequences.json
+environment/config.json
 
 # Logs
 logs

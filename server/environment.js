@@ -14,8 +14,7 @@ const readFile = (fileName) => {
  * @returns {object} config
  */
 const getEnvironment = () => ({
-  config: readFile('../environment/config.json'),
-  sequences: readFile('../environment/sequences.json')
+  config: readFile('../environment/config.json')
 });
 
-export const { config, sequences } = getEnvironment();
+export const { config } = getEnvironment();
