@@ -1,21 +1,27 @@
 
+import Particle from 'particle-api-js';
+
 import { FETCH_UNIFIED_ID } from 'ducks/devices';
 import { EMIT_BUZZ,
          EMIT_BUZZ_RESPONSE,
          EMIT_PC_ON,
          EMIT_PC_ON_RESPONSE,
+         EMIT_DEADBOLT_TOGGLE,
          EMIT_SOUND_COM,
          EMIT_SOUND_COM_RESPONSE,
          EMIT_SEND_UNIFIED_COMMAND } from 'ducks/occurrences';
 import { handleAction } from 'utils';
 import { BUZZ_RESPONSE, PC_ON_RESPONSE, SOUND_COM_RESPONSE } from 'constants';
 import { proxyController } from 'controllers';
+import { config } from 'environment';
 
 import buzz from './buzz';
 import pcOn from './pc-on';
 import soundCom from './sound-com';
 import fetchUnified from './fetch-unified';
 import sendUnified from './send-unified';
+
+const particle = new Particle();
 
 export default (store) => (next) => (action) => {
   const reducers = {
@@ -55,6 +61,18 @@ export default (store) => (next) => (action) => {
         payload: {
           status: 200
         }
+      });
+    },
+
+    [EMIT_DEADBOLT_TOGGLE]() {
+      const { token, deviceId } = config.photons.deadbolt;
+      const { id } = action;
+
+      particle.callFunction({
+        deviceId,
+        auth: token,
+        name: 'toggle',
+        argument: id
       });
     },
 

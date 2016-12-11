@@ -1,9 +1,7 @@
 /* eslint new-cap:0 */
 import { lightState } from 'node-hue-api';
-import Particle from 'particle-api-js';
 import { get } from 'lodash';
 
-import { config } from 'environment';
 import { handleAction,
          flashAuthorized,
          rain,
@@ -34,7 +32,6 @@ export const EMIT_SOUND_COM_RESPONSE = 'EMIT_SOUND_COM_RESPONSE';
 export const EMIT_DEADBOLT_TOGGLE = 'EMIT_DEADBOLT_TOGGLE';
 export const EMIT_SEND_UNIFIED_COMMAND = 'EMIT_SEND_UNIFIED_COMMAND';
 
-const particle = new Particle();
 
 const initialState = {
   lightState,
@@ -76,18 +73,6 @@ const occurrencesReducer = (state = initialState, action) => {
       hueBridge.setLightState(2, state.lightState.create().bri(100));
 
       return state;
-    },
-
-    [EMIT_DEADBOLT_TOGGLE]() {
-      const { token, deviceId } = config.photons.deadbolt;
-      const { id } = action;
-
-      particle.callFunction({
-        deviceId,
-        auth: token,
-        name: 'toggle',
-        argument: id
-      });
     },
 
     [EMIT_DR_LIGHT_TOGGLE]() {
