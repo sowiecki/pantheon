@@ -1,4 +1,4 @@
-/* eslint array-callback-return:0 */
+/* eslint import/prefer-default-export:0 */
 import path from 'path';
 import { readFileSync } from 'fs';
 
