@@ -3,12 +3,15 @@
   "plugins": [
     "transform-async-to-generator",
     "transform-object-rest-spread",
-    ["module-alias", [
-      { "src": "./server/environment", "expose": "environment" },
-      { "src": "./server/controllers", "expose": "controllers" },
-      { "src": "./server/ducks", "expose": "ducks" },
-      { "src": "./server/constants", "expose": "constants" },
-      { "src": "./server/utils", "expose": "utils" }
-    ]]
+    ["module-resolver", {
+      "root": ["./src"],
+      "alias": {
+        "environment": "./server/environment",
+        "controllers": "./server/controllers",
+        "ducks": "./server/ducks",
+        "constants": "./server/constants",
+        "utils": "./server/utils"
+      }
+    }]
   ]
 }

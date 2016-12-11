@@ -2,25 +2,21 @@
 /* globals console */
 import WebSocket from 'ws';
 
-import { buzzerController, deskController, hueController, unifiedController } from './';
-import { deadboltController } from './deadbolt';
 import { config } from 'environment';
 import { WEBSOCKET_PROTOCOL,
          WEBSOCKET_RECONNECT_INTERVAL,
          HANDSHAKE,
          RECONNECTED,
          BUZZ,
-         PC_ON,
-         LIGHTS_COM,
-         SOUND_COM,
-         DEADBOLT_COM,
-         UNIFIED_BATCH } from 'constants';
-import { handleEvent } from 'utils';
+         BUZZ_EVENTS,
+         BATCH_EVENTS } from 'constants';
+import { batchEvents, handleEvent } from 'utils';
+import store from '../store';
 
 let interval;
 let webSocket;
 
-export const proxyController = () => ({
+const proxyController = () => ({
   initialize() {
     clearInterval(interval);
     webSocket = new WebSocket(config.proxyHost, WEBSOCKET_PROTOCOL);
@@ -55,32 +51,26 @@ export const proxyController = () => ({
         console.log(payload.message);
       },
 
+      /**
+       * Special snowflake handler for Particle Photon buzzer, because holy-fucking-shit
+       * their webhooks don't support custom request bodies
+       */
       [BUZZ]() {
-        buzzerController().buzz();
+        if (payload.id === config.id) {
+          batchEvents(store, BUZZ_EVENTS);
+        }
       },
 
-      [DEADBOLT_COM]() {
-        deadboltController().toggle(payload.id);
-      },
+      [BATCH_EVENTS]() {
+        if (payload.id === config.id) {
+          const events = payload.body;
 
-      [PC_ON]() {
-        deskController().pcOn();
-      },
-
-      [LIGHTS_COM]() {
-        hueController().parseCom(payload.body.payload);
-      },
-
-      [SOUND_COM]() {
-        deskController().parseSoundCom(payload.body.payload);
-      },
-
-      [UNIFIED_BATCH]() {
-        unifiedController().batch(payload);
+          batchEvents(store, events);
+        }
       },
 
       [undefined]() {
-        console.log(JSON.parse(data));
+        console.log('Unhandled event', JSON.parse(data));
       }
     };
 
@@ -93,3 +83,5 @@ export const proxyController = () => ({
     }, WEBSOCKET_RECONNECT_INTERVAL);
   }
 });
+
+export default proxyController;

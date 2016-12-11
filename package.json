@@ -20,7 +20,7 @@
   "author": "Sean Owiecki",
   "license": "MIT",
   "dependencies": {
-    "babel-plugin-module-alias": "^1.6.0",
+    "babel-plugin-module-resolver": "^2.4.0",
     "babel-plugin-transform-async-to-generator": "^6.8.0",
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "babel-polyfill": "^6.9.1",
@@ -32,24 +32,24 @@
     "koa-router": "^7.0.1",
     "lodash": "^4.15.0",
     "node-hue-api": "^2.2.0",
-    "node-pixel": "^0.6.1",
+    "node-pixel": "^0.8.2",
+    "nodejs-dashboard": "^0.2.1",
     "nodemon": "^1.9.2",
     "particle-api-js": "^6.4.0",
     "particle-io": "^0.14.0",
     "redux": "^3.5.2",
-    "serialport": "^3.1.2",
     "ws": "^1.1.1"
   },
   "devDependencies": {
-    "babel-eslint": "^6.0.4",
-    "eslint": "^2.11.1",
-    "eslint-config-airbnb": "^9.0.1",
-    "eslint-formatter-pretty": "^0.2.2",
-    "eslint-plugin-filenames": "^1.0.0",
-    "eslint-plugin-import": "^1.8.1",
-    "eslint-plugin-jsx-a11y": "^1.2.3",
-    "eslint-plugin-react": "^5.1.1",
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.12.0",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-formatter-pretty": "^1.0.0",
+    "eslint-plugin-filenames": "^1.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.8.0",
     "nodemon": "^1.10.2",
-    "nodejs-dashboard": "^0.1.1"
+    "serialport": "^4.0.6"
   }
 }

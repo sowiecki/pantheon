@@ -3,23 +3,21 @@
 import http from 'http';
 
 import { setResponse } from 'utils';
-import * as commands from './unified/commands';
 import { config } from 'environment';
-import store from '../store';
-
-// import { EMIT_REGISTER_UNIFIED_ID } from 'ducks/unified';
 import { UNIFIED_REMOTE_PORT } from 'constants';
+
+import * as commands from './unified/commands';
 
 /**
  * Send events to a Unified Remote server,
  * using a session established by ./fetch-unified.js
  */
 
-const sendUnified = (command, action, next) => {
+const sendUnified = (store, action, next) => {
   const { hostname } = config.unified;
-  const { unifiedID } = store.getState().unifiedReducer;
+  const { unifiedID } = store.getState().devicesReducer;
 
-  const commandObject = commands[command.name](command);
+  const commandObject = commands[action.name](action);
 
   const options = {
     hostname,
@@ -35,7 +33,7 @@ const sendUnified = (command, action, next) => {
     response.setEncoding('utf8');
 
     response.on('data', () => {
-      setResponse(action, 200);
+      setResponse({ next }, 200);
     });
   });
 

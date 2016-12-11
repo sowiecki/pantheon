@@ -1,6 +1,7 @@
+/* eslint operator-assignment:0 */
 /* globals setInterval, clearInterval, setTimeout */
-import { getPositions } from './devices';
 import { FPS, UP, DOWN, BLACK, RESET_DESK_LIGHT_STRIP_TIMEOUT } from 'constants';
+import { getPositions } from './devices';
 
 const random = (cap) => Math.floor(Math.random() * (cap - 1)) + 1;
 

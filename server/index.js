@@ -3,17 +3,17 @@
 import Koa from 'koa';
 import colors from 'colors/safe';
 
-import router from './routes';
-import * as controllers from './controllers';
-
 import { getControllerName } from 'utils';
+
+import router from './routes';
+import controllers from './controllers';
 
 const server = new Koa();
 const port = process.env.PORT || 4000;
 
 server.use(router.routes());
 
-const run = async() => {
+const run = async () => {
   console.log(`Listening on port ${port}`);
 
   Object.keys(controllers).forEach((key) => {

@@ -1,10 +1,11 @@
 /* globals console */
 /* eslint no-console: 0 */
+import Particle from 'particle-api-js';
+
 import { setResponse } from 'utils';
 import { config } from 'environment';
 import { EMIT_SOUND_COM_RESPONSE } from 'ducks/devices';
 
-const Particle = require('particle-api-js');
 const particle = new Particle();
 
 const pcOn = (action, next) => {
