@@ -7,7 +7,7 @@ A [Node.js](https://nodejs.org/) server for controlling multiple "Internet of Th
 Moirai integrates multiple products and devices into a single API, allowing for incredible control.
 
 Once a service is integrated, it can be controlled as part of a sequence of batched events.
-For example, using JSON to set up a sequence for arriving home:
+For example, defining up a sequence for arriving home is as simple as sending a serialized JSON array:
 
 ```js
 [
