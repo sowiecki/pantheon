@@ -4,7 +4,7 @@
 
 A [Node.js](https://nodejs.org/) server for controlling multiple "Internet of Things" (IoT) devices.
 
-Moirai integrates multiple devices into a single, common API, allowing for incredibly control through a RESTful API.
+Moirai integrates multiple products and devices into a single API, allowing for incredible control.
 
 Once a service is integrated, it can be controlled as part of a sequence of batched events.
 For example,
@@ -24,3 +24,11 @@ Currently supported integrations:
 * [Unified Remote](https://www.unifiedremote.com/)
 * [Close-it](https://github.com/Nase00/close-it)
 * [Custom Firmware](./firmware) built for the [Particle Photon](particle.io) and [Arduino](https://www.arduino.cc/) platforms
+
+Products that are actively integrated into a Moirai server will still have their 1st-party solutions function.
+E.g., Philips Hue dimmer switches and Unified Remote apps function as expected, even with Moirai running.
+
+# Alpha Status
+
+This software is in alpha, and is currently highly tailored to my use cases and home setup.
+I am working to make it more configurable, modular, and secure for wider consumption.
