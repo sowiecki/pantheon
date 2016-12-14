@@ -18,5 +18,4 @@ if (cluster.isMaster) {
 } else {
   require('nodejs-dashboard');
   require('./server');
-  require('nodejs-dashboard');
 }
