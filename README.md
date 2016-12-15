@@ -2,6 +2,9 @@
 [![DevDependencies Status](https://david-dm.org/nase00/moirai/dev-status.svg?style=flat-square)](https://david-dm.org/nase00/moirai#info=devDependencies)
 [![bitHound](https://img.shields.io/bithound/code/github/Nase00/moirai.svg?style=flat-square)](https://www.bithound.io/github/Nase00/moirai/master/files)
 
+*This software is in **alpha**, and is currently highly tailored to my use cases and home setup.
+I am working to make it more configurable, modular, and secure for wider consumption.*
+
 A [Node.js](https://nodejs.org/) server for controlling multiple "Internet of Things" (IoT) devices.
 
 Moirai integrates multiple products and devices into a single API, allowing for incredible control.
@@ -29,11 +32,20 @@ Currently supported integrations:
 Products that are actively integrated into a Moirai server will still have their 1st-party solutions function.
 E.g., Philips Hue dimmer switches and Unified Remote apps function as expected, even with Moirai running.
 
-Other services to control Moirai with:
+Services to control Moirai with:
 * Microsoft Kinect connected to a Windows PC running [Aperature](https://github.com/Nase00/aperature)
 * A keypad connected to a Raspberry Pi running [Node-HTTP-Macros](https://github.com/Nase00/node-http-macros)
 
-# Alpha Status
+# Getting started
+```bash
+git clone https://github.com/Nase00/moirai.git
+cd moirai
+touch ./environment/config.json
+```
 
-This software is in alpha, and is currently highly tailored to my use cases and home setup.
-I am working to make it more configurable, modular, secure, and documented for wider consumption.
+Before proceeding, populate `config.json` with your [configuration parameters](./environment/README.md).
+
+```bash
+npm install
+npm start
+```
