@@ -61,13 +61,14 @@ const proxyController = () => ({
     if (payload.id === config.id) {
       if (proxyHandlers[payload.event]) {
         eventHandler();
-        proxyController().send(`${payload.event}_RESPONSE`, 200);
+        // TODO update Acheron to accept _RESPONSE events
+        // proxyController().send(`${payload.event}_RESPONSE`, 200);
       } else {
         errorNoHandler(payload.event);
-        proxyController().send(`${payload.event}_RESPONSE`, 500);
+        // proxyController().send(`${payload.event}_RESPONSE`, 500);
       }
     } else {
-      proxyController().send(`${payload.event}_RESPONSE`, 403);
+      // proxyController().send(`${payload.event}_RESPONSE`, 403);
     }
   },
 

@@ -15,7 +15,7 @@ export const EMIT_REGISTER_BRIDGE = 'EMIT_REGISTER_BRIDGE';
 
 const initialState = {
   ports: config.ports,
-  hueUserId: config.users[Object.keys(config.users)[0]],
+  hueUserID: config.hue.userID,
 };
 
 const devicesReducer = (state = initialState, action) => {
@@ -31,7 +31,7 @@ const devicesReducer = (state = initialState, action) => {
     [EMIT_REGISTER_BRIDGE]() {
       return {
         ...state,
-        hueBridge: new HueApi(action.bridge.ipaddress, state.hueUserId)
+        hueBridge: new HueApi(action.bridge.ipaddress, state.hueUserID)
       };
     },
 

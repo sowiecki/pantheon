@@ -3,24 +3,54 @@
 [![bitHound](https://img.shields.io/bithound/code/github/Nase00/moirai.svg?style=flat-square)](https://www.bithound.io/github/Nase00/moirai/master/files)
 
 *This software is in **alpha**, and is currently highly tailored to my use cases and home setup.
-I am working to make it more configurable, modular, and secure for wider consumption.*
+I am working to make it more configurable, modular, and secure for wider consumption. The API is undergoing significant changes.*
 
-A [Node.js](https://nodejs.org/) server for controlling multiple "Internet of Things" (IoT) devices.
+A [Node.js](https://nodejs.org/) middleman service for controlling multiple "Internet of Things" (IoT) devices.
 
-Moirai integrates multiple products and devices into a single API, allowing for incredible control.
+Moirai integrates diverse services and devices into a single API, allowing for incredibly precise and convenient control.
 
-Once a service is integrated, it can be controlled as part of a sequence of batched events.
-For example, defining up a sequence for arriving home is as simple as sending a serialized JSON array:
+Integrated services and devices can be controlled through "events" defined as part of a sequence.
+These sequences are triggered by HTTP requests to the Moirai service. For example,
 
 ```js
+// HTTP request body
 [
-  { "type": "EMIT_BUZZ" }, // Triggers Close-it module to open building gate
-  { "type": "EMIT_LR_LIGHT_ON" }, // Turns on living room (LR) light
-  { "type": "EMIT_PC_ON" }, // Triggers Lamprey module to turn on PC
-  { "type": "EMIT_SEND_UNIFIED_COMMAND", "name": "triggerCommand", "value": 3, "delay": 60000 } // Wait 60 seconds, then triggers script on PC to open and play music
+  // Trigger Close-it module to open building gate
+  { "type": "EMIT_BUZZ" },
+
+  // Set bulb with ID #1 to brightness level 50
+  { "type": "EMIT_HUE_SWITCH", "id": 1, "value": 50 },
+
+  // Trigger a Particle Photon function to power on PC
+  {
+    "type": "EMIT_TRIGGER_PHOTON_FUNCTION",
+    "deviceId": "123123123123123",
+    "name": "pc-on",
+    "argument": "togglePower",
+    "auth": "567890567890"
+  },
+
+  // Trigger a Particle Photon function to power on PC speakers with an IR transmitter
+  {
+    "type": "EMIT_TRIGGER_PHOTON_FUNCTION",
+    "deviceId": "567123123123123",
+    "name": "pc-sound",
+    "argument": "togglePower",
+    "auth": "765890567890"
+  },
+
+  // Wait 60 seconds, then trigger script on the PC to open and play music
+  {
+    "type": "EMIT_SEND_UNIFIED_COMMAND",
+    "name": "triggerCommand",
+    "value": 3,
+    "delay": 60000
+  }
 ]
 ```
 The sequence can be triggered by absolutely anything that is capable of sending an HTTP request, such as Google Home, Alexa, or any custom web application.
+
+See the [Events documentation](./docs/events.md) for how to send requests.
 
 Currently supported integrations:
 

@@ -7,6 +7,9 @@
 | id                   | Secret passcode required for a request to function | Yes       |         |
 | proxyHost            | Address of webSocket proxy to connect to           | No        |         |
 | users                | Hue users list                                     | No        |         |
+| hue                  | User ID of Hue light assigned in `config.json`, [see here](https://www.developers.meethue.com/documentation/getting-started) on how to register a user to a Hue bridge, and obtain the user ID | No |
+
+
 TODO finish this after changing APIs
 
 Example of a `config.json`:
@@ -14,14 +17,8 @@ Example of a `config.json`:
 {
   "id": "123456",
   "proxyHost": "http://www.digitalocean.com",
-  "users": {
-    "user#alias Bob": "123456"
-  },
-  "bridges": {
-    "primary": {
-      "id": "00123456",
-      "internalipaddress": "192.168.1.100"
-    }
+  "hue": {
+    "userID": "123456"
   },
   "ports": {
     "jFive": "/dev/cu.usbmodem1",
