@@ -3,15 +3,12 @@
 import WebSocket from 'ws';
 
 import { config } from 'environment';
+import getStandardHandlers from 'handlers';
 import { WEBSOCKET_PROTOCOL,
          WEBSOCKET_RECONNECT_INTERVAL,
          HANDSHAKE,
-         RECONNECTED,
-         BUZZ,
-         BUZZ_EVENTS,
-         BATCH_EVENTS } from 'constants';
-import { batchEvents, handleEvent } from 'utils';
-import store from '../store';
+         RECONNECTED } from 'constants';
+import { getEventHandler, errorNoHandler } from 'utils';
 
 let interval;
 let webSocket;
@@ -19,6 +16,11 @@ let webSocket;
 const proxyController = () => ({
   initialize() {
     clearInterval(interval);
+
+    if (!config.proxyHost) {
+      return;
+    }
+
     webSocket = new WebSocket(config.proxyHost, WEBSOCKET_PROTOCOL);
 
     webSocket.onopen = this.handleConnection;
@@ -42,39 +44,31 @@ const proxyController = () => ({
   parseEvent({ data }) {
     const { payload } = JSON.parse(data);
 
-    const handlers = {
+    const proxyHandlers = {
+      ...getStandardHandlers(payload),
+
       [HANDSHAKE]() {
         console.log(payload.message);
       },
 
       [RECONNECTED]() {
         console.log(payload.message);
-      },
-
-      /**
-       * Special snowflake handler for Particle Photon buzzer, because holy-fucking-shit
-       * their webhooks don't support custom request bodies
-       */
-      [BUZZ]() {
-        if (payload.id === config.id) {
-          batchEvents(store, BUZZ_EVENTS);
-        }
-      },
-
-      [BATCH_EVENTS]() {
-        if (payload.id === config.id) {
-          const events = payload.body;
-
-          batchEvents(store, events);
-        }
-      },
-
-      [undefined]() {
-        console.log('Unhandled event', JSON.parse(data));
       }
     };
 
-    handleEvent(payload.event, handlers);
+    const eventHandler = getEventHandler(payload.event, proxyHandlers);
+
+    if (payload.id === config.id) {
+      if (proxyHandlers[payload.event]) {
+        eventHandler();
+        proxyController().send(`${payload.event}_RESPONSE`, 200);
+      } else {
+        errorNoHandler(payload.event);
+        proxyController().send(`${payload.event}_RESPONSE`, 500);
+      }
+    } else {
+      proxyController().send(`${payload.event}_RESPONSE`, 403);
+    }
   },
 
   reconnect() {

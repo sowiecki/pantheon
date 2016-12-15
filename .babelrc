@@ -9,6 +9,7 @@
         "environment": "./server/environment",
         "controllers": "./server/controllers",
         "ducks": "./server/ducks",
+        "handlers": "./server/handlers",
         "constants": "./server/constants",
         "utils": "./server/utils"
       }

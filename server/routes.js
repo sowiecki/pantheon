@@ -1,15 +1,28 @@
 import Router from 'koa-router';
 
-import { hueController, buzzerController, deskController } from 'controllers';
+import getStandardHandlers from 'handlers';
+import { setResponse, getEventHandler, errorNoHandler } from 'utils';
+import { config } from 'environment';
 
 const router = new Router();
 
-router.get('/on', () => hueController().on());
+router.post('/api', (crx) => {
+  const authorized = crx.request.headers.id === config.id;
 
-router.get('/off', () => hueController().off());
+  if (authorized) {
+    const handlers = getStandardHandlers(crx.request);
+    const eventHandler = getEventHandler(crx.headers.event, handlers);
 
-router.post('/buzzer', (next) => buzzerController(next).buzz());
-
-router.post('/secretary', (next) => deskController(next).pcOn());
+    if (eventHandler) {
+      eventHandler();
+      setResponse({ next: crx }, 200);
+    } else {
+      errorNoHandler(crx.headers.event);
+      setResponse({ next: crx }, 500);
+    }
+  } else {
+    setResponse({ next: crx }, 403);
+  }
+});
 
 export default router;

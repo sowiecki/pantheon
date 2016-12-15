@@ -29,6 +29,7 @@
     "colors": "^1.1.2",
     "johnny-five": "^0.10.0",
     "koa": "^2.0.0",
+    "koa-bodyparser": "next",
     "koa-router": "^7.0.1",
     "lodash": "^4.15.0",
     "node-hue-api": "^2.2.0",

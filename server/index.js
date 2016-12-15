@@ -1,6 +1,7 @@
 /* eslint no-console:0 */
 /* globals console */
 import Koa from 'koa';
+import bodyParser from 'koa-bodyparser';
 import colors from 'colors/safe';
 
 import { getControllerName } from 'utils';
@@ -11,6 +12,7 @@ import controllers from './controllers';
 const server = new Koa();
 const port = process.env.PORT || 4000;
 
+server.use(bodyParser());
 server.use(router.routes());
 
 const run = async () => {
