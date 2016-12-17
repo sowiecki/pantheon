@@ -41,6 +41,8 @@ This event wraps the [Particle callFunction](https://docs.particle.io/reference/
 The following are each required, but can be defined either as property on the device name in `config.json`, or by the event request.
 If in the event request, the associated property in `config.json` will be ignored for that instance of the event.
 
+**key (string)**: Key of stored properties within `config.json`.
+
 **name (string)**: Name of the function to call
 
 **argument (string)**: Arguement to provide to function
@@ -59,20 +61,27 @@ If in the event request, the associated property in `config.json` will be ignore
 ### HTTP Request
 **type (string)**: `EMIT_FORWARD_HTTP_REQUEST`
 
+**key (string)**: Key of stored properties within `config.json`.
+
+The following are each required, but can be defined either as property on the device name in `config.json`, or by the event request.
+If in the event request, the associated property in `config.json` will be ignored for that instance of the event.
+
 **method (string)**: Any valid HTTP method, defaults to `POST`.
 
 Refer to Node.js's [http.request method](https://nodejs.org/api/http.html#http_http_request_options_callback) for other options.
-These options may be sent directly, for example:
+
+Example of manually sending an event:
 ```json
 { "type": "EMIT_FORWARD_HTTP_REQUEST", "options": { "path": "/api/doot", "port": 3000, "hostname": "192.168.1.100" }, "body": { "code": "hunter2" } }
 ```
-*Or*, you can pre-define the parameters within `config.json`, and simply reference the key for those parameters.
 
-Request body:
+Example of pre-defining the event parameters, and referencing the key from `config.json`:
+
+###### Request body
 ```json
 { "type": "EMIT_FORWARD_HTTP_REQUEST", "key": "dootAPI" }
 ```
-`config.json`:
+###### config.json
 ```json
 {
   ...

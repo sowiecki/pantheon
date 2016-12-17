@@ -8,7 +8,7 @@ import { config } from 'environment';
 const particle = new Particle();
 
 const triggerPhotonFunction = (action, next) => {
-  const predefinedParameters = config.photons[action.alias];
+  const predefinedParameters = config.photons[action.key];
 
   const parameters = {
     ...predefinedParameters,
