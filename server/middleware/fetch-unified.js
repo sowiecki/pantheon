@@ -11,7 +11,7 @@ import { UNIFIED_REMOTE_PORT } from 'constants';
  * A hacked together, reverse-engineered Unified Remote (UR) connection implementation,
  * based solely on snooping the UR web client source and network activity.
  * Credit to https://www.unifiedremote.com/ for an awesome application.
- * (A REST API would be even more awesome...)
+ * (A well-documented REST API would be even more awesome...)
  *
  * As best as it could be ascertained,
  * these seem to be the only requirements for establishing a useful UR connection:

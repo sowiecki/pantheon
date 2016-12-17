@@ -6,11 +6,15 @@ import { get } from 'lodash';
 import { setResponse } from 'utils';
 import { config } from 'environment';
 
+/**
+ * Forwards an HTTP request using parameters either provided directly by an action,
+ * or matches a provided key to pre-defined parameters in config.json.
+ */
 const forwardHTTPRequest = (action, next) => {
   const { key, body } = action;
 
   const payload = JSON.stringify(body || config.http_requests[key].body);
-  const optionsOverride = get(config, `[http_requests][${key}].options`, action);
+  const optionsOverride = get(config, `http_requests[${key}].options`, action);
 
   const options = {
     method: action.method || 'POST',
