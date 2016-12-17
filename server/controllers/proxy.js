@@ -1,6 +1,7 @@
 /* eslint new-cap:0, no-console:0 */
 /* globals console */
 import WebSocket from 'ws';
+import { get } from 'lodash';
 
 import { config } from 'environment';
 import getStandardHandlers from 'handlers';
@@ -29,7 +30,8 @@ const proxyController = () => ({
   },
 
   handleConnection() {
-    const payload = { id: config.id };
+    const payload = { headers: { id: config.id } };
+
     webSocket.send(JSON.stringify({ event: HANDSHAKE, payload }));
   },
 
@@ -43,6 +45,8 @@ const proxyController = () => ({
 
   parseEvent({ data }) {
     const { payload } = JSON.parse(data);
+    const id = get(payload, 'headers.id');
+    const event = get(payload, 'headers.event');
 
     const proxyHandlers = {
       ...getStandardHandlers(payload),
@@ -56,15 +60,15 @@ const proxyController = () => ({
       }
     };
 
-    const eventHandler = getEventHandler(payload.event, proxyHandlers);
+    const eventHandler = getEventHandler(event, proxyHandlers);
 
-    if (payload.id === config.id) {
-      if (proxyHandlers[payload.event]) {
+    if (id === config.id) {
+      if (proxyHandlers[event]) {
         eventHandler();
         // TODO update Acheron to accept _RESPONSE events
         // proxyController().send(`${payload.event}_RESPONSE`, 200);
       } else {
-        errorNoHandler(payload.event);
+        errorNoHandler(event);
         // proxyController().send(`${payload.event}_RESPONSE`, 500);
       }
     } else {
