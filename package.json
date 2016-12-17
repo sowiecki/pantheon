@@ -40,6 +40,7 @@
     "particle-api-js": "^6.4.0",
     "particle-io": "^0.14.0",
     "redux": "^3.5.2",
+    "winston": "^2.3.0",
     "ws": "^1.1.1"
   },
   "devDependencies": {
