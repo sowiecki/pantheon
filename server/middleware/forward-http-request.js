@@ -14,7 +14,7 @@ const forwardHTTPRequest = (action, next) => {
   const { key, body } = action;
 
   const payload = JSON.stringify(body || config.http_requests[key].body);
-  const optionsOverride = get(config, `http_requests[${key}].options`, action);
+  const optionsOverride = get(config, `http_requests[${key}].options`, action.options);
 
   const options = {
     method: action.method || 'POST',

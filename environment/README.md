@@ -2,15 +2,20 @@
 
 `config.json` will define what devices and services will be integrated into the application.
 
-| Parameter            | Description                                        | Required? | Default |
-|----------------------|----------------------------------------------------|-----------|---------|
-| id                   | Secret passcode required for a request to function | Yes       |         |
-| proxyHost            | Address of webSocket proxy to connect to           | No        |         |
-| users                | Hue users list                                     | No        |         |
+| Parameter            | Description                                          | Required? | Default |
+|----------------------|------------------------------------------------------|-----------|---------|
+| id                   | Secret passcode required for any request to function | Yes       |         |
+| proxyHost            | Address of webSocket proxy to connect to             | No        |         |
 | hue                  | User ID of Hue light assigned in `config.json`, [see here](https://www.developers.meethue.com/documentation/getting-started) on how to register a user to a Hue bridge, and obtain the user ID | No |
+| photons              | Individually listed Particle Photon devices          | No        |         |
+| - token              | Authentication token for Photon device               | Yes       |         |
+| - deviceId           | ID of Photon Device                                  | Yes       |         |
+| - name               | Name of function to call                             | No        |         |
+| - argument           | Argument to provide to function call                 | No        |         |
+| http_requests        | Pre-defined HTTP requests                             | No        |         |
+| - method             | HTTP method to use, e.g., `POST`, `GET`, etc.        | No        | `POST`  |
+| - ...                | See Node.js's [http.request method](https://nodejs.org/api/http.html#http_http_request_options_callback) for a list of valid `options` properties | Some ||
 
-
-TODO finish this after changing APIs
 
 Example of a `config.json`:
 ```json
@@ -27,7 +32,9 @@ Example of a `config.json`:
   "photons": {
     "deadbolt": {
       "token": "123456",
-      "deviceId": "654321"
+      "deviceId": "654321",
+      "argument": "open",
+      "password": "hunter2"
     },
     "secretary": {
       "token": "123456",
@@ -38,9 +45,15 @@ Example of a `config.json`:
       "deviceId": "555555"
     }
   },
-  "buzzer": {
-    "hostname": "192.168.1.123",
-    "port": 8080
+  "http_requests": {
+    "buzz": {
+      "options": {
+        "path": "/api/press",
+        "port": 3000,
+        "hostname": "192.168.1.100"
+      },
+      "body": { "code": "hunter" }
+    }
   },
   "unified": {
     "hostname": "192.168.1.321"

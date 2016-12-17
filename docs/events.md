@@ -18,6 +18,10 @@ headers:
 
 body: Construct a JSON array of objects with your [events](./docs/EVENTS.md).
 
+Alternatively, you can set the "body" as a header property.
+This is useful as a workaround for use cases like [Particle Photon Webhooks](https://docs.particle.io/guide/tools-and-features/webhooks/), which lack support for sending proper HTTP request bodies.
+Be sure to set the header key as "body" and the value as a JSON-serialized string of an array of event objects.
+
 # Supported Events
 ### Hue Lighting
 *Currently, RGB is not supported*
@@ -51,6 +55,39 @@ If in the event request, the associated property in `config.json` will be ignore
 **name (string)**: See [supported commands](../server/middleware/unified/commands.js)
 
 **[command] (any)**: Type of command to send, e.g. provide text for `sendText`
+
+### HTTP Request
+**type (string)**: `EMIT_FORWARD_HTTP_REQUEST`
+
+**method (string)**: Any valid HTTP method, defaults to `POST`.
+
+Refer to Node.js's [http.request method](https://nodejs.org/api/http.html#http_http_request_options_callback) for other options.
+These options may be sent directly, for example:
+```json
+{ "type": "EMIT_FORWARD_HTTP_REQUEST", "options": { "path": "/api/doot", "port": 3000, "hostname": "192.168.1.100" }, "body": { "code": "hunter2" } }
+```
+*Or*, you can pre-define the parameters within `config.json`, and simply reference the key for those parameters.
+
+Request body:
+```json
+{ "type": "EMIT_FORWARD_HTTP_REQUEST", "key": "dootAPI" }
+```
+`config.json`:
+```json
+{
+  ...
+  "http_requests": {
+    "dootAPI": {
+      "options": {
+        "path": "/api/doot",
+        "port": 3000,
+        "hostname": "192.168.1.100"
+      },
+      "body": { "code": "hunter2" }
+    }
+  }
+}
+```
 
 # Proxying requests
 If a `proxyHost` is defined in `./environment/config.json`, requests can alternatively be directed to the proxy.
