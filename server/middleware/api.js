@@ -1,15 +1,11 @@
 import { FETCH_UNIFIED_ID } from 'ducks/devices';
 import { EMIT_TRIGGER_PHOTON_FUNCTION,
-         EMIT_BUZZ,
-         EMIT_BUZZ_RESPONSE,
+         EMIT_FORWARD_HTTP_REQUEST,
          EMIT_SEND_UNIFIED_COMMAND } from 'ducks/occurrences';
 import { handleAction } from 'utils';
-import { BUZZ_RESPONSE } from 'constants';
-import { proxyController } from 'controllers';
-
-import buzz from './buzz';
 
 import triggerPhotonFunction from './trigger-photon-function';
+import forwardHTTPRequest from './forward-http-request';
 import fetchUnified from './fetch-unified';
 import sendUnified from './send-unified';
 
@@ -19,17 +15,8 @@ export default (store) => (next) => (action) => {
       triggerPhotonFunction(action, next);
     },
 
-    [EMIT_BUZZ]() {
-      buzz(action, next);
-    },
-
-    [EMIT_BUZZ_RESPONSE]() {
-      proxyController().send({
-        BUZZ_RESPONSE,
-        payload: {
-          status: 200
-        }
-      });
+    [EMIT_FORWARD_HTTP_REQUEST]() {
+      forwardHTTPRequest(action, next);
     },
 
     [FETCH_UNIFIED_ID]() {

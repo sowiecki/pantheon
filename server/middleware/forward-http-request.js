@@ -1,39 +1,32 @@
 /* globals console */
 /* eslint no-console: 0 */
 import http from 'http';
+import { get } from 'lodash';
 
 import { setResponse } from 'utils';
 import { config } from 'environment';
-import { EMIT_BUZZ_RESPONSE } from 'ducks/occurrences';
-import { BUZZER_API } from 'constants';
 
-const buzz = (action, next) => {
-  setResponse(action, 200);
+const forwardHTTPRequest = (action, next) => {
+  const { key, body } = action;
 
-  const payload = JSON.stringify({
-    code: action.code
-  });
+  const payload = JSON.stringify(body || config.http_requests[key].body);
+  const optionsOverride = get(config, `[http_requests][${key}].options`, action);
 
   const options = {
-    hostname: config.buzzer.hostname,
-    port: config.buzzer.port,
-    path: BUZZER_API,
-    method: 'POST',
+    method: action.method || 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Content-Length': payload.length
-    }
+    },
+    ...optionsOverride
   };
 
   const request = http.request(options, (response) => {
     response.setEncoding('utf8');
     response.on('data', (chunk) => {
-      console.log(`Buzz response: ${chunk}`);
+      console.log(`Response: ${chunk}`);
 
-      next({
-        type: EMIT_BUZZ_RESPONSE,
-        status: JSON.parse(chunk).status
-      });
+      setResponse(next, JSON.parse(chunk).status);
     });
   });
 
@@ -41,8 +34,11 @@ const buzz = (action, next) => {
     console.log(`Problem with request: ${message}`);
   });
 
-  request.write(payload);
+  if (payload) {
+    request.write(payload);
+  }
+
   request.end();
 };
 
-export default buzz;
+export default forwardHTTPRequest;

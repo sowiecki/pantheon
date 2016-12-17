@@ -6,7 +6,8 @@ import { handleAction,
          flashAuthorized,
          rain,
          colorGenerators,
-         toggleLights } from 'utils';
+         toggleLights,
+         logActionType } from 'utils';
 import { DESK_LIGHT_STRIP_PRIMARY,
          DESK_LIGHT_STRIP_PRIMARY_LENGTH } from 'constants';
 
@@ -16,6 +17,8 @@ export const EMIT_DESK_LIGHT_COLOR_FLASH = 'EMIT_DESK_LIGHT_COLOR_FLASH';
 export const EMIT_DESK_MIC_VALUE_CHANGE = 'EMIT_MIC_VALUE_CHANGE';
 
 export const EMIT_TRIGGER_PHOTON_FUNCTION = 'EMIT_TRIGGER_PHOTON_FUNCTION';
+
+export const EMIT_FORWARD_HTTP_REQUEST = 'EMIT_FORWARD_HTTP_REQUEST';
 
 export const EMIT_BUZZ = 'EMIT_BUZZ';
 export const EMIT_BUZZ_RESPONSE = 'EMIT_BUZZ_RESPONSE';
@@ -31,6 +34,8 @@ const initialState = {
 
 const occurrencesReducer = (state = initialState, action) => {
   const hueBridge = get(action, 'devicesReducer.hueBridge');
+
+  logActionType(action.type);
 
   const reducers = {
     [EMIT_HUE_SWITCH]() {

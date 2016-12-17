@@ -1,3 +1,4 @@
+export * from './console';
 export * from './devices';
 export * from './effects';
 export * from './services';
