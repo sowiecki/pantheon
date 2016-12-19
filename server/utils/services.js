@@ -1,8 +1,8 @@
+/* eslint no-console:0 */
 import { get } from 'lodash';
 
 /**
  * Safetly sets HTTP response, if possible.
- * TODO: Send response to webSocket proxy when possible.
  */
 export const setResponse = (action, code) => {
   if (action && action.next) {
@@ -14,7 +14,7 @@ export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const batchEvents = async (store, events) => {
   if (!events.length) {
-    throw new Error('Unable to parse events');
+    console.log('Unable to parse events');
   }
 
   for (const event of events) {
@@ -29,3 +29,6 @@ export const batchEvents = async (store, events) => {
     }
   }
 };
+
+export const errorNoHandler = (event) => console.log(`Unhandled event: ${event}`);
+export const getEventHandler = (event, handlers) => get(handlers, `[${event}]`, null);

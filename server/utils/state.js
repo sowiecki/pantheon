@@ -11,13 +11,6 @@ export const handleAction = (state, action, reducers) => {
   return newState || state;
 };
 
-
-export const handleEvent = (event, handlers) => {
-  const handler = handlers[event] || handlers[undefined];
-
-  handler();
-};
-
 export const toggleLights = (hueBridge, state, light) => {
   hueBridge.lightStatus(light).then((lightResult) => {
     if (lightResult.state.on) {

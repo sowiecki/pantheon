@@ -1,6 +1,6 @@
-import { FETCH_UNIFIED_ID } from 'ducks/devices';
 import { UNIFIED_KEEP_ALIVE_INTERVAL } from 'constants';
-import store from '../store';
+import { FETCH_UNIFIED_ID } from 'ducks/devices';
+import store from 'store';
 
 const unifiedController = (next) => ({
   initialize() {

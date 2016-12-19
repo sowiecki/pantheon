@@ -1,17 +1,15 @@
 /* eslint new-cap:0, no-console:0 */
 /* globals console */
 import WebSocket from 'ws';
+import { get } from 'lodash';
 
 import { config } from 'environment';
+import getStandardHandlers from 'handlers';
 import { WEBSOCKET_PROTOCOL,
          WEBSOCKET_RECONNECT_INTERVAL,
          HANDSHAKE,
-         RECONNECTED,
-         BUZZ,
-         BUZZ_EVENTS,
-         BATCH_EVENTS } from 'constants';
-import { batchEvents, handleEvent } from 'utils';
-import store from '../store';
+         RECONNECTED } from 'constants';
+import { getEventHandler, errorNoHandler } from 'utils';
 
 let interval;
 let webSocket;
@@ -19,6 +17,11 @@ let webSocket;
 const proxyController = () => ({
   initialize() {
     clearInterval(interval);
+
+    if (!config.proxyHost) {
+      return;
+    }
+
     webSocket = new WebSocket(config.proxyHost, WEBSOCKET_PROTOCOL);
 
     webSocket.onopen = this.handleConnection;
@@ -27,7 +30,8 @@ const proxyController = () => ({
   },
 
   handleConnection() {
-    const payload = { id: config.id };
+    const payload = { headers: { id: config.id } };
+
     webSocket.send(JSON.stringify({ event: HANDSHAKE, payload }));
   },
 
@@ -41,40 +45,35 @@ const proxyController = () => ({
 
   parseEvent({ data }) {
     const { payload } = JSON.parse(data);
+    const id = get(payload, 'headers.id');
+    const event = get(payload, 'headers.event');
 
-    const handlers = {
+    const proxyHandlers = {
+      ...getStandardHandlers(payload),
+
       [HANDSHAKE]() {
         console.log(payload.message);
       },
 
       [RECONNECTED]() {
         console.log(payload.message);
-      },
-
-      /**
-       * Special snowflake handler for Particle Photon buzzer, because holy-fucking-shit
-       * their webhooks don't support custom request bodies
-       */
-      [BUZZ]() {
-        if (payload.id === config.id) {
-          batchEvents(store, BUZZ_EVENTS);
-        }
-      },
-
-      [BATCH_EVENTS]() {
-        if (payload.id === config.id) {
-          const events = payload.body;
-
-          batchEvents(store, events);
-        }
-      },
-
-      [undefined]() {
-        console.log('Unhandled event', JSON.parse(data));
       }
     };
 
-    handleEvent(payload.event, handlers);
+    const eventHandler = getEventHandler(event, proxyHandlers);
+
+    if (id === config.id) {
+      if (proxyHandlers[event]) {
+        eventHandler();
+        // TODO update Acheron to accept _RESPONSE events
+        // proxyController().send(`${payload.event}_RESPONSE`, 200);
+      } else {
+        errorNoHandler(event);
+        // proxyController().send(`${payload.event}_RESPONSE`, 500);
+      }
+    } else {
+      // proxyController().send(`${payload.event}_RESPONSE`, 403);
+    }
   },
 
   reconnect() {

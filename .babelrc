@@ -6,10 +6,12 @@
     ["module-resolver", {
       "root": ["./src"],
       "alias": {
-        "environment": "./server/environment",
+        "constants": "./server/constants",
         "controllers": "./server/controllers",
         "ducks": "./server/ducks",
-        "constants": "./server/constants",
+        "environment": "./server/environment",
+        "handlers": "./server/handlers",
+        "store": "./server/store",
         "utils": "./server/utils"
       }
     }]
