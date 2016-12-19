@@ -1,25 +1,32 @@
-[![Dependencies Status](https://david-dm.org/nase00/moirai.svg?style=flat-square)](https://david-dm.org/nase00/moirai)
-[![DevDependencies Status](https://david-dm.org/nase00/moirai/dev-status.svg?style=flat-square)](https://david-dm.org/nase00/moirai#info=devDependencies)
-[![bitHound](https://img.shields.io/bithound/code/github/Nase00/moirai.svg?style=flat-square)](https://www.bithound.io/github/Nase00/moirai/master/files)
+[![Dependencies Status](https://david-dm.org/nase00/pantheon.svg?style=flat-square)](https://david-dm.org/nase00/pantheon)
+[![DevDependencies Status](https://david-dm.org/nase00/pantheon/dev-status.svg?style=flat-square)](https://david-dm.org/nase00/pantheon#info=devDependencies)
+[![bitHound](https://img.shields.io/bithound/code/github/Nase00/pantheon.svg?style=flat-square)](https://www.bithound.io/github/Nase00/pantheon/master/files)
 
-*This software is in **alpha**, and is currently highly tailored to my use cases and home setup.
-I am working to make it more configurable, modular, and secure for wider consumption. The API is undergoing significant changes.*
+*This software is in **alpha**,
+and is currently undergoing major changes to make it more configurable, modular, and well-documented for wider consumption.*
 
-A [Node.js](https://nodejs.org/) middleman service for controlling multiple "Internet of Things" (IoT) devices.
+Pantheon is an application for easily managing control of multiple "Internet of Things" (IoT) devices.
 
-Moirai integrates diverse services and devices into a single API, allowing for incredibly precise and convenient control.
-
-Integrated services and devices can be controlled through "events" defined as part of a sequence.
-These sequences are triggered by HTTP requests to the Moirai service. For example,
+Integrated services and devices can be triggered as "events" by an HTTP request to an instance of Pantheon.
+A single request can contain multiple events, described in a sequence of how they should be performed.
+For example,
 
 ```js
-// HTTP request body
+// An HTTP request body sent by a cellphone app a by user upon arriving home
 [
-  // Trigger Close-it module to open building gate
-  { "type": "EMIT_BUZZ" },
+  // Trigger a separate application to open the building gate
+  {
+    "type": "EMIT_FORWARD_HTTP_REQUEST",
+    "key": "buildingGate",
+    "password": "hunter2"
+  },
 
-  // Set bulb with ID #1 to brightness level 50
-  { "type": "EMIT_HUE_SWITCH", "id": 1, "value": 50 },
+  // Turn on bulb with ID of 1
+  {
+    "type": "EMIT_HUE_SWITCH",
+    "id": 1,
+    "value": "on"
+  },
 
   // Trigger a Particle Photon function to power on PC
   {
@@ -48,28 +55,27 @@ These sequences are triggered by HTTP requests to the Moirai service. For exampl
   }
 ]
 ```
-The sequence can be triggered by absolutely anything that is capable of sending an HTTP request, such as Google Home, Alexa, or any custom web application.
-
-See the [Events documentation](./docs/events.md) for how to send requests.
 
 Currently supported integrations:
 
 * [Philips Hue](http://www2.meethue.com/en-us/)
 * [Unified Remote](https://www.unifiedremote.com/)
-* [Close-it](https://github.com/Nase00/close-it)
-* [Custom Firmware](./firmware) built for the [Particle Photon](particle.io) and [Arduino](https://www.arduino.cc/) platforms
+* Custom solutions built on the [Particle Photon](particle.io) and [Arduino](https://www.arduino.cc/) platforms,
+e.g., [see included custom firmwares](./firmware)
+* Any device or service that can be controlled by an HTTP request, e.g.,
+a Raspberry Pi running [Close-it](https://github.com/Nase00/close-it) to close the circuit on an apartment call box
 
-Products that are actively integrated into a Moirai server will still have their 1st-party solutions function.
-E.g., Philips Hue dimmer switches and Unified Remote apps function as expected, even with Moirai running.
+Products that are integrated into a Pantheon server will still have their 1st-party solutions function.
+E.g., Philips Hue dimmer switches and Unified Remote apps function as normal, even with Pantheon running.
 
-Services to control Moirai with:
-* Microsoft Kinect connected to a Windows PC running [Aperature](https://github.com/Nase00/aperature)
-* A keypad connected to a Raspberry Pi running [Node-HTTP-Macros](https://github.com/Nase00/node-http-macros)
+Here are some examples of applications that pair well with Pantheon:
+* [Aperature](https://github.com/Nase00/aperature) - Map Microsoft Kinect gestures to HTTP requests
+* [Node-HTTP-Macros](https://github.com/Nase00/node-http-macros) - Map hotkeys to HTTP requests
 
 # Getting started
 ```bash
-git clone https://github.com/Nase00/moirai.git
-cd moirai
+git clone https://github.com/Nase00/pantheon.git
+cd pantheon
 touch ./environment/config.json
 ```
 
@@ -79,3 +85,7 @@ Before proceeding, populate `config.json` with your [configuration parameters](.
 npm install
 npm start
 ```
+
+# Documentation
+* [Triggering Events](./docs/events.md)
+* [Environment configuration](./environment/README.md)
