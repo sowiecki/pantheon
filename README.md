@@ -8,14 +8,14 @@
 *This software is in **alpha**,
 and is currently undergoing major changes to make it more configurable, modular, and well-documented for wider consumption.*
 
-Pantheon is an application for easily managing control of multiple "Internet of Things" (IoT) devices.
+#### Pantheon is an application for managing control of multiple "Internet of Things" (IoT) devices.
 
 Integrated services and devices can be triggered as "events" by an HTTP request to an instance of Pantheon.
 A single request can contain multiple events, described in a sequence of how they should be performed.
 For example,
 
 ```js
-// An HTTP request body sent by a cellphone app a by user upon arriving home
+// An HTTP request body sent by a cellphone app upon arriving home
 [
   // Trigger a separate application to open the building gate
   {
