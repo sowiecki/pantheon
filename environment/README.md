@@ -12,7 +12,7 @@
 | - deviceId           | ID of Photon Device                                  | Yes       |         |
 | - name               | Name of function to call                             | No        |         |
 | - argument           | Argument to provide to function call                 | No        |         |
-| http_requests        | Pre-defined HTTP requests                             | No        |         |
+| httpRequests         | Pre-defined HTTP requests                             | No        |         |
 | - method             | HTTP method to use, e.g., `POST`, `GET`, etc.        | No        | `POST`  |
 | - ...                | See Node.js's [http.request method](https://nodejs.org/api/http.html#http_http_request_options_callback) for a list of valid `options` properties | Some ||
 
@@ -45,7 +45,7 @@ Example of a `config.json`:
       "deviceId": "555555"
     }
   },
-  "http_requests": {
+  "httpRequests": {
     "buzz": {
       "options": {
         "path": "/api/press",

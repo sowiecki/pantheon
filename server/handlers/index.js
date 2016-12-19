@@ -1,7 +1,6 @@
 import { BATCH_EVENTS, BATCH_EVENTS_FROM_WEBHOOK } from 'constants';
+import store from 'store';
 import { batchEvents } from 'utils';
-
-import store from '../store';
 
 const getStandardHandlers = (payload) => ({
   [BATCH_EVENTS]() {

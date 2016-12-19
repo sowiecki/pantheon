@@ -2,19 +2,22 @@
 import path from 'path';
 import { readFileSync } from 'fs';
 
+import validator from '../environment/validation';
+
 const readFile = (fileName) => {
-  const filePath = path.join('./environment', fileName);
+  const filePath = path.join(__dirname, fileName);
 
   return JSON.parse(readFileSync(filePath, 'utf8'));
 };
 
-/**
- * Reads user-configured JSON environment files.
- *
- * @returns {object} config
- */
-const getEnvironment = () => ({
-  config: readFile('../environment/config.json')
-});
+const config = readFile('../environment/config.json');
 
-export const { config } = getEnvironment();
+const { errors } = validator.validate(config, '/ConfigSchema');
+
+if (errors.length) {
+  errors.forEach((error) => {
+    throw new Error(`config.json validation error, ${error.stack}`);
+  });
+}
+
+export { config };

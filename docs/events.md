@@ -85,7 +85,7 @@ Example of pre-defining the event parameters, and referencing the key from `conf
 ```json
 {
   ...
-  "http_requests": {
+  "httpRequests": {
     "dootAPI": {
       "options": {
         "path": "/api/doot",
