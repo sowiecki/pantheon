@@ -11,16 +11,22 @@ import { config } from 'environment';
  * or matches a provided key to pre-defined parameters in config.json.
  */
 const forwardHTTPRequest = (action, next) => {
-  const { key, body } = action;
+  const { key } = action;
+  const keyIsInvalid = key && !config.httpRequests[key];
 
-  const payload = JSON.stringify(body || config.httpRequests[key].body);
+  if (keyIsInvalid) {
+    throw new Error(`Property ${key} not declared in httpRequests property of config.json`);
+  }
+
+  const body = get(config, `httpRequests[${key}].body)`, action.body);
   const optionsOverride = get(config, `httpRequests[${key}].options`, action.options);
+  const payload = JSON.stringify(body);
 
   const options = {
     method: action.method || 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Content-Length': payload.length
+      'Content-Length': payload ? payload.length : 0
     },
     ...optionsOverride
   };
