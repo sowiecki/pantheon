@@ -1,17 +1,11 @@
 import { HueApi } from 'node-hue-api';
 import { get } from 'lodash';
 
-import { DESK_LIGHT_STRIP_PRIMARY,
-         DESK_LIGHT_STRIP_PRIMARY_LENGTH } from 'constants';
 import { config } from 'environment';
-import { handleAction,
-         registerAccessories,
-         rain } from 'utils';
+import { handleAction } from 'utils';
 
 export const FETCH_UNIFIED_ID = 'FETCH_UNIFIED_ID';
 export const EMIT_REGISTER_UNIFIED_ID = 'EMIT_REGISTER_UNIFIED_ID';
-
-export const EMIT_REGISTER_DESK_ACCESSORIES = 'EMIT_REGISTER_DESK_ACCESSORIES';
 export const EMIT_REGISTER_BRIDGE = 'EMIT_REGISTER_BRIDGE';
 
 const initialState = {
@@ -20,14 +14,6 @@ const initialState = {
 
 const devicesReducer = (state = initialState, action) => {
   const reducers = {
-    [EMIT_REGISTER_DESK_ACCESSORIES]() {
-      const newState = registerAccessories(state, action.accessories);
-
-      rain.start(newState[DESK_LIGHT_STRIP_PRIMARY], DESK_LIGHT_STRIP_PRIMARY_LENGTH);
-
-      return newState;
-    },
-
     [EMIT_REGISTER_BRIDGE]() {
       return {
         ...state,

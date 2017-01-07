@@ -2,24 +2,11 @@
 import { lightState } from 'node-hue-api';
 import { get } from 'lodash';
 
-import { handleAction,
-         flashAuthorized,
-         rain,
-         colorGenerators,
-         toggleLights,
-         logActionType } from 'utils';
-import { DESK_LIGHT_STRIP_PRIMARY,
-         DESK_LIGHT_STRIP_PRIMARY_LENGTH } from 'constants';
+import { handleAction, toggleLights, logActionType } from 'utils';
 
 export const EMIT_HUE_SWITCH = 'EMIT_HUE_SWITCH';
-
-export const EMIT_DESK_LIGHT_COLOR_FLASH = 'EMIT_DESK_LIGHT_COLOR_FLASH';
-export const EMIT_DESK_MIC_VALUE_CHANGE = 'EMIT_MIC_VALUE_CHANGE';
-
 export const EMIT_TRIGGER_PHOTON_FUNCTION = 'EMIT_TRIGGER_PHOTON_FUNCTION';
-
 export const EMIT_FORWARD_HTTP_REQUEST = 'EMIT_FORWARD_HTTP_REQUEST';
-
 export const EMIT_SEND_UNIFIED_COMMAND = 'EMIT_SEND_UNIFIED_COMMAND';
 
 const initialState = {
@@ -44,18 +31,6 @@ const occurrencesReducer = (state = initialState, action) => {
       } else if (newLightState[action.value]) {
         hueBridge.setLightState(action.id, newLightState[action.value]());
         hueBridge.setLightState(action.id, newLightState.bri(255));
-      }
-    },
-
-    [EMIT_DESK_LIGHT_COLOR_FLASH]() {
-      const deskLight = action.devicesReducer[DESK_LIGHT_STRIP_PRIMARY];
-
-      if (deskLight) {
-        const color = colorGenerators[action.color] || colorGenerators.red;
-
-        flashAuthorized(deskLight, color, () => {
-          rain.start(deskLight, DESK_LIGHT_STRIP_PRIMARY_LENGTH);
-        });
       }
     }
   };
