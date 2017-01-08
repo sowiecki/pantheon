@@ -3,7 +3,7 @@
 import http from 'http';
 import { get } from 'lodash';
 
-import { setResponse } from 'utils';
+import { stringifyObjectValues, setResponse } from 'utils';
 import { config } from 'environment';
 
 /**
@@ -20,7 +20,10 @@ const forwardHTTPRequest = (action, next) => {
 
   const body = get(config, `httpRequests[${key}].body)`, action.body);
   const optionsOverride = get(config, `httpRequests[${key}].options`, action.options);
-  const payload = JSON.stringify(body);
+
+  const payload = body ? JSON.stringify(body) : null;
+
+  const additionalHeaders = stringifyObjectValues(optionsOverride.headers);
 
   const options = {
     method: action.method || 'POST',
@@ -28,7 +31,7 @@ const forwardHTTPRequest = (action, next) => {
     headers: {
       'Content-Type': 'application/json',
       'Content-Length': payload ? payload.length : 0,
-      ...optionsOverride.headers
+      ...additionalHeaders
     }
   };
 
