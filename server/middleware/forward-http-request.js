@@ -24,11 +24,12 @@ const forwardHTTPRequest = (action, next) => {
 
   const options = {
     method: action.method || 'POST',
+    ...optionsOverride,
     headers: {
       'Content-Type': 'application/json',
-      'Content-Length': payload ? payload.length : 0
-    },
-    ...optionsOverride
+      'Content-Length': payload ? payload.length : 0,
+      ...optionsOverride.headers
+    }
   };
 
   const request = http.request(options, (response) => {
