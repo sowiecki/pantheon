@@ -37,3 +37,24 @@ export const triggerCommand = ({ value }) => JSON.stringify({
     Name: `command${value}`
   }
 });
+
+export const spotifyPlayPause = () => JSON.stringify({
+  ID: 'Unified.Spotify',
+  Action: 7,
+  Request: 7,
+  Run: { Name: 'play_pause' }
+});
+
+export const spotifyNextTrack = () => JSON.stringify({
+  ID: 'Unified.Spotify',
+  Action: 7,
+  Request: 7,
+  Run: { Name: 'next' }
+});
+
+export const spotifyPrevTrack = () => JSON.stringify({
+  ID: 'Unified.Spotify',
+  Action: 7,
+  Request: 7,
+  Run: { Name: 'prev' }
+});
