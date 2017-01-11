@@ -8,10 +8,12 @@
 *This software is in **alpha**,
 and is currently undergoing major changes to make it more configurable, modular, and well-documented for wider consumption.*
 
-#### Pantheon is an application for managing control of multiple "Internet of Things" (IoT) devices.
+Pantheon is an application for managing control of multiple "Internet of Things" (IoT) devices.
+It serves a hub or central point of access for multiple, diverse types of services and devices.
 
-Integrated services and devices can be triggered as "events" by an HTTP request to an instance of Pantheon.
-A single request can contain multiple events, described in a sequence of how they should be performed.
+Integrated services and devices can be triggered by one or more HTTP requests to an instance of Pantheon.
+A single request can contain multiple events, with each event in a request body triggered sequentially.
+Events are triggered immediately one after the other, unless a delay is specified.
 For example,
 
 ```js
@@ -64,7 +66,7 @@ Currently supported integrations:
 * [Philips Hue](http://www2.meethue.com/en-us/)
 * [Unified Remote](https://www.unifiedremote.com/)
 * Custom solutions built on the [Particle Photon](particle.io) and [Arduino](https://www.arduino.cc/) platforms,
-e.g., [see included custom firmwares](./firmware)
+e.g., [Lamprey](https://github.com/Nase00/lamprey) and [deadbolt-nfc](https://github.com/Nase00/deadbolt-nfc)
 * Any device or service that can be controlled by an HTTP request, e.g.,
 a Raspberry Pi running [Close-it](https://github.com/Nase00/close-it) to close the circuit on an apartment call box
 
