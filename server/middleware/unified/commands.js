@@ -56,5 +56,5 @@ export const spotifyPrevTrack = () => JSON.stringify({
   ID: 'Unified.Spotify',
   Action: 7,
   Request: 7,
-  Run: { Name: 'prev' }
+  Run: { Name: 'previous' }
 });
