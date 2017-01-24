@@ -7,6 +7,7 @@ import { handleAction } from 'utils';
 export const FETCH_UNIFIED_ID = 'FETCH_UNIFIED_ID';
 export const EMIT_REGISTER_UNIFIED_ID = 'EMIT_REGISTER_UNIFIED_ID';
 export const EMIT_REGISTER_BRIDGE = 'EMIT_REGISTER_BRIDGE';
+export const EMIT_REGISTER_CUSTOM_STATE = 'EMIT_REGISTER_CUSTOM_STATE';
 
 const initialState = {
   hueUserID: get(config, 'hue.userID'),
@@ -25,6 +26,19 @@ const devicesReducer = (state = initialState, action) => {
       return {
         ...state,
         unifiedID: action.unifiedID
+      };
+    },
+
+    [EMIT_REGISTER_CUSTOM_STATE]() {
+      const events = config[action.deviceType];
+      const eventKeys = Object.keys(events);
+      const customStates = eventKeys.map((eventKey) => ({
+        ...events[eventKey].$state
+      }));
+
+      return {
+        ...state,
+        ...customStates
       };
     }
   };
