@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+  - "7.4"
+script:
+  - travis_wait yarn run test
+env:
+  - NODE_ENV=test
