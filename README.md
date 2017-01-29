@@ -1,3 +1,4 @@
+[![Build Status](https://img.shields.io/travis/Nase00/pantheon/master.svg?style=flat-square)](https://travis-ci.org/Nase00/pantheon)
 [![GitHub Release](https://img.shields.io/github/release/Nase00/pantheon.svg?style=flat-square)](https://github.com/Nase00/pantheon/releases)
 ![license](https://img.shields.io/github/license/Nase00/pantheon.svg?style=flat-square)
 
