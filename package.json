@@ -10,9 +10,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodejs-dashboard node ./index.js",
-    "dev": "nodemon ./index.js",
+    "dev": "nodemon ./index.js --ignore **.spec.*",
     "lint": "eslint --format=node_modules/eslint-formatter-pretty --ext .js,.jsx *.js server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "bin": {
     "pantheon": "./index.js"
@@ -50,6 +50,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
+    "jest": "^18.1.0",
     "nodemon": "^1.10.2",
     "serialport": "^4.0.6"
   }

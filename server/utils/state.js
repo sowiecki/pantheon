@@ -1,3 +1,5 @@
+import { reduce } from 'lodash';
+
 /**
  * @param {object} state
  * @param {object} action
@@ -20,4 +22,19 @@ export const toggleLights = (hueBridge, state, light) => {
       hueBridge.setLightState(light, state.lightState.create().bri(255));
     }
   });
+};
+
+/**
+ * @param {object} events - User defined events (limited to predefined types)
+ * @returns {object} - Flattened custom state
+ */
+export const formatCustomState = (events) => {
+  if (!events) {
+    return;
+  }
+
+  const eventKeys = Object.keys(events);
+  const customStates = eventKeys.map((eventKey) => events[eventKey].$state).filter((e) => !!e);
+
+  return reduce(customStates, (a, b) => ({ ...a, ...b }));
 };

@@ -2,7 +2,7 @@ import { HueApi } from 'node-hue-api';
 import { get } from 'lodash';
 
 import { config } from 'environment';
-import { handleAction } from 'utils';
+import { handleAction, formatCustomState } from 'utils';
 
 export const FETCH_UNIFIED_ID = 'FETCH_UNIFIED_ID';
 export const EMIT_REGISTER_UNIFIED_ID = 'EMIT_REGISTER_UNIFIED_ID';
@@ -31,14 +31,10 @@ const devicesReducer = (state = initialState, action) => {
 
     [EMIT_REGISTER_CUSTOM_STATE]() {
       const events = config[action.deviceType];
-      const eventKeys = Object.keys(events);
-      const customStates = eventKeys.map((eventKey) => ({
-        ...events[eventKey].$state
-      }));
 
       return {
         ...state,
-        ...customStates
+        ...formatCustomState(events)
       };
     }
   };

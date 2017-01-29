@@ -3,7 +3,7 @@ import { DEVICE_TYPES } from 'constants';
 import store from 'store';
 
 const stateController = () => ({
-  initialized() {
+  initialize() {
     DEVICE_TYPES.forEach((deviceType) => store.dispatch({
       type: EMIT_REGISTER_CUSTOM_STATE,
       deviceType
