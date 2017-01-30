@@ -1,13 +1,16 @@
-/* eslint new-cap:0 */
+/* eslint new-cap:0, no-eval:0 */
 import { lightState } from 'node-hue-api';
 import { get } from 'lodash';
 
-import { handleAction, toggleLights, logActionType } from 'utils';
+import { config } from 'environment';
+import { EVENT_EMITTERS_MAP } from 'constants';
+import { handleAction, toggleLights, logActionType, logUndefinedHandler } from 'utils';
 
 export const EMIT_HUE_SWITCH = 'EMIT_HUE_SWITCH';
 export const EMIT_TRIGGER_PHOTON_FUNCTION = 'EMIT_TRIGGER_PHOTON_FUNCTION';
 export const EMIT_FORWARD_HTTP_REQUEST = 'EMIT_FORWARD_HTTP_REQUEST';
 export const EMIT_SEND_UNIFIED_COMMAND = 'EMIT_SEND_UNIFIED_COMMAND';
+export const EMIT_CUSTOM_STATE_UPDATE = 'EMIT_CUSTOM_STATE_UPDATE';
 
 const initialState = {
   lightState,
@@ -32,8 +35,31 @@ const occurrencesReducer = (state = initialState, action) => {
         hueBridge.setLightState(action.id, newLightState[action.value]());
         hueBridge.setLightState(action.id, newLightState.bri(255));
       }
+    },
+
+    [EMIT_CUSTOM_STATE_UPDATE](customStateConfig) {
+      action.$state.forEach((customStateKey) => {
+        try {
+          const customStateHandler = eval(customStateConfig[customStateKey].$handler);
+
+          state[customStateKey] = {
+            ...customStateHandler(state[customStateKey])
+          };
+        } catch (e) {
+          logUndefinedHandler(e);
+        }
+      });
+
+      return state;
     }
   };
+
+  const eventKey = EVENT_EMITTERS_MAP[action.type];
+  const customStateConfig = get(config[eventKey], `${action.key}.$state`);
+
+  if (customStateConfig) {
+    reducers[EMIT_CUSTOM_STATE_UPDATE](customStateConfig);
+  }
 
   return handleAction(state, action, reducers);
 };

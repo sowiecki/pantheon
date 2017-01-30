@@ -29,12 +29,24 @@ export const toggleLights = (hueBridge, state, light) => {
  * @returns {object} - Flattened custom state
  */
 export const formatCustomState = (events) => {
-  if (!events) {
-    return;
-  }
+  if (!events) { return; }
 
   const eventKeys = Object.keys(events);
-  const customStates = eventKeys.map((eventKey) => events[eventKey].$state).filter((e) => !!e);
+  const getCustomState = (customStateProps) => {
+    if (!customStateProps) { return; }
+    const customStateKeys = Object.keys(customStateProps);
+
+    const customState = {};
+
+    customStateKeys.forEach((customStateKey) => {
+      customState[customStateKey] = customStateProps[customStateKey].default;
+    });
+
+    return customState;
+  };
+
+  const mapCustomState = (eventKey) => getCustomState(events[eventKey].$state);
+  const customStates = eventKeys.map(mapCustomState).filter((e) => !!e);
 
   return reduce(customStates, (a, b) => ({ ...a, ...b }));
 };

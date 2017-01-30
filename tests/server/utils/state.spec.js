@@ -38,10 +38,10 @@ describe('formatCustomState', () => {
 
     const mockExpected = {
       photons: {
-        mockKey: { type: 'bool', default: true }
+        mockKey: true
       },
       httpRequests: {
-        mockKey: { type: 'bool', default: false }
+        mockKey: false
       }
     };
 
