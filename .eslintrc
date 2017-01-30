@@ -32,7 +32,8 @@
     "no-plusplus": 0,
     "import/extensions": [1, "never"],
     "no-restricted-syntax": [1, "WithStatement"],
-    "import/no-extraneous-dependencies": 0
+    "import/no-extraneous-dependencies": 0,
+    "no-await-in-loop": 0
   },
   "globals": {
     "require": true
