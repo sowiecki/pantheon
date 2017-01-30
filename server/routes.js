@@ -3,13 +3,24 @@ import Router from 'koa-router';
 import getStandardHandlers from 'handlers';
 import { setResponse, getEventHandler, errorNoHandler } from 'utils';
 import { config } from 'environment';
+import store from 'store';
 
 const router = new Router();
 
-router.post('/api', (crx) => {
-  const authorized = crx.request.headers.id === config.id;
+const isAuthorized = (crx) => crx.request.headers.id === config.id;
 
-  if (authorized) {
+router.post('/api/state', (crx) => {
+  if (isAuthorized(crx)) {
+    setResponse({ next: crx }, 200);
+
+    crx.body = JSON.stringify(store.getState());
+  } else {
+    setResponse({ next: crx }, 403);
+  }
+});
+
+router.post('/api', (crx) => {
+  if (isAuthorized(crx)) {
     const handlers = getStandardHandlers(crx.request);
     const eventHandler = getEventHandler(crx.headers.event, handlers);
 
