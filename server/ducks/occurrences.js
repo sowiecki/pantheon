@@ -13,9 +13,7 @@ export const EMIT_SEND_UNIFIED_COMMAND = 'EMIT_SEND_UNIFIED_COMMAND';
 export const EMIT_CUSTOM_STATE_UPDATE = 'EMIT_CUSTOM_STATE_UPDATE';
 
 const initialState = {
-  lightState,
-  isDeadboltLocked: false,
-  isDoorClosed: false
+  lightState
 };
 
 const occurrencesReducer = (state = initialState, action) => {
