@@ -1,9 +1,11 @@
 [![Build Status](https://img.shields.io/travis/Nase00/pantheon/master.svg?style=flat-square)](https://travis-ci.org/Nase00/pantheon)
+[![Coveralls](https://img.shields.io/coveralls/Nase00/pantheon.svg?style=flat-square)](https://coveralls.io/github/Nase00/pantheon)
+
 [![GitHub Release](https://img.shields.io/github/release/Nase00/pantheon.svg?style=flat-square)](https://github.com/Nase00/pantheon/releases)
 ![license](https://img.shields.io/github/license/Nase00/pantheon.svg?style=flat-square)
 
-[![Dependencies Status](https://david-dm.org/nase00/pantheon.svg?style=flat-square)](https://david-dm.org/nase00/pantheon)
-[![DevDependencies Status](https://david-dm.org/nase00/pantheon/dev-status.svg?style=flat-square)](https://david-dm.org/nase00/pantheon#info=devDependencies)
+[![bitHound](https://img.shields.io/bithound/dependencies/github/nase00/pantheon.svg?style=flat-square)](https://www.bithound.io/github/Nase00/pantheon/master/dependencies/npm)
+[![bitHound](https://img.shields.io/bithound/devDependencies/github/nase00/pantheon.svg?style=flat-square)](https://www.bithound.io/github/Nase00/pantheon/master/dependencies/npm)
 [![bitHound](https://img.shields.io/bithound/code/github/Nase00/pantheon.svg?style=flat-square)](https://www.bithound.io/github/Nase00/pantheon/master/files)
 
 *This software is in **alpha**,
