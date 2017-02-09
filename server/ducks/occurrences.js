@@ -39,7 +39,10 @@ const occurrencesReducer = (state = initialState, action) => {
     [EMIT_CUSTOM_STATE_UPDATE](customStateConfig) {
       action.$state.forEach((customStateKey) => {
         try {
-          const customStateHandler = eval(customStateConfig[customStateKey].$handler);
+          const forcedHandler = get(config, `${action.$path}.$state[${customStateKey}].$handler`);
+          const riderHandler = () => customStateConfig[customStateKey].$handler;
+
+          const customStateHandler = eval(forcedHandler || riderHandler());
 
           state[customStateKey] = customStateHandler(state[customStateKey]);
         } catch (e) {

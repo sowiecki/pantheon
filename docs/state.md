@@ -53,6 +53,16 @@ Continuing with the door lock example, we can update the `isLocked` state proper
 ]
 ```
 
+Alternatively, any custom state can be force-updated without triggering its associated event.
+However, in this instance a `$path` property is required to locate the `$handler` declared in `config.json`:
+
+```js
+// HTTP request body
+[
+  {"type": "EMIT_CUSTOM_STATE_UPDATE", "$path": "photons.doorLock", "$state": ["isLocked"]}
+]
+```
+
 The `$handler` we provided was a simple function to flip the state property's value.
 
 ## Using custom state
