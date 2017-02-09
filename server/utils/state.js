@@ -1,4 +1,4 @@
-import { reduce } from 'lodash';
+import { flatMap, map, reduce } from 'lodash';
 
 /**
  * @param {object} state
@@ -25,28 +25,11 @@ export const toggleLights = (hueBridge, state, light) => {
 };
 
 /**
- * @param {object} events - User defined events (limited to predefined types)
+ * @param {object} config - User configuration
  * @returns {object} - Flattened custom state
  */
-export const formatCustomState = (events) => {
-  if (!events) { return; }
+export const initCustomState = (config) => {
+  const customStates = flatMap(config, (property) => map(property, '$state')).filter((e) => e);
 
-  const eventKeys = Object.keys(events);
-  const getCustomState = (customStateProps) => {
-    if (!customStateProps) { return; }
-    const customStateKeys = Object.keys(customStateProps);
-
-    const customState = {};
-
-    customStateKeys.forEach((customStateKey) => {
-      customState[customStateKey] = customStateProps[customStateKey].default;
-    });
-
-    return customState;
-  };
-
-  const mapCustomState = (eventKey) => getCustomState(events[eventKey].$state);
-  const customStates = eventKeys.map(mapCustomState).filter((e) => !!e);
-
-  return reduce(customStates, (a, b) => ({ ...a, ...b }));
+  return reduce(customStates, (result, value) => ({ ...result, ...value }));
 };

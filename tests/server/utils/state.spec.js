@@ -1,18 +1,17 @@
 /* eslint-env jest */
 
-import { DEVICE_TYPES } from 'constants/services';
-import { formatCustomState } from 'utils/state';
+import { initCustomState } from 'utils/state';
 
-describe('formatCustomState', () => {
+describe('initCustomState', () => {
   it('Formats custom state from user config', () => {
-    const mockCustomState = {
+    const mockConfig = {
       photons: {
         deadbolt: {
           auth: '123',
           deviceId: '456',
           name: 'mock',
           $state: {
-            mockKey: {
+            fooBarKey: {
               type: 'bool',
               default: true
             }
@@ -27,7 +26,7 @@ describe('formatCustomState', () => {
             hostname: '192.168.1.1'
           },
           $state: {
-            mockKey: {
+            bizzBazzKey: {
               type: 'bool',
               default: false
             }
@@ -36,21 +35,19 @@ describe('formatCustomState', () => {
       }
     };
 
-    const mockExpected = {
-      photons: {
-        mockKey: true
+    const expected = {
+      bizzBazzKey: {
+        default: false,
+        type: 'bool',
       },
-      httpRequests: {
-        mockKey: false
+      fooBarKey: {
+        default: true,
+        type: 'bool',
       }
     };
 
-    DEVICE_TYPES.forEach((DEVICE_TYPE) => {
-      const events = mockCustomState[DEVICE_TYPE];
-      const result = formatCustomState(events);
-      const expected = mockExpected[DEVICE_TYPE];
+    const result = initCustomState(mockConfig);
 
-      expect(result).toEqual(expected);
-    });
+    expect(result).toEqual(expected);
   });
 });
