@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+  - "7.5"
+script:
+  - travis_wait yarn coveralls
+env:
+  - NODE_ENV=test

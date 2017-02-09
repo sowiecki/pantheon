@@ -14,8 +14,12 @@ const logger = new (winston.Logger)({
   ]
 });
 
-export const logActionType = (type) => {
-  const time = moment().format('M/D/YY hh:mm:ss A');
+const getTime = () => moment().format('M/D/YY hh:mm:ss A');
 
-  logger.log('info', `${colors.grey(time)} | ${colors.yellow(type)}`);
+export const logActionType = (type) => {
+  logger.log('info', `${colors.grey(getTime())} | ${colors.yellow(type)}`);
+};
+
+export const logUndefinedHandler = (e) => {
+  logger.log('info', `${colors.grey(getTime())} | ${colors.red(e.message)}`);
 };

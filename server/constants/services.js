@@ -1,3 +1,5 @@
+export const DEVICE_TYPES = ['hue', 'photons', 'httpRequests', 'unified'];
+
 export const WEBSOCKET_PROTOCOL = 'protocolOne';
 export const WEBSOCKET_RECONNECT_INTERVAL = 2000;
 

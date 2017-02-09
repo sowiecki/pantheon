@@ -1,3 +1,5 @@
+import { flatMap, map, reduce } from 'lodash';
+
 /**
  * @param {object} state
  * @param {object} action
@@ -20,4 +22,14 @@ export const toggleLights = (hueBridge, state, light) => {
       hueBridge.setLightState(light, state.lightState.create().bri(255));
     }
   });
+};
+
+/**
+ * @param {object} config - User configuration
+ * @returns {object} - Flattened custom state
+ */
+export const initCustomState = (config) => {
+  const customStates = flatMap(config, (property) => map(property, '$state')).filter((e) => e);
+
+  return reduce(customStates, (result, value) => ({ ...result, ...value }));
 };

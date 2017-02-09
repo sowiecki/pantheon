@@ -4,15 +4,17 @@
   "description": "",
   "private": true,
   "engines": {
-    "node": "^6.0.0",
+    "node": "^7.5.0",
     "npm": "^3.8.6"
   },
   "main": "index.js",
   "scripts": {
     "start": "nodejs-dashboard node ./index.js",
-    "dev": "nodemon ./index.js",
+    "dev": "nodemon ./index.js --ignore **.spec.*",
     "lint": "eslint --format=node_modules/eslint-formatter-pretty --ext .js,.jsx *.js server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test-cov": "jest --coverage",
+    "coveralls": "yarn test-cov && cat ./coverage/lcov.info | coveralls"
   },
   "bin": {
     "pantheon": "./index.js"
@@ -34,22 +36,24 @@
     "lodash": "^4.15.0",
     "moment": "^2.17.1",
     "node-hue-api": "^2.2.0",
-    "nodejs-dashboard": "^0.2.1",
+    "nodejs-dashboard": "^0.3.0",
     "nodemon": "^1.9.2",
     "particle-api-js": "^6.4.0",
     "redux": "^3.5.2",
     "winston": "^2.3.0",
-    "ws": "^1.1.1"
+    "ws": "2.0.3"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
+    "coveralls": "^2.11.16",
     "eslint": "^3.12.0",
-    "eslint-config-airbnb": "^13.0.0",
+    "eslint-config-airbnb": "14.0.0",
     "eslint-formatter-pretty": "^1.0.0",
     "eslint-plugin-filenames": "^1.1.0",
     "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-jsx-a11y": "3.0.2",
     "eslint-plugin-react": "^6.8.0",
+    "jest": "^18.1.0",
     "nodemon": "^1.10.2",
     "serialport": "^4.0.6"
   }
