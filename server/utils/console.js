@@ -23,3 +23,7 @@ export const logActionType = (type) => {
 export const logUndefinedHandler = (e) => {
   logger.log('info', `${colors.grey(getTime())} | ${colors.red(e.message)}`);
 };
+
+export const errorNoHandler = (event) => {
+  logger.log(`${colors.red('Unhandled event')}: ${event}`);
+};

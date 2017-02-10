@@ -1,14 +1,10 @@
 /* eslint no-console:0 */
-import { get } from 'lodash';
+import { set, get } from 'lodash';
 
 /**
  * Safetly sets HTTP response, if possible.
  */
-export const setResponse = (action, code) => {
-  if (action && action.next) {
-    action.next.body = code;
-  }
-};
+export const setResponse = (action, code) => set(action, 'next.body', code);
 
 export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -30,5 +26,4 @@ export const batchEvents = async (store, events) => {
   }
 };
 
-export const errorNoHandler = (event) => console.log(`Unhandled event: ${event}`);
 export const getEventHandler = (event, handlers) => get(handlers, `[${event}]`, null);
