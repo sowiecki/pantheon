@@ -95,5 +95,6 @@ npm start
 ```
 
 # Documentation
+* [Environment Configuration](./environment/README.md)
 * [Triggering Events](./docs/events.md)
-* [Environment configuration](./environment/README.md)
+* [Custom State](./docs/state.md)

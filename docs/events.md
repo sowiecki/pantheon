@@ -1,3 +1,5 @@
+An *event* is a result of instructing an integrated service or device to do something.
+
 # Batching events
 To batch an event or events, issue an HTTP request to your server:
 
