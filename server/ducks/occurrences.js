@@ -3,11 +3,11 @@ import { lightState } from 'node-hue-api';
 import { mapValues, get } from 'lodash';
 
 import { config } from 'environment';
-import { EVENT_EMITTERS_MAP } from 'constants';
+import { EVENT_EMITTERS_MAP, CUSTOM_LIGHT_FUNCTIONS } from 'constants';
 import {
   initCustomState,
   handleAction,
-  toggleLights,
+  toggleLight,
   logActionType,
   logUndefinedHandler,
   errorLightStatus
@@ -33,20 +33,26 @@ const occurrencesReducer = (state = initialState, action) => {
       const ipaddress = action.ipaddress || Object.keys(hue.userIDs)[0];
       const hueBridge = get(hue, `['${ipaddress}'].bridge`);
 
-      const newLightState = state.lightState.create();
-
-      try {
-        if (typeof action.value === 'number') {
-          hueBridge.setLightState(action.id, newLightState.bri(action.value));
-        } else if (action.value === 'toggle') {
-          toggleLights(hueBridge, state, action.id);
-        } else if (newLightState[action.value]) {
-          hueBridge.setLightState(action.id, newLightState[action.value]());
-          hueBridge.setLightState(action.id, newLightState.bri(255));
+      if (CUSTOM_LIGHT_FUNCTIONS.includes(action.func)) {
+        switch (action.func) {
+          case 'toggle':
+            toggleLight(hueBridge, state, action.id);
+            break;
+          default:
+            errorLightStatus();
+            break;
         }
-      } catch (e) {
-        errorLightStatus();
+      } else {
+        try {
+          const newLightState = state.lightState.create()[action.func](action.arg);
+
+          hueBridge.setLightState(action.id, newLightState);
+        } catch (e) {
+          errorLightStatus();
+        }
       }
+
+      return { ...state };
     },
 
     [EMIT_CUSTOM_STATE_UPDATE](customStateConfig) {

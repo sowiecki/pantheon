@@ -32,7 +32,8 @@ export const errorNoHandler = (event) => {
 };
 
 export const errorLightStatus = () => {
-  const message = `${colors.red('Could not alter light state')}; did you use the correct IP address?`;
+  const alert = colors.red('Could not alter light state');
+  const message = `${alert}; did you use the correct IP address or trigger a valid function?`;
 
   logger.log('error', withTime(message));
 };

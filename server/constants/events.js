@@ -14,3 +14,5 @@ export const EVENT_EMITTERS_MAP = {
   [EMIT_TRIGGER_PHOTON_FUNCTION]: 'photons',
   [EMIT_FORWARD_HTTP_REQUEST]: 'httpRequests'
 };
+
+export const CUSTOM_LIGHT_FUNCTIONS = ['toggle'];
