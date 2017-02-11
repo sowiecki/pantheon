@@ -15,15 +15,24 @@ const logger = new (winston.Logger)({
 });
 
 const getTime = () => moment().format('M/D/YY hh:mm:ss A');
+const withTime = (message) => `${colors.grey(getTime())} | ${message}`;
 
 export const logActionType = (type) => {
-  logger.log('info', `${colors.grey(getTime())} | ${colors.yellow(type)}`);
+  logger.log('info', withTime(colors.yellow(type)));
 };
 
 export const logUndefinedHandler = (e) => {
-  logger.log('info', `${colors.grey(getTime())} | ${colors.red(e.message)}`);
+  logger.log('error', withTime(colors.red(e.message)));
 };
 
 export const errorNoHandler = (event) => {
-  logger.log(`${colors.red('Unhandled event')}: ${event}`);
+  const message = `${colors.red('Unhandled event')}: ${event}`;
+
+  logger.log('error', withTime(message));
+};
+
+export const errorLightStatus = () => {
+  const message = `${colors.red('Could not alter light state')}; did you use the correct IP address?`;
+
+  logger.log('error', withTime(message));
 };

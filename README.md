@@ -31,7 +31,7 @@ For example,
 
   // Turn on bulb with ID of 1
   {
-    "type": "EMIT_HUE_SWITCH",
+    "type": "EMIT_SEND_HUE_COMMAND",
     "id": 1,
     "value": "on"
   },

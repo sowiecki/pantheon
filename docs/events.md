@@ -27,10 +27,15 @@ Be sure to set the header key as "body" and the value as a JSON-serialized strin
 # Supported Events
 ### Hue Lighting
 *Currently, RGB is not supported*
+*Important*: If your network has multiple discoverable Hue bridges,
+you must specify the ip address of the bridge you wish to communicate with
+when sending commands. This holds true even if not all bridges are registered with Pantheon!
 
-**type (string)**: `EMIT_HUE_SWITCH`
+**type (string)**: `EMIT_SEND_HUE_COMMAND`
 
 **id (number)**: ID of light to switch state for
+
+**ipaddress (string)**: IP address of Hue bridge (if you have more than one on your network)
 
 **value (number|string)**: `'toggle'`, `'on'`, `'off'`, or provide an integer to set a specific brightness
 
