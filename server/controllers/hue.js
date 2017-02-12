@@ -3,20 +3,21 @@ import hue from 'node-hue-api';
 import { config } from 'environment';
 
 import { EMIT_REGISTER_BRIDGE } from 'ducks/devices';
+import { errorNoUserIDFound } from 'utils';
 import store from 'store';
 
 const hueController = () => ({
-  initialize() {
-    if (!config.hueUserIDs) {
-      return;
-    }
+  shouldInit() {
+    return !!config.hueUserIDs;
+  },
 
+  initialize() {
     hue.nupnpSearch().then((bridges) => {
       bridges.map((bridge) => {
         const userID = config.hueUserIDs[bridge.ipaddress];
 
         if (!userID) {
-          this.noUserIDFound(bridge);
+          return errorNoUserIDFound(bridge.ipaddress);
         }
 
         return store.dispatch({
@@ -26,10 +27,6 @@ const hueController = () => ({
         });
       });
     }).done();
-  },
-
-  noUserIDFound(bridge) {
-    throw new Error(`userID not found for Hue bridge on ${bridge.ipaddress}`);
   }
 });
 

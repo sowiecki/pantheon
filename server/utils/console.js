@@ -3,7 +3,7 @@ import winston from 'winston';
 import moment from 'moment';
 import colors from 'colors';
 
-const logger = new (winston.Logger)({
+export const logger = new (winston.Logger)({
   transports: [
     new (winston.transports.Console)(),
     new (winston.transports.File)({
@@ -36,4 +36,8 @@ export const errorLightStatus = () => {
   const message = `${alert}; did you use the correct IP address or trigger a valid function?`;
 
   logger.log('error', withTime(message));
+};
+
+export const errorNoUserIDFound = (ipaddress) => {
+  logger.log('error', `userID not found for Hue bridge on ${ipaddress}`);
 };

@@ -15,12 +15,12 @@ let interval;
 let webSocket;
 
 const proxyController = () => ({
+  shouldInit() {
+    return !!config.proxyHost;
+  },
+
   initialize() {
     clearInterval(interval);
-
-    if (!config.proxyHost) {
-      return;
-    }
 
     webSocket = new WebSocket(config.proxyHost, WEBSOCKET_PROTOCOL);
 
