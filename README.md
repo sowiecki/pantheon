@@ -29,11 +29,19 @@ For example,
     "password": "hunter2"
   },
 
-  // Turn on bulb with ID of 1
+  // Set bulb 1 to brightness 100
   {
     "type": "EMIT_SEND_HUE_COMMAND",
     "id": 1,
-    "value": "on"
+    "func": "brightness",
+    "arg": 100
+  },
+
+  // Turn bulb 2 off
+  {
+    "type": "EMIT_SEND_HUE_COMMAND",
+    "id": 2,
+    "func": "turnOff"
   },
 
   // Trigger a Particle Photon function to power on PC
