@@ -13,7 +13,7 @@ export const handleAction = (state, action, reducers) => {
   return newState || state;
 };
 
-export const toggleLights = (hueBridge, state, light) => {
+export const toggleLight = (hueBridge, state, light) => {
   hueBridge.lightStatus(light).then((lightResult) => {
     if (lightResult.state.on) {
       hueBridge.setLightState(light, state.lightState.create().off());

@@ -4,7 +4,7 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import colors from 'colors/safe';
 
-import { getControllerName } from 'utils';
+import { logger, getControllerName } from 'utils';
 
 import router from './routes';
 import controllers from './controllers';
@@ -16,21 +16,22 @@ server.use(bodyParser());
 server.use(router.routes());
 
 const run = async () => {
-  console.log(`Listening on port ${port}`);
+  logger.log('info', `Listening on port ${port}`);
 
   Object.keys(controllers).forEach((key) => {
+    const shouldInit = controllers[key]().shouldInit();
     const hasInitializeMethod = typeof controllers[key]().initialize === 'function';
-    const controllerName = colors.bold(getControllerName(controllers[key]));
 
-    if (hasInitializeMethod) {
-      console.log(`Initializing ${controllerName}`);
+    if (shouldInit && hasInitializeMethod) {
+      const controllerName = colors.bold(getControllerName(controllers[key]));
+      logger.log('info', `Initializing ${controllerName}`);
 
       try {
         controllers[key]().initialize();
 
-        console.log(`${controllerName} initialization: ${colors.bgGreen.bold('success')}`);
+        logger.log('info', `${controllerName} initialization: ${colors.bgGreen.bold('success')}`);
       } catch (e) {
-        console.log(`${controllerName} initialization: ${colors.bgRed.bold('fail')}`);
+        logger.log('info', `${controllerName} initialization: ${colors.bgRed.bold('fail')}`);
       }
     }
   });

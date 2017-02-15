@@ -4,29 +4,30 @@ import WebSocket from 'ws';
 import { get } from 'lodash';
 
 import { config } from 'environment';
-import getStandardHandlers from 'handlers';
+import getEventHandlers from 'handlers';
 import { WEBSOCKET_PROTOCOL,
          WEBSOCKET_RECONNECT_INTERVAL,
          HANDSHAKE,
          RECONNECTED } from 'constants';
-import { getEventHandler, errorNoHandler } from 'utils';
+import { logger, errorNoHandler } from 'utils';
 
 let interval;
 let webSocket;
 
 const proxyController = () => ({
+  shouldInit() {
+    return !!config.proxyHost;
+  },
+
   initialize() {
     clearInterval(interval);
-
-    if (!config.proxyHost) {
-      return;
-    }
 
     webSocket = new WebSocket(config.proxyHost, WEBSOCKET_PROTOCOL);
 
     webSocket.onopen = this.handleConnection;
     webSocket.onmessage = this.parseEvent;
     webSocket.onclose = this.reconnect;
+    webSocket.onerror = this.handleError;
   },
 
   handleConnection() {
@@ -39,40 +40,32 @@ const proxyController = () => ({
     if (webSocket.readyState) {
       webSocket.send(JSON.stringify({ event, payload }));
     } else {
-      console.log('WebSocket is not currently open');
+      logger.log('error', 'WebSocket is not currently open');
     }
   },
 
   parseEvent({ data }) {
     const { payload } = JSON.parse(data);
     const id = get(payload, 'headers.id');
-    const event = get(payload, 'headers.event');
+    const payloadEventHeader = get(JSON.parse(data), 'payload.event');
+    const event = get(payload, 'headers.event', payloadEventHeader);
 
     const proxyHandlers = {
-      ...getStandardHandlers(payload),
-
-      [HANDSHAKE]() {
-        console.log(payload.message);
-      },
-
-      [RECONNECTED]() {
-        console.log(payload.message);
-      }
+      [HANDSHAKE]: () => logger.log('info', payload.message),
+      [RECONNECTED]: () => logger.log('info', payload.message)
     };
 
-    const eventHandler = getEventHandler(event, proxyHandlers);
+    const isAuthorized = id === config.id;
+    const handlers = isAuthorized ? getEventHandlers(payload) : proxyHandlers;
+    const eventHandler = handlers[event];
 
-    if (id === config.id) {
-      if (proxyHandlers[event]) {
-        eventHandler();
-        // TODO update Acheron to accept _RESPONSE events
-        // proxyController().send(`${payload.event}_RESPONSE`, 200);
-      } else {
-        errorNoHandler(event);
-        // proxyController().send(`${payload.event}_RESPONSE`, 500);
-      }
-    } else {
-      // proxyController().send(`${payload.event}_RESPONSE`, 403);
+    if (eventHandler) {
+      eventHandler();
+      // TODO update proxy to accept _RESPONSE events
+      // this.send(`${payload.event}_RESPONSE`, 200);
+    } else if (event) {
+      errorNoHandler(event);
+      // this.send(`${payload.event}_RESPONSE`, 500);
     }
   },
 
@@ -80,6 +73,10 @@ const proxyController = () => ({
     interval = setInterval(() => {
       proxyController().initialize();
     }, WEBSOCKET_RECONNECT_INTERVAL);
+  },
+
+  handleError(error) {
+    throw new error();
   }
 });
 

@@ -25,5 +25,3 @@ export const batchEvents = async (store, events) => {
     }
   }
 };
-
-export const getEventHandler = (event, handlers) => get(handlers, `[${event}]`, null);

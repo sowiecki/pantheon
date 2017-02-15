@@ -9,15 +9,25 @@ export const EMIT_REGISTER_UNIFIED_ID = 'EMIT_REGISTER_UNIFIED_ID';
 export const EMIT_REGISTER_BRIDGE = 'EMIT_REGISTER_BRIDGE';
 
 const initialState = {
-  hueUserID: get(config, 'hue.userID'),
+  hue: {
+    userIDs: get(config, 'hueUserIDs', {})
+  }
 };
 
 const devicesReducer = (state = initialState, action) => {
   const reducers = {
     [EMIT_REGISTER_BRIDGE]() {
+      const { ipaddress } = action.bridge;
+
       return {
         ...state,
-        hueBridge: new HueApi(action.bridge.ipaddress, state.hueUserID)
+        hue: {
+          ...state.hue,
+          [ipaddress]: {
+            bridge: new HueApi(ipaddress, state.hue.userIDs[ipaddress]),
+            userID: action.userID
+          }
+        }
       };
     },
 

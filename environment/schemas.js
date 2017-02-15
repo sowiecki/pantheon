@@ -6,12 +6,11 @@ export default [
     properties: {
       id: { type: 'string' },
       proxyHost: { type: 'string' },
-      hue: {
+      hueUserIDs: {
         type: 'object',
         properties: {
-          userID: { type: 'string' }
-        },
-        required: ['userID']
+          additionalProperties: { type: 'string' }
+        }
       },
       photons: {
         type: 'object',

@@ -29,11 +29,19 @@ For example,
     "password": "hunter2"
   },
 
-  // Turn on bulb with ID of 1
+  // Set bulb 1 to brightness 100
   {
-    "type": "EMIT_HUE_SWITCH",
+    "type": "EMIT_SEND_HUE_COMMAND",
     "id": 1,
-    "value": "on"
+    "func": "brightness",
+    "arg": 100
+  },
+
+  // Turn bulb 2 off
+  {
+    "type": "EMIT_SEND_HUE_COMMAND",
+    "id": 2,
+    "func": "turnOff"
   },
 
   // Trigger a Particle Photon function to power on PC
@@ -73,7 +81,8 @@ e.g., [Lamprey](https://github.com/Nase00/lamprey) and [deadbolt-nfc](https://gi
 * Any device or service that can be controlled by an HTTP request, e.g.,
 a Raspberry Pi running [Close-it](https://github.com/Nase00/close-it) to close the circuit on an apartment call box
 
-Products that are integrated into a Pantheon server will still have their 1st-party solutions function.
+Because Pantheon does not replace or interfere with preexisting device communication protocols,
+products that are integrated will still have their first-party solutions function.
 E.g., Philips Hue dimmer switches and Unified Remote apps function as normal, even with Pantheon running.
 
 Here are some examples of applications that pair well with Pantheon:

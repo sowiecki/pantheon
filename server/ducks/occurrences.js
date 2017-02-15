@@ -3,10 +3,17 @@ import { lightState } from 'node-hue-api';
 import { mapValues, get } from 'lodash';
 
 import { config } from 'environment';
-import { EVENT_EMITTERS_MAP } from 'constants';
-import { initCustomState, handleAction, toggleLights, logActionType, logUndefinedHandler } from 'utils';
+import { EVENT_EMITTERS_MAP, CUSTOM_LIGHT_FUNCTIONS } from 'constants';
+import {
+  initCustomState,
+  handleAction,
+  toggleLight,
+  logActionType,
+  logUndefinedHandler,
+  errorLightStatus
+} from 'utils';
 
-export const EMIT_HUE_SWITCH = 'EMIT_HUE_SWITCH';
+export const EMIT_SEND_HUE_COMMAND = 'EMIT_SEND_HUE_COMMAND';
 export const EMIT_TRIGGER_PHOTON_FUNCTION = 'EMIT_TRIGGER_PHOTON_FUNCTION';
 export const EMIT_FORWARD_HTTP_REQUEST = 'EMIT_FORWARD_HTTP_REQUEST';
 export const EMIT_SEND_UNIFIED_COMMAND = 'EMIT_SEND_UNIFIED_COMMAND';
@@ -18,22 +25,34 @@ const initialState = {
 };
 
 const occurrencesReducer = (state = initialState, action) => {
-  const hueBridge = get(action, 'devicesReducer.hueBridge');
-
   logActionType(action.type);
 
   const reducers = {
-    [EMIT_HUE_SWITCH]() {
-      const newLightState = state.lightState.create();
+    [EMIT_SEND_HUE_COMMAND]() {
+      const { hue } = action.devicesReducer;
+      const ipaddress = action.ipaddress || Object.keys(hue.userIDs)[0];
+      const hueBridge = get(hue, `['${ipaddress}'].bridge`);
 
-      if (typeof action.value === 'number') {
-        hueBridge.setLightState(action.id, newLightState.bri(action.value));
-      } else if (action.value === 'toggle') {
-        toggleLights(hueBridge, state, action.id);
-      } else if (newLightState[action.value]) {
-        hueBridge.setLightState(action.id, newLightState[action.value]());
-        hueBridge.setLightState(action.id, newLightState.bri(255));
+      if (CUSTOM_LIGHT_FUNCTIONS.includes(action.func)) {
+        switch (action.func) {
+          case 'toggle':
+            toggleLight(hueBridge, state, action.id);
+            break;
+          default:
+            errorLightStatus();
+            break;
+        }
+      } else {
+        try {
+          const newLightState = state.lightState.create()[action.func](action.arg);
+
+          hueBridge.setLightState(action.id, newLightState);
+        } catch (e) {
+          errorLightStatus();
+        }
       }
+
+      return { ...state };
     },
 
     [EMIT_CUSTOM_STATE_UPDATE](customStateConfig) {

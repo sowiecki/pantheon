@@ -2,7 +2,7 @@ import { BATCH_EVENTS, BATCH_EVENTS_FROM_WEBHOOK } from 'constants';
 import store from 'store';
 import { batchEvents } from 'utils';
 
-const getStandardHandlers = (payload) => ({
+const getEventHandlers = (payload) => ({
   [BATCH_EVENTS]() {
     batchEvents(store, payload.body);
   },
@@ -15,4 +15,4 @@ const getStandardHandlers = (payload) => ({
   }
 });
 
-export default getStandardHandlers;
+export default getEventHandlers;
