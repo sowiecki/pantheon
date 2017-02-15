@@ -7,9 +7,18 @@ export const logger = new (winston.Logger)({
   transports: [
     new (winston.transports.Console)(),
     new (winston.transports.File)({
+      name: 'info-file',
       filename: 'events.log',
       timestamp: false,
-      maxsize: 100000000
+      maxsize: 100000000,
+      level: 'info'
+    }),
+    new (winston.transports.File)({
+      name: 'error-file',
+      filename: 'errors.log',
+      timestamp: false,
+      maxsize: 100000000,
+      level: 'error'
     })
   ]
 });
