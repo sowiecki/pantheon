@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 
-import getStandardHandlers from 'handlers';
-import { setResponse, getEventHandler, errorNoHandler } from 'utils';
+import getEventHandlers from 'handlers';
+import { setResponse, errorNoHandler } from 'utils';
 import { config } from 'environment';
 import store from 'store';
 
@@ -21,8 +21,8 @@ router.post('/api/state', (crx) => {
 
 router.post('/api', (crx) => {
   if (isAuthorized(crx)) {
-    const handlers = getStandardHandlers(crx.request);
-    const eventHandler = getEventHandler(crx.headers.event, handlers);
+    const handlers = getEventHandlers(crx.request);
+    const eventHandler = handlers[crx.request.header.event];
 
     if (eventHandler) {
       eventHandler();
