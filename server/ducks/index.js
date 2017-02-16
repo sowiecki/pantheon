@@ -1,7 +1,5 @@
-import devicesReducer from './devices';
-import occurrencesReducer from './occurrences';
+import meta from './meta';
 
 export default {
-  devicesReducer,
-  occurrencesReducer
+  meta
 };

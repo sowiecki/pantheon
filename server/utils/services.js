@@ -18,10 +18,7 @@ export const batchEvents = async (store, events) => {
 
     for (let i = 0; i < duplicate; i++) {
       await sleep(event.delay);
-      await store.dispatch({
-        ...event,
-        devicesReducer: store.getState().devicesReducer
-      });
+      await store.dispatch(event);
     }
   }
 };
