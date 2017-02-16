@@ -1,9 +1,9 @@
 /* eslint-env jest */
-import { handleAction, initCustomState } from 'utils/state';
+import { handleAction, initCustomState, generateReducers } from 'utils/state';
 
 describe('State utilities', () => {
   describe('handleAction', () => {
-    it('should correctly reduce the action onto the state.', () => {
+    it('should reduce the action onto the state.', () => {
       const mockState = { foo: 'bar' };
       const mockAction = { type: 'EMIT_BIZZBAZZ' };
       const mockReducers = { EMIT_BIZZBAZZ: () => mockState.foo };
@@ -14,7 +14,7 @@ describe('State utilities', () => {
   });
 
   describe('initCustomState', () => {
-    it('Formats custom state from user config', () => {
+    it('should format custom state from user config', () => {
       const mockConfig = {
         photons: {
           deadbolt: {
@@ -60,6 +60,36 @@ describe('State utilities', () => {
       const result = initCustomState(mockConfig);
 
       expect(result).toEqual(expected);
+    });
+  });
+
+  describe('generateReducers', () => {
+    it('should generate a single object of reducers from multiple reducers', () => {
+      const mockState = {};
+      const mockAction = {};
+
+      const fooReducer = (state) => ({ foo: () => state });
+      const fizzReducer = (state) => ({ buzz: () => state });
+      const bizzReducer = (state) => ({ bazz: () => state });
+
+      const expected = {
+        foo: () => mockState,
+        buzz: () => mockState,
+        bazz: () => mockState
+      };
+      const result = generateReducers(mockState, mockAction, [
+        fooReducer,
+        fizzReducer,
+        bizzReducer
+      ]);
+      const resultKeys = Object.keys(result);
+
+      Object.keys(expected).forEach((expectedKey) => {
+        const resultValue = result[expectedKey];
+
+        expect(resultValue).toBeTruthy();
+        expect(resultKeys).toContain(expectedKey);
+      });
     });
   });
 });

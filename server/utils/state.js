@@ -33,3 +33,14 @@ export const initCustomState = (config) => {
 
   return reduce(customStates, (result, value) => ({ ...result, ...value }));
 };
+
+export const generateReducers = (state, action, reducers) => {
+  const mergeReducers = (prevReducer, nextReducer) => {
+    const shouldGenerate = typeof prevReducer === 'function';
+    const accumulated = shouldGenerate ? prevReducer(state, action) : prevReducer;
+
+    return { ...accumulated, ...nextReducer(state, action) };
+  };
+
+  return reducers.reduce(mergeReducers);
+};
