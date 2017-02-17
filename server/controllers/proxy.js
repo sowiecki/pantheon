@@ -27,13 +27,17 @@ const proxyController = () => ({
     webSocket.onopen = this.handleConnection;
     webSocket.onmessage = this.parseEvent;
     webSocket.onclose = this.reconnect;
-    webSocket.onerror = this.handleError;
+    webSocket.onerror = this.handleConnectionError;
   },
 
   handleConnection() {
     const payload = { headers: { id: config.id } };
 
     webSocket.send(JSON.stringify({ event: HANDSHAKE, payload }));
+  },
+
+  handleConnectionError(e) {
+    throw new Error(e);
   },
 
   send(event, payload) {
@@ -61,11 +65,8 @@ const proxyController = () => ({
 
     if (eventHandler) {
       eventHandler();
-      // TODO update proxy to accept _RESPONSE events
-      // this.send(`${payload.event}_RESPONSE`, 200);
     } else if (event) {
       errorNoHandler(event);
-      // this.send(`${payload.event}_RESPONSE`, 500);
     }
   },
 
@@ -73,10 +74,6 @@ const proxyController = () => ({
     interval = setInterval(() => {
       proxyController().initialize();
     }, WEBSOCKET_RECONNECT_INTERVAL);
-  },
-
-  handleError(error) {
-    throw new error();
   }
 });
 
