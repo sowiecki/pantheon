@@ -14,7 +14,9 @@ import { logger, errorNoHandler } from 'utils';
 let interval;
 let webSocket;
 
-const proxyController = () => ({
+const proxyController = {
+  displayName: 'Proxy Controller',
+
   shouldInit() {
     return !!config.proxyHost;
   },
@@ -72,9 +74,9 @@ const proxyController = () => ({
 
   reconnect() {
     interval = setInterval(() => {
-      proxyController().initialize();
+      proxyController.initialize();
     }, WEBSOCKET_RECONNECT_INTERVAL);
   }
-});
+};
 
 export default proxyController;

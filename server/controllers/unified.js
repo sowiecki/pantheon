@@ -3,12 +3,14 @@ import { UNIFIED_KEEP_ALIVE_INTERVAL } from 'constants';
 import { FETCH_UNIFIED_ID } from 'ducks/devices';
 import store from 'store';
 
-const unifiedController = (next) => ({
+const unifiedController = {
+  displayName: 'Unified Controller',
+
   shouldInit() {
     return !!config.unified;
   },
 
-  initialize() {
+  initialize(next) {
     const keepAlive = () => store.dispatch({
       type: FETCH_UNIFIED_ID,
       next
@@ -18,6 +20,6 @@ const unifiedController = (next) => ({
 
     setInterval(keepAlive, UNIFIED_KEEP_ALIVE_INTERVAL);
   }
-});
+};
 
 export default unifiedController;
