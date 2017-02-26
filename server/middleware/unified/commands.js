@@ -45,6 +45,34 @@ export const spotifyPlayPause = () => JSON.stringify({
   Run: { Name: 'play_pause' }
 });
 
+export const spotifyStop = () => JSON.stringify({
+  ID: 'Unified.Spotify',
+  Action: 7,
+  Request: 7,
+  Run: { Name: 'stop' }
+});
+
+export const spotifyVolumeUp = () => JSON.stringify({
+  ID: 'Unified.Spotify',
+  Action: 7,
+  Request: 7,
+  Run: { Name: 'volume_up' }
+});
+
+export const spotifyVolumeDown = () => JSON.stringify({
+  ID: 'Unified.Spotify',
+  Action: 7,
+  Request: 7,
+  Run: { Name: 'volume_down' }
+});
+
+export const spotifyVolumeMute = () => JSON.stringify({
+  ID: 'Unified.Spotify',
+  Action: 7,
+  Request: 7,
+  Run: { Name: 'volume_mute' }
+});
+
 export const spotifyNextTrack = () => JSON.stringify({
   ID: 'Unified.Spotify',
   Action: 7,
