@@ -95,9 +95,8 @@ This should give us the following response object:
 
 ```js
 {
-  devicesReducer: {
+  meta: {
     isLocked: true,
-  },
-  occurrencesReducer: {}
+  }
 }
 ```

@@ -15,7 +15,7 @@ import * as commands from './unified/commands';
 
 const sendUnified = (store, action, next) => {
   const { hostname } = config.unified;
-  const { unifiedID } = store.getState().devicesReducer;
+  const { unifiedID } = store.getState().meta;
 
   const commandObject = commands[action.name](action);
 
