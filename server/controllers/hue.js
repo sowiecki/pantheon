@@ -5,11 +5,12 @@ import { config } from 'environment';
 import { EMIT_REGISTER_BRIDGE } from 'ducks/devices';
 import { errorNoUserIDFound } from 'utils';
 import store from 'store';
+import Controller from './controller';
 
-const hueController = () => ({
-  shouldInit() {
-    return !!config.hueUserIDs;
-  },
+const hueController = new Controller({
+  displayName: 'Hue Controller',
+
+  shouldInit: () => !!config.hueUserIDs,
 
   initialize() {
     hue.nupnpSearch().then((bridges) => {

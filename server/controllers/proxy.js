@@ -10,14 +10,15 @@ import { WEBSOCKET_PROTOCOL,
          HANDSHAKE,
          RECONNECTED } from 'constants';
 import { logger, errorNoHandler } from 'utils';
+import Controller from './controller';
 
 let interval;
 let webSocket;
 
-const proxyController = () => ({
-  shouldInit() {
-    return !!config.proxyHost;
-  },
+const proxyController = new Controller({
+  displayName: 'Proxy Controller',
+
+  shouldInit: () => !!config.proxyHost,
 
   initialize() {
     clearInterval(interval);
@@ -72,7 +73,7 @@ const proxyController = () => ({
 
   reconnect() {
     interval = setInterval(() => {
-      proxyController().initialize();
+      proxyController.initialize();
     }, WEBSOCKET_RECONNECT_INTERVAL);
   }
 });
