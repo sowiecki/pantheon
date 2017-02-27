@@ -1,4 +1,4 @@
-import { flatMap, map, reduce } from 'lodash';
+import { flatMap, map, reduce, omit } from 'lodash';
 
 /**
  * @param {object} state
@@ -44,3 +44,9 @@ export const generateReducers = (state, action, reducers) => {
 
   return reducers.reduce(mergeReducers);
 };
+
+export const filterSensativeState = (state) => omit(state, [
+  'unifiedID',
+  'hue',
+  'lightState'
+]);

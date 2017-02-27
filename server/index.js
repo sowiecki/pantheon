@@ -11,7 +11,7 @@ import controllers from './controllers';
 const server = new Koa();
 const port = process.env.PORT || 4000;
 
-server.use(bodyParser());
+server.use(bodyParser({ multipart: true }));
 server.use(router.routes());
 
 const run = async () => {

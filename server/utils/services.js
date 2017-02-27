@@ -22,3 +22,20 @@ export const batchEvents = async (store, events) => {
     }
   }
 };
+
+export const getHueStates = async (store) => {
+  const state = store.getState().meta;
+  const ipaddresses = Object.keys(state.hue).slice(1);
+  const lightStates = {};
+
+  for (let i = 0; i < ipaddresses.length; i++) {
+    const ipaddress = ipaddresses[i];
+    const bridge = state.hue[ipaddress].bridge;
+
+    await bridge.groups().then((result) => {
+      lightStates[ipaddress] = result;
+    });
+  }
+
+  return lightStates;
+};

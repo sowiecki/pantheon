@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { handleAction, initCustomState, generateReducers } from 'utils/state';
+import { handleAction, initCustomState, generateReducers, filterSensativeState } from 'utils/state';
 
 describe('State utilities', () => {
   describe('handleAction', () => {
@@ -91,5 +91,9 @@ describe('State utilities', () => {
         expect(resultKeys).toContain(expectedKey);
       });
     });
+  });
+
+  describe('filterSensativeState', () => {
+    // TODO test
   });
 });
