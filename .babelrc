@@ -1,7 +1,6 @@
 {
   "presets": ["es2015"],
   "plugins": [
-    "transform-async-to-generator",
     "transform-object-rest-spread",
     ["module-resolver", {
       "root": ["./src"],
@@ -12,7 +11,8 @@
         "environment": "./server/environment",
         "handlers": "./server/handlers",
         "store": "./server/store",
-        "utils": "./server/utils"
+        "utils": "./server/utils",
+        "tests": "./tests"
       }
     }]
   ]

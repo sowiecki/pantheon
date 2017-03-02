@@ -1,38 +1,40 @@
 import Router from 'koa-router';
 
 import getEventHandlers from 'handlers';
-import { setResponse, errorNoHandler } from 'utils';
+import { setResponse, errorNoHandler, filterSensativeState, getHueStates } from 'utils';
 import { config } from 'environment';
 import store from 'store';
 
 const router = new Router();
 
-const isAuthorized = (crx) => crx.request.headers.id === config.id;
+const isAuthorized = (ctx) => ctx.request.headers.id === config.id;
 
-router.post('/api/state', (crx) => {
-  if (isAuthorized(crx)) {
-    setResponse({ next: crx }, 200);
+router.post('/api/state', async (ctx) => {
+  if (isAuthorized(ctx)) {
+    const hueStates = await getHueStates(store);
+    const metaState = store.getState().meta;
 
-    crx.body = JSON.stringify(store.getState());
+    setResponse({ next: ctx }, 200);
+    ctx.body = filterSensativeState({ hueStates, ...metaState });
   } else {
-    setResponse({ next: crx }, 403);
+    setResponse({ next: ctx }, 403);
   }
 });
 
-router.post('/api', (crx) => {
-  if (isAuthorized(crx)) {
-    const handlers = getEventHandlers(crx.request);
-    const eventHandler = handlers[crx.request.header.event];
+router.post('/api', (ctx) => {
+  if (isAuthorized(ctx)) {
+    const handlers = getEventHandlers(ctx.request);
+    const eventHandler = handlers[ctx.request.header.event];
 
     if (eventHandler) {
       eventHandler();
-      setResponse({ next: crx }, 200);
+      setResponse({ next: ctx }, 200);
     } else {
-      errorNoHandler(crx.headers.event);
-      setResponse({ next: crx }, 500);
+      errorNoHandler(ctx.headers.event);
+      setResponse({ next: ctx }, 500);
     }
   } else {
-    setResponse({ next: crx }, 403);
+    setResponse({ next: ctx }, 403);
   }
 });
 

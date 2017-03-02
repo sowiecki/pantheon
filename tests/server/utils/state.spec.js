@@ -1,5 +1,10 @@
 /* eslint-env jest */
-import { handleAction, initCustomState, generateReducers } from 'utils/state';
+import { handleAction, initCustomState, generateReducers, filterSensativeState } from 'utils/state';
+import { mockConfig, mockGroups } from 'tests/mocks';
+import { genMockStore, genBridge } from 'tests/utils';
+import injectExtensions from 'tests/extensions';
+
+injectExtensions();
 
 describe('State utilities', () => {
   describe('handleAction', () => {
@@ -15,37 +20,6 @@ describe('State utilities', () => {
 
   describe('initCustomState', () => {
     it('should format custom state from user config', () => {
-      const mockConfig = {
-        photons: {
-          deadbolt: {
-            auth: '123',
-            deviceId: '456',
-            name: 'mock',
-            $state: {
-              fooBarKey: {
-                type: 'bool',
-                default: true
-              }
-            }
-          }
-        },
-        httpRequests: {
-          foo: {
-            options: {
-              path: '/api/bar',
-              port: 8080,
-              hostname: '192.168.1.1'
-            },
-            $state: {
-              bizzBazzKey: {
-                type: 'bool',
-                default: false
-              }
-            }
-          }
-        }
-      };
-
       const expected = {
         bizzBazzKey: {
           default: false,
@@ -90,6 +64,25 @@ describe('State utilities', () => {
         expect(resultValue).toBeTruthy();
         expect(resultKeys).toContain(expectedKey);
       });
+    });
+  });
+
+  describe('filterSensativeState', () => {
+    it('filters sensative state data', () => {
+      const result = filterSensativeState(genMockStore.getState());
+      const expected = {
+        meta: {
+          hue: {
+            userIds: ['foo', 'bar'],
+            ...genBridge(mockGroups, 0),
+            ...genBridge(mockGroups, 1),
+            ...genBridge(mockGroups, 2),
+            ...genBridge(mockGroups, 3)
+          }
+        }
+      };
+
+      expect(result).toMatchStructure(expected);
     });
   });
 });
