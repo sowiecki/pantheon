@@ -31,6 +31,7 @@ const run = async () => {
         logger.log('info', `${controllerName} initialization: ${colors.bgGreen.bold('success')}`);
       } catch (e) {
         logger.log('info', `${controllerName} initialization: ${colors.bgRed.bold('failure')}`);
+        logger.log('error', e);
       }
     }
   });
