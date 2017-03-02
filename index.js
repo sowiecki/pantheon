@@ -4,7 +4,6 @@
 const cluster = require('cluster');
 
 require('babel-register');
-require('babel-polyfill');
 
 if (cluster.isMaster) {
   cluster.fork();
