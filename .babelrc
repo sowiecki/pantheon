@@ -11,7 +11,8 @@
         "environment": "./server/environment",
         "handlers": "./server/handlers",
         "store": "./server/store",
-        "utils": "./server/utils"
+        "utils": "./server/utils",
+        "tests": "./tests"
       }
     }]
   ]

@@ -11,7 +11,7 @@
   "scripts": {
     "start": "nodejs-dashboard node ./index.js",
     "dev": "nodemon ./index.js --ignore **.spec.*",
-    "lint": "eslint --format=node_modules/eslint-formatter-pretty --ext .js,.jsx *.js server",
+    "lint": "eslint --format=node_modules/eslint-formatter-pretty --ext .js,.jsx *.js tests server",
     "test": "yarn lint && jest",
     "test-cov": "jest --coverage",
     "coveralls": "yarn test-cov && cat ./coverage/lcov.info | coveralls"
