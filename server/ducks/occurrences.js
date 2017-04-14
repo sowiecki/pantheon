@@ -43,15 +43,18 @@ const occurrencesReducer = (state, action) => ({
     return { ...state };
   },
 
-  [EMIT_CUSTOM_STATE_UPDATE](customStateConfig) {
-    action.$state.forEach((customStateKey) => {
+  [EMIT_CUSTOM_STATE_UPDATE]() {
+    // Some services make it difficult to send non-stringified stateUpdates
+    const mustBeParsed = typeof action.stateUpdates === 'string';
+    const stateUpdates = mustBeParsed ? JSON.parse(action.stateUpdates) : action.stateUpdates;
+
+    Object.keys(stateUpdates).forEach((customStateKey) => {
       try {
-        const forcedHandler = get(config, `${action.$path}.$state[${customStateKey}].$handler`);
-        const riderHandler = () => customStateConfig[customStateKey].$handler;
+        const handler = get(config, `${action.path}.$state[${customStateKey}].$handler`);
+        const customStateHandler = eval(handler);
+        const value = stateUpdates[customStateKey] || customStateKey;
 
-        const customStateHandler = eval(forcedHandler || riderHandler());
-
-        state[customStateKey] = customStateHandler(state[customStateKey]);
+        state[customStateKey] = customStateHandler(value);
       } catch (e) {
         logUndefinedHandler(e);
       }

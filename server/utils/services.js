@@ -8,6 +8,11 @@ export const setResponse = (action, code) => set(action, 'next.body', code);
 
 export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+export const handleEvent = async (store, event) => {
+  await sleep(event.delay);
+  await store.dispatch(event);
+};
+
 export const batchEvents = async (store, events) => {
   if (!events.length) {
     console.log('Unable to parse events');
@@ -17,8 +22,7 @@ export const batchEvents = async (store, events) => {
     const duplicate = get(event, 'duplicate', 1);
 
     for (let i = 0; i < duplicate; i++) {
-      await sleep(event.delay);
-      await store.dispatch(event);
+      handleEvent(store, event);
     }
   }
 };
