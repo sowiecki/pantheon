@@ -30,7 +30,7 @@ export const focusAddress = () => JSON.stringify({
 });
 
 export const triggerCommand = ({ value }) => JSON.stringify({
-  ID: 'Examples.CustomRun',
+  ID: 'NA.CustomRun',
   Action: 7,
   Request: 7,
   Run: {
