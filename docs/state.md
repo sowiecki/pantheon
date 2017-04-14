@@ -33,7 +33,7 @@ and add the state key we want to use, in this case `isLocked`:
           "default": "true",
 
           // Function that declares how to handle updates to this state property
-          "$handler": "function (value) { return !value; }"
+          "$handler": "function (value) { return !!parseInt(value, 10); }"
         }
       }
     }
@@ -41,29 +41,25 @@ and add the state key we want to use, in this case `isLocked`:
 }
 ```
 
-With this configuration, when Pantheon is run it will include the `isLocked` state and initialize it with `true`.
-To update this state, the `$state` key must be specified as part of the event object.
+With this configuration, when Pantheon runs it will include the `isLocked` state and initialize it with `true`.
+To update this state, the `stateUpdates` map must be specified as part of the event object, with the new value
+to update `isLocked` with.
 
-Continuing with the door lock example, we can update the `isLocked` state property by specifying it when we trigger the `doorLock` event:
-
-```js
-// HTTP request body
-[
-  { "type": "EMIT_FORWARD_HTTP_REQUEST", "key": "doorLock", "$state": ["isLocked"] }
-]
-```
-
-Alternatively, any custom state can be force-updated without triggering its associated event.
-However, in this instance a `$path` property is required to locate the `$handler` declared in `config.json`:
+Continuing with the door lock example, we can update the `isLocked` state property by batching it with a special
+state update event immediately after we trigger the `doorLock` event:
 
 ```js
 // HTTP request body
 [
-  {"type": "EMIT_CUSTOM_STATE_UPDATE", "$path": "photons.doorLock", "$state": ["isLocked"]}
+  { "type": "EMIT_FORWARD_HTTP_REQUEST", "key": "doorLock", "stateUpdates": { "isLocked": "1" } },
+  {"type": "EMIT_CUSTOM_STATE_UPDATE", "path": "photons.doorLock", "stateUpdates": { "isLocked": "1" } }
 ]
 ```
+
+Note the `path` property is required to locate the `$handler` declared in `config.json`.
 
 The `$handler` we provided was a simple function to flip the state property's value.
+It always takes the custom state value as its only argument.
 
 ## Using custom state
 

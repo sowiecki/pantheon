@@ -18,6 +18,9 @@ headers:
 }
 ```
 
+event: Set to `SINGLE_EVENT` to pass a single event object,
+or `BATCH_EVENTS` to send an array of sequentially-triggered events.
+
 body: Construct a JSON array of objects with your [events](./docs/EVENTS.md).
 
 Alternatively, you can set the "body" as a header property.

@@ -3,9 +3,8 @@ import { mapValues, get } from 'lodash';
 
 import { config } from 'environment';
 import { initCustomState, generateReducers, handleAction, logActionType } from 'utils';
-import { EVENT_EMITTERS_MAP } from 'constants';
 import devicesReducer from './devices';
-import occurrencesReducer, { EMIT_CUSTOM_STATE_UPDATE } from './occurrences';
+import occurrencesReducer from './occurrences';
 
 const initialState = {
   ...mapValues(initCustomState(config), 'default'),
@@ -22,13 +21,6 @@ const metaReducer = (state = initialState, action) => {
     devicesReducer,
     occurrencesReducer
   ]);
-
-  const eventKey = EVENT_EMITTERS_MAP[action.type];
-  const customStateConfig = get(config[eventKey], `${action.key}.$state`);
-
-  if (customStateConfig && action.$state) {
-    reducers[EMIT_CUSTOM_STATE_UPDATE](customStateConfig);
-  }
 
   return handleAction(state, action, reducers);
 };
