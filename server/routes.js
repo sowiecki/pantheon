@@ -1,9 +1,17 @@
 import Router from 'koa-router';
+import send from 'koa-send';
+import queryString from 'query-string';
 
 import getEventHandlers from 'handlers';
-import { setResponse, errorNoHandler, filterSensativeState, getHueStates } from 'utils';
+import { PUBLIC_DIR } from 'config';
+import { SPOTIFY_TOKEN_REFRESH_INVERVAL } from 'constants';
+import {
+  EMIT_REGISTER_SPOTIFY_CODE,
+  EMIT_REFRESH_SPOTIFY_CODE
+} from 'ducks/devices';
 import { config } from 'environment';
 import store from 'store';
+import { setResponse, errorNoHandler, filterSensativeState, getHueStates } from 'utils';
 
 const router = new Router();
 
@@ -37,5 +45,21 @@ router.post('/api', (ctx) => {
     setResponse({ next: ctx }, 403);
   }
 });
+
+router.get('/api/register-spotify', async (ctx) => {
+  const code = queryString.parse(ctx.request.url)['/api/register-spotify?code'];
+
+  store.dispatch({
+    type: EMIT_REGISTER_SPOTIFY_CODE,
+    code
+  });
+
+  setInterval(() => store.dispatch({
+    type: EMIT_REFRESH_SPOTIFY_CODE
+  }), SPOTIFY_TOKEN_REFRESH_INVERVAL);
+
+  await send(ctx, '/spotify-auth.html', { root: PUBLIC_DIR });
+});
+
 
 export default router;
