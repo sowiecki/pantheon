@@ -5,3 +5,14 @@ export const WEBSOCKET_RECONNECT_INTERVAL = 2000;
 
 export const UNIFIED_REMOTE_PORT = 9510;
 export const UNIFIED_KEEP_ALIVE_INTERVAL = 60000;
+
+export const SPOTIFY_PERMISSION_SCOPES = [
+  'playlist-read-private',
+  'playlist-read-collaborative',
+  'user-read-private',
+  'user-read-playback-state',
+  'user-read-email',
+  'streaming',
+  'user-top-read'
+];
+export const SPOTIFY_TOKEN_REFRESH_INVERVAL = 3540000; // 59 minutes

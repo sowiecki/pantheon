@@ -1,20 +1,28 @@
 {
-  "presets": ["es2015"],
+  "presets": [
+    "es2015"
+  ],
   "plugins": [
     "transform-object-rest-spread",
     "transform-class-properties",
-    ["module-resolver", {
-      "root": ["./src"],
-      "alias": {
-        "constants": "./server/constants",
-        "controllers": "./server/controllers",
-        "ducks": "./server/ducks",
-        "environment": "./server/environment",
-        "handlers": "./server/handlers",
-        "store": "./server/store",
-        "utils": "./server/utils",
-        "tests": "./tests"
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./src"
+        ],
+        "alias": {
+          "config": "./server/config",
+          "constants": "./server/constants",
+          "controllers": "./server/controllers",
+          "ducks": "./server/ducks",
+          "environment": "./server/environment",
+          "handlers": "./server/handlers",
+          "store": "./server/store",
+          "utils": "./server/utils",
+          "tests": "./tests"
+        }
       }
-    }]
+    ]
   ]
 }

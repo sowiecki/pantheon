@@ -1,8 +1,12 @@
+import https from 'https';
 import { HueApi } from 'node-hue-api';
 
 export const FETCH_UNIFIED_ID = 'FETCH_UNIFIED_ID';
 export const EMIT_REGISTER_UNIFIED_ID = 'EMIT_REGISTER_UNIFIED_ID';
 export const EMIT_REGISTER_BRIDGE = 'EMIT_REGISTER_BRIDGE';
+export const EMIT_REGISTER_SPOTIFY_CLIENT = 'EMIT_REGISTER_SPOTIFY_CLIENT';
+export const EMIT_REGISTER_SPOTIFY_CODE = 'EMIT_REGISTER_SPOTIFY_CODE';
+export const EMIT_REFRESH_SPOTIFY_CODE = 'EMIT_REFRESH_SPOTIFY_CODE';
 
 const devicesReducer = (state, action) => ({
   [EMIT_REGISTER_BRIDGE]() {
@@ -20,10 +24,55 @@ const devicesReducer = (state, action) => ({
     };
   },
 
-  [EMIT_REGISTER_UNIFIED_ID]() {
+  [EMIT_REGISTER_UNIFIED_ID]: () => ({
+    ...state,
+    unifiedID: action.unifiedID
+  }),
+
+  [EMIT_REGISTER_SPOTIFY_CLIENT]: () => ({
+    ...state,
+    spotifyApi: action.spotifyApi
+  }),
+
+  [EMIT_REGISTER_SPOTIFY_CODE]() {
+    // TODO extract and clean up! And use to always register spotify devices
+    const foo = (token) => https.get({
+      host: 'api.spotify.com',
+      path: '/v1/me/player/devices',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }, (res) => {
+      console.log(`STATUS: ${res.statusCode}`);
+      console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+      res.setEncoding('utf8');
+      res.on('data', (chunk) => {
+        console.log(`BODY: ${chunk}`);
+      });
+      res.on('end', () => {
+        console.log('No more data in response.');
+      });
+    });
+
+    state.spotifyApi.authorizationCodeGrant(action.code).then(({ body }) => {
+      state.spotifyApi.setAccessToken(body.access_token);
+      state.spotifyApi.setRefreshToken(body.refresh_token);
+      foo(body.access_token);
+    }, (err) => {
+      console.log('Problem setting Spotify authentication code!', err); // eslint-disable-line
+    });
+
     return {
       ...state,
-      unifiedID: action.unifiedID
+      spotifyToken: action.code
+    };
+  },
+
+  [EMIT_REFRESH_SPOTIFY_CODE]() {
+    state.spotifyApi.refreshAccessToken();
+
+    return {
+      ...state
     };
   }
 });
