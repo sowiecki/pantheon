@@ -2,19 +2,18 @@ import SpotifyWebApi from 'spotify-web-api-node';
 import opn from 'opn';
 import { get } from 'lodash';
 
-import { config } from 'environment';
-import { PORT } from 'config';
-import store from 'store';
-import { EMIT_REGISTER_SPOTIFY_CLIENT } from 'ducks/devices';
+import { ENV, PORT } from 'config';
 import { SPOTIFY_PERMISSION_SCOPES } from 'constants';
+import { EMIT_REGISTER_SPOTIFY_CLIENT } from 'ducks/devices';
+import store from 'store';
 import Controller from './controller';
 
 const spotifyController = new Controller({
   displayName: 'Spotify Controller',
 
-  shouldInit: () => !!config.spotify,
+  shouldInit: () => !!ENV.spotify,
 
-  getRedirectUri: () => config.spotify.redirectUri || `http://localhost:${PORT}/api/register-spotify`,
+  getRedirectUri: () => ENV.spotify.redirectUri || `http://localhost:${PORT}/api/register-spotify`,
 
   getToken() {
     const { meta } = store.getState();
@@ -23,7 +22,7 @@ const spotifyController = new Controller({
   },
 
   initialize() {
-    const { clientId, clientSecret } = config.spotify;
+    const { clientId, clientSecret } = ENV.spotify;
 
     const spotifyApi = new SpotifyWebApi({
       clientId,

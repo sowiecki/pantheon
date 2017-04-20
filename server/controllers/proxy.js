@@ -3,12 +3,14 @@
 import WebSocket from 'ws';
 import { get } from 'lodash';
 
-import { config } from 'environment';
+import { ENV } from 'config';
+import {
+  WEBSOCKET_PROTOCOL,
+  WEBSOCKET_RECONNECT_INTERVAL,
+  HANDSHAKE,
+  RECONNECTED
+} from 'constants';
 import getEventHandlers from 'handlers';
-import { WEBSOCKET_PROTOCOL,
-         WEBSOCKET_RECONNECT_INTERVAL,
-         HANDSHAKE,
-         RECONNECTED } from 'constants';
 import { logger, errorNoHandler } from 'utils';
 import Controller from './controller';
 
@@ -18,12 +20,12 @@ let webSocket;
 const proxyController = new Controller({
   displayName: 'Proxy Controller',
 
-  shouldInit: () => !!config.proxyHost,
+  shouldInit: () => !!ENV.proxyHost,
 
   initialize() {
     clearInterval(interval);
 
-    webSocket = new WebSocket(config.proxyHost, WEBSOCKET_PROTOCOL);
+    webSocket = new WebSocket(ENV.proxyHost, WEBSOCKET_PROTOCOL);
 
     webSocket.onopen = this.handleConnection;
     webSocket.onmessage = this.parseEvent;
@@ -32,7 +34,7 @@ const proxyController = new Controller({
   },
 
   handleConnection() {
-    const payload = { headers: { id: config.id } };
+    const payload = { headers: { id: ENV.id } };
 
     webSocket.send(JSON.stringify({ event: HANDSHAKE, payload }));
   },
@@ -60,7 +62,7 @@ const proxyController = new Controller({
       [RECONNECTED]: () => logger.log('info', payload.message)
     };
 
-    const isAuthorized = id === config.id;
+    const isAuthorized = id === ENV.id;
     const handlers = isAuthorized ? getEventHandlers(payload) : proxyHandlers;
     const eventHandler = handlers[event];
 

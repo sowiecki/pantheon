@@ -4,8 +4,8 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import colors from 'colors/safe';
 
-import { logger } from 'utils';
 import { PORT } from 'config';
+import { logger } from 'utils';
 import router from './routes';
 import controllers from './controllers';
 

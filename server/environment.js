@@ -10,9 +10,9 @@ const readFile = (fileName) => {
   return JSON.parse(readFileSync(filePath, 'utf8'));
 };
 
-const config = readFile('../environment/config.json');
+const ENV = readFile('../environment/config.json');
 
-const { errors } = validator.validate(config, '/ConfigSchema');
+const { errors } = validator.validate(ENV, '/ConfigSchema');
 
 if (errors.length) {
   errors.forEach((error) => {
@@ -20,4 +20,4 @@ if (errors.length) {
   });
 }
 
-export { config };
+export { ENV };
