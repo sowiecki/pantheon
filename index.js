@@ -5,7 +5,7 @@ const cluster = require('cluster');
 
 require('babel-register');
 
-if (cluster.isMaster) {
+if (cluster.isMaster && process.env.NODE_ENV !== 'development') {
   cluster.fork();
 
   cluster.on('exit', (deadWorker) => {

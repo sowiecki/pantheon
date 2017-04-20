@@ -43,8 +43,23 @@ const devicesReducer = (state, action) => ({
         Authorization: `Bearer ${token}`
       }
     }, (res) => {
-      console.log(`STATUS: ${res.statusCode}`);
-      console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+      res.setEncoding('utf8');
+      res.on('data', (chunk) => {
+        console.log(`BODY: ${chunk}`);
+      });
+      res.on('end', () => {
+        console.log('No more data in response.');
+      });
+    });
+
+    const bar = (token) => https.request({
+      method: 'PUT',
+      host: 'api.spotify.com',
+      path: '/v1/me/player/play',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }, (res) => {
       res.setEncoding('utf8');
       res.on('data', (chunk) => {
         console.log(`BODY: ${chunk}`);
@@ -57,7 +72,9 @@ const devicesReducer = (state, action) => ({
     state.spotifyApi.authorizationCodeGrant(action.code).then(({ body }) => {
       state.spotifyApi.setAccessToken(body.access_token);
       state.spotifyApi.setRefreshToken(body.refresh_token);
-      foo(body.access_token);
+      // foo(body.access_token);
+      // const req = bar(body.access_token); // TODO working Spotify play! Yay! Extract to cleaner/programmatic setup
+      // req.end();
     }, (err) => {
       console.log('Problem setting Spotify authentication code!', err); // eslint-disable-line
     });
