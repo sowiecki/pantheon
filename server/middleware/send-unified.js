@@ -2,9 +2,9 @@
 /* eslint no-console: 0 */
 import http from 'http';
 
-import { setResponse } from 'utils';
-import { config } from 'environment';
+import { ENV } from 'config';
 import { UNIFIED_REMOTE_PORT } from 'constants';
+import { setResponse } from 'utils';
 
 import * as commands from './unified/commands';
 
@@ -14,7 +14,7 @@ import * as commands from './unified/commands';
  */
 
 const sendUnified = (store, action, next) => {
-  const { hostname } = config.unified;
+  const { hostname } = ENV.unified;
   const { unifiedID } = store.getState().meta;
 
   const commandObject = commands[action.name](action);

@@ -3,19 +3,18 @@ import send from 'koa-send';
 import queryString from 'query-string';
 
 import getEventHandlers from 'handlers';
-import { PUBLIC_DIR } from 'config';
 import { SPOTIFY_TOKEN_REFRESH_INVERVAL } from 'constants';
+import { ENV, PUBLIC_DIR } from 'config';
 import {
   EMIT_REGISTER_SPOTIFY_CODE,
   EMIT_REFRESH_SPOTIFY_CODE
 } from 'ducks/devices';
-import { config } from 'environment';
 import store from 'store';
 import { setResponse, errorNoHandler, filterSensativeState, getHueStates } from 'utils';
 
 const router = new Router();
 
-const isAuthorized = (ctx) => ctx.request.headers.id === config.id;
+const isAuthorized = (ctx) => ctx.request.headers.id === ENV.id;
 
 router.post('/api/state', async (ctx) => {
   if (isAuthorized(ctx)) {

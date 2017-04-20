@@ -2,13 +2,13 @@
 /* globals console */
 import Particle from 'particle-api-js';
 
+import { ENV } from 'config';
 import { setResponse } from 'utils';
-import { config } from 'environment';
 
 const particle = new Particle();
 
 const triggerPhotonFunction = (action, next) => {
-  const predefinedParameters = config.photons[action.key];
+  const predefinedParameters = ENV.photons[action.key];
 
   const parameters = {
     ...predefinedParameters,

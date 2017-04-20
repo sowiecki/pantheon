@@ -1,7 +1,7 @@
 /* eslint no-eval:0 */
 import { get } from 'lodash';
 
-import { config } from 'environment';
+import { ENV } from 'config';
 import { CUSTOM_LIGHT_FUNCTIONS } from 'constants';
 import {
   toggleLight,
@@ -51,7 +51,7 @@ const occurrencesReducer = (state, action) => ({
 
     Object.keys(stateUpdates).forEach((customStateKey) => {
       try {
-        const handler = get(config, `${action.path}.$state[${customStateKey}].$handler`);
+        const handler = get(ENV, `${action.path}.$state[${customStateKey}].$handler`);
         const customStateHandler = eval(handler);
         const value = stateUpdates[customStateKey] || customStateKey;
 

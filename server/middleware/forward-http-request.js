@@ -3,23 +3,23 @@
 import http from 'http';
 import { get } from 'lodash';
 
+import { ENV } from 'config';
 import { stringifyObjectValues, setResponse } from 'utils';
-import { config } from 'environment';
 
 /**
  * Forwards an HTTP request using parameters either provided directly by an action,
- * or matches a provided key to pre-defined parameters in config.json.
+ * or matches a provided key to pre-defined parameters in ENV.json.
  */
 const forwardHTTPRequest = (action, next) => {
   const { key } = action;
-  const keyIsInvalid = key && !config.httpRequests[key];
+  const keyIsInvalid = key && !ENV.httpRequests[key];
 
   if (keyIsInvalid) {
-    throw new Error(`Property ${key} not declared in httpRequests property of config.json`);
+    throw new Error(`Property ${key} not declared in httpRequests property of ENV.json`);
   }
 
-  const body = get(config, `httpRequests[${key}].body)`, action.body);
-  const optionsOverride = get(config, `httpRequests[${key}].options`, action.options);
+  const body = get(ENV, `httpRequests[${key}].body)`, action.body);
+  const optionsOverride = get(ENV, `httpRequests[${key}].options`, action.options);
 
   const payload = body ? JSON.stringify(body) : null;
 
