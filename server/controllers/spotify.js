@@ -15,12 +15,6 @@ const spotifyController = new Controller({
 
   getRedirectUri: () => ENV.spotify.redirectUri || `http://localhost:${PORT}/api/register-spotify`,
 
-  getToken() {
-    const { meta } = store.getState();
-
-    return get(meta, 'spotify.token');
-  },
-
   initialize() {
     const { clientId, clientSecret } = ENV.spotify;
 
