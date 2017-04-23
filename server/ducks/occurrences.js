@@ -14,7 +14,8 @@ export const EMIT_TRIGGER_PHOTON_FUNCTION = 'EMIT_TRIGGER_PHOTON_FUNCTION';
 export const EMIT_FORWARD_HTTP_REQUEST = 'EMIT_FORWARD_HTTP_REQUEST';
 export const EMIT_SEND_UNIFIED_COMMAND = 'EMIT_SEND_UNIFIED_COMMAND';
 export const EMIT_CUSTOM_STATE_UPDATE = 'EMIT_CUSTOM_STATE_UPDATE';
-export const EMIT_SPOTIFY_COMMAND = 'EMIT_SPOTIFY_COMMAND';
+export const EMIT_SEND_SPOTIFY_COMMAND = 'EMIT_SEND_SPOTIFY_COMMAND';
+export const EMIT_REGISTER_SPOTIFY_DEVICES = 'EMIT_REGISTER_SPOTIFY_DEVICES';
 
 const occurrencesReducer = (state, action) => ({
   [EMIT_SEND_HUE_COMMAND]() {
@@ -64,18 +65,10 @@ const occurrencesReducer = (state, action) => ({
     return { ...state };
   },
 
-  [EMIT_SPOTIFY_COMMAND]() {
-    state.spotifyApi.getMe()
-      .then(function (data) {
-        console.log('Some information about the authenticated user', data.body);
-      }, function (err) {
-        console.log('Something went wrong!', err);
-      });
-
-    return {
-      ...state
-    };
-  }
+  [EMIT_REGISTER_SPOTIFY_DEVICES]: () => ({
+    ...state,
+    spotifyDevices: action.data.devices
+  })
 });
 
 export default occurrencesReducer;

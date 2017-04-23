@@ -48,5 +48,8 @@ export const generateReducers = (state, action, reducers) => {
 export const filterSensativeState = (state) => omit(state, [
   'unifiedID',
   'hue',
-  'lightState'
+  'lightState',
+  'spotifyApi',
+  'spotifyAccessToken',
+  'spotifyRefreshToken'
 ]);

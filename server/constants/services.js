@@ -6,6 +6,8 @@ export const WEBSOCKET_RECONNECT_INTERVAL = 2000;
 export const UNIFIED_REMOTE_PORT = 9510;
 export const UNIFIED_KEEP_ALIVE_INTERVAL = 60000;
 
+export const SPOTIFY_HOST = 'api.spotify.com';
+export const SPOTIFY_API = '/v1/';
 export const SPOTIFY_PERMISSION_SCOPES = [
   'playlist-read-private',
   'playlist-read-collaborative',

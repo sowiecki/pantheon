@@ -6,7 +6,7 @@ import getEventHandlers from 'handlers';
 import { SPOTIFY_TOKEN_REFRESH_INVERVAL } from 'constants';
 import { ENV, PUBLIC_DIR } from 'config';
 import {
-  EMIT_REGISTER_SPOTIFY_CODE,
+  FETCH_SPOTIFY_CODE,
   EMIT_REFRESH_SPOTIFY_CODE
 } from 'ducks/devices';
 import store from 'store';
@@ -49,7 +49,7 @@ router.get('/api/register-spotify', async (ctx) => {
   const code = queryString.parse(ctx.request.url)['/api/register-spotify?code'];
 
   store.dispatch({
-    type: EMIT_REGISTER_SPOTIFY_CODE,
+    type: FETCH_SPOTIFY_CODE,
     code
   });
 

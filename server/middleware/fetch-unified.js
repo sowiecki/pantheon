@@ -22,7 +22,8 @@ import { setResponse } from 'utils';
  * It may not be necessary to constantly generate a new UR-Connection-ID,
  * but it doesn't seem harmful, and it maintains an active session for the application.
  *
- * With an active session, POST requests can be sent to trigger events (see ./send-unified.js)
+ * With an active session,
+ * POST requests can be sent to trigger events (see ./send-unified-command.js)
  */
 
 const declareCapabilities = (unifiedID) => {
