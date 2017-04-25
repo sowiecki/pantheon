@@ -1,3 +1,5 @@
+/* eslint no-console:0 */
+/* globals console */
 import SpotifyWebApi from 'spotify-web-api-node';
 import opn from 'opn';
 
@@ -25,11 +27,12 @@ const spotifyController = new Controller({
     });
 
     const authorizeURL = spotifyApi.createAuthorizeURL(SPOTIFY_PERMISSION_SCOPES);
+    const handleOpnFailure = spotifyController.handleOpnFailure.bind(this, authorizeURL);
 
     // Assuming the correct callback URL was registered for the application,
     // this will begin the process to loop back to this server and register an auth token.
     // Register your callback URL here https://developer.spotify.com/my-applications
-    opn(authorizeURL);
+    opn(authorizeURL).catch(handleOpnFailure);
 
     store.dispatch({
       type: EMIT_REGISTER_SPOTIFY_CLIENT,
@@ -49,6 +52,21 @@ const spotifyController = new Controller({
         name: 'player'
       });
     }, SPOTIFY_SYNC_STATE_TIMEOUT);
+  },
+
+  /**
+   * Since opn wraps xdg-open on Linux, which does not work over SSH,
+   * we must use an alternative method to launch the authorization URL.
+   */
+  handleOpnFailure(authorizeURL) {
+    console.log('Failed to open Spotify authorize URL, trying alternative method');
+
+    const terminal = require('child_process').spawn('bash');
+    const display = ENV.spotify.display || '0';
+    const browser = ENV.spotify.browser || 'chromium-browser';
+    const cmd = `DISPLAY=:${display} ${browser} ${authorizeURL}`;
+
+    terminal.stdin.write(cmd);
   }
 });
 
