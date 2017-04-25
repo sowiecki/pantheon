@@ -1,3 +1,4 @@
+import spotifyController from 'controllers/spotify';
 import { EMIT_REGISTER_SPOTIFY_TOKENS } from 'ducks/devices';
 
 const fetchSpotifyCode = (store, action, next) => {
@@ -12,6 +13,8 @@ const fetchSpotifyCode = (store, action, next) => {
       spotifyAccessToken: body.access_token,
       spotifyRefreshToken: body.refresh_token
     });
+
+    spotifyController.syncState();
   }, (error) => {
     console.log('Problem setting Spotify authentication code!', error); // eslint-disable-line
   });
