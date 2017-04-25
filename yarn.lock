@@ -3175,9 +3175,9 @@ node-emoji@^1.4.1:
   dependencies:
     string.prototype.codepointat "^0.2.0"
 
-node-hue-api@2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/node-hue-api/-/node-hue-api-2.4.1.tgz#2b5ec1fe817b12b22f524f09dc94ec5c0baeb3a7"
+node-hue-api@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/node-hue-api/-/node-hue-api-2.4.2.tgz#f721aba415a6c4a8d0b4c2af0ab36939f0ab5cb7"
   dependencies:
     axios "~0.15.3"
     deep-extend "~0.4.0"
