@@ -15,3 +15,7 @@ of Pantheon.
 
 This does mean that Spotify integration is impossible if the device running Pantheon cannot launch a browser.
 
+## Launching Pantheon over SSH on Linux platforms
+When launched over SSH on Linux platforms, Pantheon must use an alternative method to authenticate with Spotify.
+By default, it will try to open the authorization URL using the command `DISPLAY=:0 chromium-browser`.
+To use a different display and browser, set the `spotify.display` and `spotify.browser` properties in `config.json`.
