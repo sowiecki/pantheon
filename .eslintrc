@@ -1,6 +1,10 @@
 {
-  "plugins": ["filenames"],
-  "extends": ["airbnb"],
+  "plugins": [
+    "filenames"
+  ],
+  "extends": [
+    "airbnb"
+  ],
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
@@ -18,20 +22,47 @@
     "strict": 0,
     "global-require": 0,
     "import/no-unresolved": 0,
-    "quotes": [2, "single"],
-    "arrow-body-style": ["error", "as-needed"],
-    "indent": [2, 2, {"SwitchCase": 1}],
+    "quotes": [
+      2,
+      "single"
+    ],
+    "arrow-body-style": [
+      "error",
+      "as-needed"
+    ],
+    "indent": [
+      2,
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
     "no-invalid-this": 0,
     "valid-jsdoc": 0,
     "comma-dangle": 0,
     "no-param-reassign": 0,
+    "no-confusing-arrow": [
+      0,
+      {
+        "allowParens": true
+      }
+    ],
     "consistent-return": 0,
     "default-case": 0,
     "no-extra-parens": 0,
-    "arrow-parens": [1, "always"],
+    "arrow-parens": [
+      1,
+      "always"
+    ],
     "no-plusplus": 0,
-    "import/extensions": [1, "never"],
-    "no-restricted-syntax": [1, "WithStatement"],
+    "import/extensions": [
+      1,
+      "never"
+    ],
+    "no-restricted-syntax": [
+      1,
+      "WithStatement"
+    ],
     "import/no-extraneous-dependencies": 0,
     "no-await-in-loop": 0
   },

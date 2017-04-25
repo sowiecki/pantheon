@@ -1,3 +1,4 @@
+import queryString from 'query-string';
 import { get } from 'lodash';
 
 import { SPOTIFY_API } from 'constants';
@@ -8,6 +9,8 @@ import {
 } from 'ducks/occurrences';
 
 const prependAPI = (path) => `${SPOTIFY_API}${path}`;
+const appendParams = (params) => `?${queryString.stringify(params)}`;
+const resolveParam = (key, value) => value ? ({ [key]: value }) : {};
 
 /**
  * Command functions each return an object containing properties, request options and body,
@@ -34,10 +37,15 @@ export const playerDevices = () => ({
   }
 });
 
-export const playerPlay = () => ({
+export const playerPlay = ({ contextUri, uris, offset }) => ({
   options: {
     method: 'PUT',
     path: prependAPI('me/player/play')
+  },
+  body: {
+    ...resolveParam('context_uri', contextUri),
+    ...resolveParam('uris', uris),
+    ...resolveParam('offset', offset)
   }
 });
 
@@ -59,6 +67,27 @@ export const playerPlayPause = (action, state) => {
     }
   };
 };
+
+export const playerVolume = ({ volumePercent, deviceId }) => ({
+  options: {
+    method: 'PUT',
+    path: prependAPI('me/player/volume') + appendParams({ volume_percent: volumePercent, device_id: deviceId })
+  }
+});
+
+export const playerNext = () => ({
+  options: {
+    method: 'POST',
+    path: prependAPI('me/player/next')
+  }
+});
+
+export const playerPrevious = () => ({
+  options: {
+    method: 'POST',
+    path: prependAPI('me/player/previous')
+  }
+});
 
 export const transferPlayback = ({ deviceIds, play }) => ({
   options: {
