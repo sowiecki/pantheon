@@ -59,14 +59,14 @@ const spotifyController = new Controller({
    * we must use an alternative method to launch the authorization URL.
    */
   handleOpnFailure(authorizeURL) {
+    console.log('===', authorizeURL)
     console.log('Failed to open Spotify authorize URL, trying alternative method');
 
-    const terminal = require('child_process').spawn('bash');
     const display = ENV.spotify.display || '0';
     const browser = ENV.spotify.browser || 'chromium-browser';
     const cmd = `DISPLAY=:${display} ${browser} ${authorizeURL}`;
 
-    terminal.stdin.write(cmd);
+    require('child_process').exec(cmd);
   }
 });
 

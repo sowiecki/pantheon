@@ -1,6 +1,7 @@
 /* globals console */
 /* eslint no-console: 0 */
 import https from 'https';
+import { isEmpty } from 'lodash';
 
 import spotifyController from 'controllers/spotify';
 import { SPOTIFY_HOST } from 'constants';
@@ -13,13 +14,14 @@ const sendSpotifyCommand = (store, action, next) => {
   const commandProperties = commands[action.name](action, state);
 
   const options = {
+    ...commandProperties.options,
     method: commandProperties.options.method,
     host: SPOTIFY_HOST,
     path: commandProperties.options.path,
     headers: {
-      Authorization: `Bearer ${state.spotifyAccessToken}`
-    },
-    ...commandProperties.options.headers
+      Authorization: `Bearer ${state.spotifyAccessToken}`,
+      ...commandProperties.options.headers
+    }
   };
 
   if (!commandProperties.type) {
@@ -45,7 +47,7 @@ const sendSpotifyCommand = (store, action, next) => {
     console.log(`Problem with request: ${message}`);
   });
 
-  if (commandProperties.body) {
+  if (!isEmpty(commandProperties.body)) {
     request.write(JSON.stringify(commandProperties.body));
   }
 
