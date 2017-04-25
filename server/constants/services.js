@@ -18,3 +18,4 @@ export const SPOTIFY_PERMISSION_SCOPES = [
   'user-top-read'
 ];
 export const SPOTIFY_TOKEN_REFRESH_INVERVAL = 3540000; // 59 minutes
+export const SPOTIFY_SYNC_STATE_TIMEOUT = 250;
