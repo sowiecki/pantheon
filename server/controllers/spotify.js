@@ -2,6 +2,7 @@
 /* globals console */
 import SpotifyWebApi from 'spotify-web-api-node';
 import opn from 'opn';
+import { get } from 'lodash';
 
 import { ENV, PORT } from 'config';
 import { SPOTIFY_PERMISSION_SCOPES, SPOTIFY_SYNC_STATE_TIMEOUT } from 'constants';
@@ -17,16 +18,23 @@ const spotifyController = new Controller({
 
   getRedirectUri: () => ENV.spotify.redirectUri || `http://localhost:${PORT}/api/register-spotify`,
 
+  getPermissionScopes() {
+    const blacklistedPermissions = get(ENV, 'spotify.blacklistedPermissions', []);
+    const filterBlacklisted = (e) => !blacklistedPermissions.includes(e);
+    const permissionScopes = SPOTIFY_PERMISSION_SCOPES.filter(filterBlacklisted);
+
+    return permissionScopes;
+  },
+
   initialize() {
     const { clientId, clientSecret } = ENV.spotify;
-
     const spotifyApi = new SpotifyWebApi({
       clientId,
       clientSecret,
       redirectUri: spotifyController.getRedirectUri()
     });
 
-    const authorizeURL = spotifyApi.createAuthorizeURL(SPOTIFY_PERMISSION_SCOPES);
+    const authorizeURL = spotifyApi.createAuthorizeURL(spotifyController.getPermissionScopes());
     const handleOpnFailure = spotifyController.handleOpnFailure.bind(this, authorizeURL);
 
     // Assuming the correct callback URL was registered for the application,
@@ -61,12 +69,11 @@ const spotifyController = new Controller({
   handleOpnFailure(authorizeURL) {
     console.log('Failed to open Spotify authorize URL, trying alternative method');
 
-    const terminal = require('child_process').spawn('bash');
     const display = ENV.spotify.display || '0';
     const browser = ENV.spotify.browser || 'chromium-browser';
-    const cmd = `DISPLAY=:${display} ${browser} ${authorizeURL}`;
+    const cmd = `DISPLAY=:${display} ${browser} '${authorizeURL}'`;
 
-    terminal.stdin.write(cmd);
+    require('child_process').exec(cmd);
   }
 });
 
