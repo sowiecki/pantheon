@@ -23,7 +23,10 @@ const forwardHTTPRequest = (action, next) => {
 
   const payload = body ? JSON.stringify(body) : null;
 
-  const additionalHeaders = stringifyObjectValues(optionsOverride.headers);
+  const headers = stringifyObjectValues({
+    ...optionsOverride.headers,
+    ...action.additionalHeaders
+  });
 
   const options = {
     method: action.method || 'POST',
@@ -31,7 +34,7 @@ const forwardHTTPRequest = (action, next) => {
     headers: {
       'Content-Type': 'application/json',
       'Content-Length': payload ? payload.length : 0,
-      ...additionalHeaders
+      ...headers
     }
   };
 
