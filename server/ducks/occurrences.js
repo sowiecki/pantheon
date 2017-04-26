@@ -60,9 +60,8 @@ const occurrencesReducer = (state, action) => ({
       try {
         const handler = get(ENV, `${action.path}.$state[${customStateKey}].$handler`);
         const customStateHandler = eval(handler);
-        const value = stateUpdates[customStateKey] || customStateKey;
 
-        state[customStateKey] = customStateHandler(value);
+        state[customStateKey] = customStateHandler(customStateKey);
       } catch (e) {
         logUndefinedHandler(e);
       }
