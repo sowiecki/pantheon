@@ -2,10 +2,10 @@
 /* eslint no-console: 0 */
 import http from 'http';
 
-import { setResponse } from 'utils';
-import { config } from 'environment';
-import { EMIT_REGISTER_UNIFIED_ID } from 'ducks/devices';
+import { ENV } from 'config';
 import { UNIFIED_REMOTE_PORT } from 'constants';
+import { EMIT_REGISTER_UNIFIED_ID } from 'ducks/devices';
+import { setResponse } from 'utils';
 
 /**
  * A hacked together, reverse-engineered Unified Remote (UR) connection implementation,
@@ -22,11 +22,12 @@ import { UNIFIED_REMOTE_PORT } from 'constants';
  * It may not be necessary to constantly generate a new UR-Connection-ID,
  * but it doesn't seem harmful, and it maintains an active session for the application.
  *
- * With an active session, POST requests can be sent to trigger events (see ./send-unified.js)
+ * With an active session,
+ * POST requests can be sent to trigger events (see ./send-unified-command.js)
  */
 
 const declareCapabilities = (unifiedID) => {
-  const { hostname } = config.unified;
+  const { hostname } = ENV.unified;
 
   const capabilities = JSON.stringify({
     Capabilities: {
@@ -66,7 +67,7 @@ const declareCapabilities = (unifiedID) => {
 };
 
 const fetchUnified = (action, next) => {
-  const { hostname } = config.unified;
+  const { hostname } = ENV.unified;
 
   const options = {
     hostname,

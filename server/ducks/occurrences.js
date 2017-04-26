@@ -1,7 +1,7 @@
 /* eslint no-eval:0 */
 import { get } from 'lodash';
 
-import { config } from 'environment';
+import { ENV } from 'config';
 import { CUSTOM_LIGHT_FUNCTIONS } from 'constants';
 import {
   toggleLight,
@@ -14,6 +14,12 @@ export const EMIT_TRIGGER_PHOTON_FUNCTION = 'EMIT_TRIGGER_PHOTON_FUNCTION';
 export const EMIT_FORWARD_HTTP_REQUEST = 'EMIT_FORWARD_HTTP_REQUEST';
 export const EMIT_SEND_UNIFIED_COMMAND = 'EMIT_SEND_UNIFIED_COMMAND';
 export const EMIT_CUSTOM_STATE_UPDATE = 'EMIT_CUSTOM_STATE_UPDATE';
+export const EMIT_SEND_SPOTIFY_COMMAND = 'EMIT_SEND_SPOTIFY_COMMAND';
+
+// Spotify onSuccess types
+export const EMIT_REGISTER_SPOTIFY_PLAYER = 'EMIT_REGISTER_SPOTIFY_PLAYER';
+export const EMIT_REGISTER_SPOTIFY_DEVICES = 'EMIT_REGISTER_SPOTIFY_DEVICES';
+export const EMIT_SPOTIFY_PLAYLISTS_UPDATE = 'EMIT_SPOTIFY_PLAYLISTS_UPDATE';
 
 const occurrencesReducer = (state, action) => ({
   [EMIT_SEND_HUE_COMMAND]() {
@@ -50,7 +56,7 @@ const occurrencesReducer = (state, action) => ({
 
     Object.keys(stateUpdates).forEach((customStateKey) => {
       try {
-        const handler = get(config, `${action.path}.$state[${customStateKey}].$handler`);
+        const handler = get(ENV, `${action.path}.$state[${customStateKey}].$handler`);
         const customStateHandler = eval(handler);
         const value = stateUpdates[customStateKey] || customStateKey;
 
@@ -61,7 +67,22 @@ const occurrencesReducer = (state, action) => ({
     });
 
     return { ...state };
-  }
+  },
+
+  [EMIT_REGISTER_SPOTIFY_PLAYER]: () => ({
+    ...state,
+    spotifyPlayer: action.data
+  }),
+
+  [EMIT_REGISTER_SPOTIFY_DEVICES]: () => ({
+    ...state,
+    spotifyDevices: action.data.devices
+  }),
+
+  [EMIT_SPOTIFY_PLAYLISTS_UPDATE]: () => ({
+    ...state,
+    spotifyPlaylists: action.data.items
+  })
 });
 
 export default occurrencesReducer;

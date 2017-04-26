@@ -2,9 +2,9 @@
 /* eslint no-console: 0 */
 import http from 'http';
 
-import { setResponse } from 'utils';
-import { config } from 'environment';
+import { ENV } from 'config';
 import { UNIFIED_REMOTE_PORT } from 'constants';
+import { setResponse } from 'utils';
 
 import * as commands from './unified/commands';
 
@@ -13,11 +13,11 @@ import * as commands from './unified/commands';
  * using a session established by ./fetch-unified.js
  */
 
-const sendUnified = (store, action, next) => {
-  const { hostname } = config.unified;
+const sendUnifiedCommand = (store, action, next) => {
+  const { hostname } = ENV.unified;
   const { unifiedID } = store.getState().meta;
 
-  const commandObject = commands[action.name](action);
+  const commandBody = commands[action.name](action);
 
   const options = {
     hostname,
@@ -41,8 +41,8 @@ const sendUnified = (store, action, next) => {
     console.log(`Problem with request: ${message}`);
   });
 
-  request.write(commandObject);
+  request.write(commandBody);
   request.end();
 };
 
-export default sendUnified;
+export default sendUnifiedCommand;

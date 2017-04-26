@@ -4,18 +4,18 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import colors from 'colors/safe';
 
+import { PORT } from 'config';
 import { logger } from 'utils';
 import router from './routes';
 import controllers from './controllers';
 
 const server = new Koa();
-const port = process.env.PORT || 4000;
 
 server.use(bodyParser({ multipart: true }));
 server.use(router.routes());
 
 const run = async () => {
-  logger.log('info', `Listening on port ${port}`);
+  logger.log('info', `Listening on port ${PORT}`);
 
   Object.keys(controllers).forEach((key) => {
     const shouldInit = controllers[key].shouldInit();
@@ -36,7 +36,7 @@ const run = async () => {
     }
   });
 
-  await server.listen(port);
+  await server.listen(PORT);
 };
 
 run();

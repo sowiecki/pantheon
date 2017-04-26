@@ -6,6 +6,12 @@
 |----------------------|------------------------------------------------------|-----------|---------|
 | id                   | Secret passcode required for any request to function | Yes       |         |
 | proxyHost            | Address of webSocket proxy to connect to             | No        |         |
+| spotify              | [See here](./SPOTIFY.md) for more information        | No        |         |
+| - cliendId           | [See here](./SPOTIFY.md) for more information        | Yes       |         |
+| - clientSecret       | [See here](./SPOTIFY.md) for more information        | Yes       |         |
+| - blacklistedPermissions | Spotify permissions to deny Pantheon             | No        |         |
+| - display            | [See here](./SPOTIFY.md) for more information        | No        |         |
+| - browser            | [See here](./SPOTIFY.md) for more information        | No        |         |
 | hueUserIDs           | User IDs for Hue bridges - [see here](https://www.developers.meethue.com/documentation/getting-started) on how to register a user to a Hue bridge, and obtain the user ID | No |
 | - [ipaddress]        | User ID registered to bridge on ip address           | No        |         |
 | photons              | Individually listed Particle Photon devices          | No        |         |
