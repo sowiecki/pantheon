@@ -2,7 +2,6 @@ import { EMIT_RESOLVE_QUEUED_EVENTS } from 'ducks/occurrences';
 
 const resolveQueuedEvents = (store, action, next) => {
   const state = { ...store.getState().meta };
-  console.log(state.queuedEvents)
   const queuedEvents = state.queuedEvents.map((queuedEvent) => {
     const statesWaitingOn = Object.keys(queuedEvent.waitFor);
 
