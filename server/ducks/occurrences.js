@@ -9,6 +9,8 @@ import {
   errorLightStatus
 } from 'utils';
 
+export const EMIT_QUEUE_EVENT = 'EMIT_QUEUE_EVENT';
+export const EMIT_RESOLVE_QUEUED_EVENTS = 'EMIT_RESOLVE_QUEUED_EVENTS';
 export const EMIT_SEND_HUE_COMMAND = 'EMIT_SEND_HUE_COMMAND';
 export const EMIT_TRIGGER_PHOTON_FUNCTION = 'EMIT_TRIGGER_PHOTON_FUNCTION';
 export const EMIT_FORWARD_HTTP_REQUEST = 'EMIT_FORWARD_HTTP_REQUEST';
@@ -68,6 +70,16 @@ const occurrencesReducer = (state, action) => ({
 
     return { ...state };
   },
+
+  [EMIT_QUEUE_EVENT]: () => ({
+    ...state,
+    queuedEvents: state.queuedEvents.concat(action.event)
+  }),
+
+  [EMIT_RESOLVE_QUEUED_EVENTS]: () => ({
+    ...state,
+    queuedEvents: action.queuedEvents
+  }),
 
   [EMIT_REGISTER_SPOTIFY_PLAYER]: () => ({
     ...state,

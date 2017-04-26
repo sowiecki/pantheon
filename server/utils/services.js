@@ -1,5 +1,6 @@
 /* eslint no-console:0 */
-import { set, get } from 'lodash';
+import { set, isEmpty, get } from 'lodash';
+import { EMIT_QUEUE_EVENT } from 'ducks/occurrences';
 
 /**
  * Safetly sets HTTP response, if possible.
@@ -10,7 +11,15 @@ export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const handleEvent = async (store, event) => {
   await sleep(event.delay);
-  await store.dispatch(event);
+
+  if (!isEmpty(event.waitFor)) {
+    await store.dispatch({
+      type: EMIT_QUEUE_EVENT,
+      event
+    });
+  } else {
+    await store.dispatch(event);
+  }
 };
 
 export const batchEvents = async (store, events) => {
