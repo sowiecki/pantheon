@@ -13,12 +13,14 @@ const readFile = (fileName) => {
 const isTest = process.env.NODE_ENV === 'test';
 const ENV = isTest ? require('../environment/mock-config') : readFile('../environment/config.json');
 
-const { errors } = validator.validate(ENV, '/ConfigSchema');
+if (!isTest) {
+  const { errors } = validator.validate(ENV, '/ConfigSchema');
 
-if (errors.length) {
-  errors.forEach((error) => {
-    throw new Error(`config.json validation error, ${error.stack}`);
-  });
+  if (errors.length) {
+    errors.forEach((error) => {
+      throw new Error(`config.json validation error, ${error.stack}`);
+    });
+  }
 }
 
 export { ENV };
