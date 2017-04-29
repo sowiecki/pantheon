@@ -10,7 +10,8 @@ const readFile = (fileName) => {
   return JSON.parse(readFileSync(filePath, 'utf8'));
 };
 
-const ENV = readFile('../environment/config.json');
+const isTest = process.env.NODE_ENV === 'test';
+const ENV = isTest ? require('../environment/mock-config') : readFile('../environment/config.json');
 
 const { errors } = validator.validate(ENV, '/ConfigSchema');
 
