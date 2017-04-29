@@ -37,10 +37,10 @@ export const playerDevices = () => ({
   }
 });
 
-export const playerPlay = ({ contextUri, uris, offset }) => ({
+export const playerPlay = ({ contextUri, deviceId, uris, offset }) => ({
   options: {
     method: 'PUT',
-    path: prependAPI('me/player/play')
+    path: prependAPI('me/player/play') + appendParams({ device_id: deviceId })
   },
   body: {
     ...resolveParam('context_uri', contextUri),
