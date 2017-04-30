@@ -1,5 +1,6 @@
 /* eslint no-console:0 */
-import { set, isEmpty, get } from 'lodash';
+import { set, get, isEmpty, mapKeys, camelCase } from 'lodash';
+
 import { EMIT_QUEUE_EVENT } from 'ducks/occurrences';
 
 /**
@@ -51,4 +52,9 @@ export const getHueStates = async (store) => {
   }
 
   return lightStates;
+};
+
+export const formatRequestKeys = (command) => (action, state) => {
+  const formattedAction = mapKeys(action, (value, key) => camelCase(key));
+  return command(formattedAction, state);
 };
