@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { setResponse, getHueStates } from 'utils/services';
+import { setResponse, getHueStates, formatRequestKeys } from 'utils/services';
 import { genMockStore } from 'tests/utils';
 
 describe('Services utilities', () => {
@@ -25,6 +25,18 @@ describe('Services utilities', () => {
         '192.168.1.3': { bazz: 4 }
       };
       const result = await getHueStates(genMockStore);
+
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('formatRequestKeys', () => {
+    it('should invoke the provided function with all event request arguements converted to camelCase', () => {
+      const mockCommand = (a) => ({ ...a });
+      const mockAction = { id: 123, snake_case: 'bizz_bazz', FOO_BAR: 0 };
+      const mockState = { foo: 'bar', bizz: 'bazz' };
+      const expected = { id: 123, snakeCase: 'bizz_bazz', fooBar: 0 };
+      const result = formatRequestKeys(mockCommand)(mockAction, mockState);
 
       expect(result).toEqual(expected);
     });

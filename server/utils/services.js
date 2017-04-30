@@ -1,5 +1,5 @@
 /* eslint no-console:0 */
-import { set, get } from 'lodash';
+import { set, get, mapKeys, camelCase } from 'lodash';
 
 /**
  * Safetly sets HTTP response, if possible.
@@ -42,4 +42,9 @@ export const getHueStates = async (store) => {
   }
 
   return lightStates;
+};
+
+export const formatRequestKeys = (command) => (action, state) => {
+  const formattedAction = mapKeys(action, (value, key) => camelCase(key));
+  return command(formattedAction, state);
 };
