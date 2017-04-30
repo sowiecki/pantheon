@@ -14,7 +14,7 @@ const mockBridges = mockGroups.reduce((accumulated, mockBridge, index) => ({
   ...genBridge(mockBridge, index)
 }), initialMockBridge);
 
-export const genMockStore = {
+export const genMockStore = (mockDispatch) => ({
   getState: () => ({
     meta: {
       hue: {
@@ -22,5 +22,7 @@ export const genMockStore = {
         ...mockBridges
       }
     }
-  })
-};
+  }),
+
+  dispatch: mockDispatch
+});
