@@ -17,7 +17,7 @@ This does mean that Spotify integration is impossible if the device running Pant
 
 ## Commands
 
-Spotify commands wrap and are *mostly* equivalent those found in the **v1** [Spotify Web API Reference](https://developer.spotify.com/web-api/endpoint-reference/). The only major difference is that parameters and command names are always camelCased, with the command name being a camelCased variation of the API's path, usually only the last two path segments. E.g., `/v1/me/player/play` becomes `"name": "playerPause"`.
+Spotify commands wrap and are *mostly* equivalent to those found in the **v1** [Spotify Web API Reference](https://developer.spotify.com/web-api/endpoint-reference/). The only major difference is that command names are always camelCased, with the command name being a camelCased variation of the API's path, usually only the last two path segments. E.g., `/v1/me/player/play` becomes `"name": "playerPause"`. Query parameters and request body data keys are accepted as either `snake_case` (as they are documented by the [Spotify API Endpoint reference](https://developer.spotify.com/web-api/endpoint-reference/)) or `camelCase`.
 
 Full example of the `playPause` command used to start playback of a specific album:
 ```json

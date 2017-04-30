@@ -5,13 +5,13 @@ import { isEmpty } from 'lodash';
 
 import spotifyController from 'controllers/spotify';
 import { SPOTIFY_HOST } from 'constants';
-import { setResponse } from 'utils';
+import { formatRequestKeys, setResponse } from 'utils';
 
 import * as commands from './spotify/commands';
 
 const sendSpotifyCommand = (store, action, next) => {
   const state = store.getState().meta;
-  const commandProperties = commands[action.name](action, state);
+  const commandProperties = formatRequestKeys(commands[action.name])(action, state);
 
   const options = {
     ...commandProperties.options,
