@@ -9,6 +9,8 @@ const resolveQueuedEvents = async (action) => {
   const queuedEvents = state.queuedEvents.concat(action.event);
 
   const unresolvedEvents = queuedEvents.map((queuedEvent) => {
+    if (!queuedEvent) return queuedEvent;
+
     const conditions = Object.keys(queuedEvent.conditions);
 
     const conditionValidations = conditions.map((condition) => {
@@ -25,7 +27,7 @@ const resolveQueuedEvents = async (action) => {
     }
 
     return queuedEvent;
-  }).filter(({ resolved }) => !resolved);
+  }).filter((event) => event && !event.resolved);
 
   // Refresh queued events sans those that were just dispatched
   store.dispatch({
