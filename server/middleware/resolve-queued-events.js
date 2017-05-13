@@ -1,31 +1,36 @@
-import { EMIT_RESOLVE_QUEUED_EVENTS } from 'ducks/occurrences';
+import { cloneDeep } from 'lodash';
 
-const resolveQueuedEvents = (store, action, next) => {
-  const state = { ...store.getState().meta };
-  const queuedEvents = state.queuedEvents.map((queuedEvent) => {
-    const statesWaitingOn = Object.keys(queuedEvent.waitFor);
+import { EMIT_SAVE_QUEUED_EVENTS } from 'ducks/occurrences';
+import store from 'store';
 
-    const eventResolutions = statesWaitingOn.map((stateWaitingOn) => {
-      const shouldResolve = state[stateWaitingOn] === queuedEvent.waitFor[stateWaitingOn];
+const resolveQueuedEvents = async (action) => {
+  const state = cloneDeep(store.getState().meta);
 
-      // Finally dispatch the action and begin clean up
-      if (shouldResolve) {
-        delete queuedEvent.waitFor;
-        store.dispatch(queuedEvent);
-      }
+  const queuedEvents = state.queuedEvents.concat(action.event);
 
-      return stateWaitingOn;
+  const unresolvedEvents = queuedEvents.map((queuedEvent) => {
+    const conditions = Object.keys(queuedEvent.conditions);
+
+    const conditionValidations = conditions.map((condition) => {
+      const conditionsMet = state[condition] === queuedEvent.conditions[condition];
+
+      return conditionsMet;
     });
 
-    const eventResolved = eventResolutions.reduce((a, b) => a && b);
+    const allConditionsMet = !conditionValidations.includes(false);
 
-    return eventResolved && queuedEvent;
-  }).filter((event) => !!event.waitFor);
+    if (allConditionsMet) {
+      store.dispatch(queuedEvent);
+      queuedEvent.resolved = true;
+    }
+
+    return queuedEvent;
+  }).filter(({ resolved }) => !resolved);
 
   // Refresh queued events sans those that were just dispatched
-  next({
-    type: EMIT_RESOLVE_QUEUED_EVENTS,
-    queuedEvents
+  store.dispatch({
+    type: EMIT_SAVE_QUEUED_EVENTS,
+    queuedEvents: unresolvedEvents
   });
 };
 

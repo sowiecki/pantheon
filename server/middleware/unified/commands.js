@@ -4,8 +4,7 @@ export const sendText = ({ value }) => JSON.stringify({
   Request: 7,
   Run: {
     Extras: {
-      Values:
-      [{ Value: value }]
+      Values: [{ Value: value }]
     },
     Name: 'toggle'
   }

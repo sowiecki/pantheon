@@ -2,7 +2,7 @@
 import { handleEvent, setResponse, getHueStates, formatRequestKeys } from 'utils/services';
 import { genMockStore } from 'tests/utils';
 
-import { EMIT_QUEUE_EVENT } from 'ducks/occurrences';
+import { EMIT_QUEUE_EVENT, RESOLVE_CUSTOM_STATE_UPDATE } from 'ducks/occurrences';
 
 describe('Services utilities', () => {
   describe('handleEvent', () => {
@@ -18,17 +18,21 @@ describe('Services utilities', () => {
 
       await handleEvent(mockStore, mockEvent);
 
-      expect(mockDispatch.mock.calls.length).toBe(1);
+      expect(mockDispatch.mock.calls.length).toBe(2);
       expect(mockDispatch.mock.calls[0][0].type).toBe('EMIT_GENERIC_EVENT');
+      expect(mockDispatch.mock.calls[1][0].type).toBe(RESOLVE_CUSTOM_STATE_UPDATE);
+      expect(mockDispatch.mock.calls[2]).toBeUndefined();
     });
 
-    it('should dispatch queued events with the correct action type', async () => {
-      const mockEvent = { type: EMIT_QUEUE_EVENT };
+    it('should dispatch conditional events with the correct action type', async () => {
+      const mockEvent = { type: 'EMIT_GENERIC_EVENT', conditions: { foo: 'bar' } };
 
       await handleEvent(mockStore, mockEvent);
 
-      expect(mockDispatch.mock.calls.length).toBe(2);
-      expect(mockDispatch.mock.calls[1][0].type).toBe(EMIT_QUEUE_EVENT);
+      expect(mockDispatch.mock.calls.length).toBe(3);
+      expect(mockDispatch.mock.calls[0][0].type).toBe('EMIT_GENERIC_EVENT');
+      expect(mockDispatch.mock.calls[1][0].type).toBe(RESOLVE_CUSTOM_STATE_UPDATE);
+      expect(mockDispatch.mock.calls[2][0].type).toBe(EMIT_QUEUE_EVENT);
     });
 
     it('should wait to dispatch delayed events', () => {
