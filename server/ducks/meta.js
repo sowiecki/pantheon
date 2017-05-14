@@ -11,7 +11,8 @@ const initialState = {
   hue: {
     userIDs: get(ENV, 'hueUserIDs', {})
   },
-  lightState
+  lightState,
+  queuedEvents: []
 };
 
 const metaReducer = (state = initialState, action) => {

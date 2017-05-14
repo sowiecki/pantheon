@@ -10,14 +10,17 @@ const readFile = (fileName) => {
   return JSON.parse(readFileSync(filePath, 'utf8'));
 };
 
-const ENV = readFile('../environment/config.json');
+const isTest = process.env.NODE_ENV === 'test';
+const ENV = isTest ? require('../tests/mocks').mockConfig : readFile('../environment/config.json');
 
-const { errors } = validator.validate(ENV, '/ConfigSchema');
+if (!isTest) {
+  const { errors } = validator.validate(ENV, '/ConfigSchema');
 
-if (errors.length) {
-  errors.forEach((error) => {
-    throw new Error(`config.json validation error, ${error.stack}`);
-  });
+  if (errors.length) {
+    errors.forEach((error) => {
+      throw new Error(`config.json validation error, ${error.stack}`);
+    });
+  }
 }
 
 export { ENV };

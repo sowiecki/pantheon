@@ -24,6 +24,7 @@ describe('State utilities', () => {
         bizzBazzKey: {
           default: false,
           type: 'bool',
+          $handler: '(value) => value'
         },
         fooBarKey: {
           default: true,
@@ -69,7 +70,7 @@ describe('State utilities', () => {
 
   describe('filterSensativeState', () => {
     it('filters sensative state data', () => {
-      const result = filterSensativeState(genMockStore.getState());
+      const result = filterSensativeState(genMockStore().getState());
       const expected = {
         meta: {
           hue: {

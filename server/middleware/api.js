@@ -1,5 +1,7 @@
 import { FETCH_UNIFIED_ID, FETCH_SPOTIFY_CODE } from 'ducks/devices';
 import {
+  RESOLVE_CUSTOM_STATE_UPDATE,
+  EMIT_QUEUE_EVENT,
   EMIT_TRIGGER_PHOTON_FUNCTION,
   EMIT_FORWARD_HTTP_REQUEST,
   EMIT_SEND_UNIFIED_COMMAND,
@@ -9,6 +11,7 @@ import {
 } from 'ducks/occurrences';
 import { handleAction } from 'utils';
 
+import resolveQueuedEvents from './resolve-queued-events';
 import triggerPhotonFunction from './trigger-photon-function';
 import forwardHTTPRequest from './forward-http-request';
 import fetchUnified from './fetch-unified';
@@ -18,6 +21,16 @@ import sendSpotifyCommand from './send-spotify-command';
 
 export default (store) => (next) => (action) => {
   const reducers = {
+    [RESOLVE_CUSTOM_STATE_UPDATE]() {
+      resolveQueuedEvents(action);
+      // const waitForStateUpdate = () => resolveQueuedEvents(action);
+      // setTimeout(waitForStateUpdate, 100);
+    },
+
+    [EMIT_QUEUE_EVENT]: () => {
+      resolveQueuedEvents(action);
+    },
+
     [EMIT_TRIGGER_PHOTON_FUNCTION]() {
       triggerPhotonFunction(action, next);
     },

@@ -1,5 +1,7 @@
 /* eslint no-console:0 */
-import { set, get, mapKeys, camelCase } from 'lodash';
+import { set, get, isEmpty, mapKeys, camelCase } from 'lodash';
+
+import { EMIT_QUEUE_EVENT, RESOLVE_CUSTOM_STATE_UPDATE } from 'ducks/occurrences';
 
 /**
  * Safetly sets HTTP response, if possible.
@@ -10,7 +12,18 @@ export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const handleEvent = async (store, event) => {
   await sleep(event.delay);
-  await store.dispatch(event);
+
+  if (!isEmpty(event.conditions)) {
+    await store.dispatch({
+      type: EMIT_QUEUE_EVENT,
+      event
+    });
+  } else {
+    await store.dispatch(event);
+
+    // The state needs to be rechecked to see if any queued event's conditions have been met
+    await store.dispatch({ type: RESOLVE_CUSTOM_STATE_UPDATE });
+  }
 };
 
 export const batchEvents = async (store, events) => {

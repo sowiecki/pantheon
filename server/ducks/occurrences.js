@@ -9,12 +9,15 @@ import {
   errorLightStatus
 } from 'utils';
 
+export const EMIT_QUEUE_EVENT = 'EMIT_QUEUE_EVENT';
+export const EMIT_SAVE_QUEUED_EVENTS = 'EMIT_SAVE_QUEUED_EVENTS';
 export const EMIT_SEND_HUE_COMMAND = 'EMIT_SEND_HUE_COMMAND';
 export const EMIT_TRIGGER_PHOTON_FUNCTION = 'EMIT_TRIGGER_PHOTON_FUNCTION';
 export const EMIT_FORWARD_HTTP_REQUEST = 'EMIT_FORWARD_HTTP_REQUEST';
 export const EMIT_SEND_UNIFIED_COMMAND = 'EMIT_SEND_UNIFIED_COMMAND';
-export const EMIT_CUSTOM_STATE_UPDATE = 'EMIT_CUSTOM_STATE_UPDATE';
 export const EMIT_SEND_SPOTIFY_COMMAND = 'EMIT_SEND_SPOTIFY_COMMAND';
+export const EMIT_CUSTOM_STATE_UPDATE = 'EMIT_CUSTOM_STATE_UPDATE';
+export const RESOLVE_CUSTOM_STATE_UPDATE = 'RESOLVE_CUSTOM_STATE_UPDATE';
 
 // Spotify onSuccess types
 export const EMIT_REGISTER_SPOTIFY_PLAYER = 'EMIT_REGISTER_SPOTIFY_PLAYER';
@@ -58,7 +61,7 @@ const occurrencesReducer = (state, action) => ({
       try {
         const handler = get(ENV, `${action.path}.$state[${customStateKey}].$handler`);
         const customStateHandler = eval(handler);
-        const value = stateUpdates[customStateKey] || customStateKey;
+        const value = stateUpdates[customStateKey];
 
         state[customStateKey] = customStateHandler(value);
       } catch (e) {
@@ -68,6 +71,11 @@ const occurrencesReducer = (state, action) => ({
 
     return { ...state };
   },
+
+  [EMIT_SAVE_QUEUED_EVENTS]: () => ({
+    ...state,
+    queuedEvents: action.queuedEvents
+  }),
 
   [EMIT_REGISTER_SPOTIFY_PLAYER]: () => ({
     ...state,
