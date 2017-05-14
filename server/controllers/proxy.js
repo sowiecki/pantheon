@@ -11,6 +11,7 @@ import {
   RECONNECTED
 } from 'constants';
 import getEventHandlers from 'handlers';
+import store from 'store';
 import { logger, errorNoHandler } from 'utils';
 import Controller from './controller';
 
@@ -62,7 +63,8 @@ const proxyController = new Controller({
       [RECONNECTED]: () => logger.log('info', payload.message)
     };
 
-    const isAuthorized = id === ENV.id;
+    const isAllowedGuest = () => id === ENV.guest.id && store.getState().meta.guestEnabled;
+    const isAuthorized = id === ENV.id || isAllowedGuest();
     const handlers = isAuthorized ? getEventHandlers(payload) : proxyHandlers;
     const eventHandler = handlers[event];
 

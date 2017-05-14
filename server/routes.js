@@ -14,7 +14,12 @@ import { setResponse, errorNoHandler, filterSensativeState, getHueStates } from 
 
 const router = new Router();
 
-const isAuthorized = (ctx) => ctx.request.headers.id === ENV.id;
+const isAllowedGuest = (id) => id === ENV.guest.id && store.getState().meta.guestEnabled;
+const isAuthorized = ({ request }) => {
+  const idMatch = request.headers.id === ENV.id;
+
+  return idMatch || isAllowedGuest(request.headers.id);
+};
 
 router.post('/api/state', async (ctx) => {
   if (isAuthorized(ctx)) {
