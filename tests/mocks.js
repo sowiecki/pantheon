@@ -1,6 +1,7 @@
 export const mockGroups = [{ foo: 0 }, { bar: 1 }, { bizz: 2 }, { bazz: 4 }];
 
 export const mockConfig = {
+  id: 'foo',
   photons: {
     deadbolt: {
       auth: '123',
@@ -24,7 +25,8 @@ export const mockConfig = {
       $state: {
         bizzBazzKey: {
           type: 'bool',
-          default: false
+          default: false,
+          $handler: '(value) => value'
         }
       }
     }

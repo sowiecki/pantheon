@@ -24,6 +24,7 @@ describe('State utilities', () => {
         bizzBazzKey: {
           default: false,
           type: 'bool',
+          $handler: '(value) => value'
         },
         fooBarKey: {
           default: true,

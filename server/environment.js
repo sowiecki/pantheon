@@ -11,7 +11,7 @@ const readFile = (fileName) => {
 };
 
 const isTest = process.env.NODE_ENV === 'test';
-const ENV = isTest ? require('../environment/mock-config') : readFile('../environment/config.json');
+const ENV = isTest ? require('../tests/mocks').mockConfig : readFile('../environment/config.json');
 
 if (!isTest) {
   const { errors } = validator.validate(ENV, '/ConfigSchema');

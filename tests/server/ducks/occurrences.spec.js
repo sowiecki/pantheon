@@ -12,7 +12,7 @@ import reducer, {
 
 describe('Occurrences reducer', () => {
   const handlersMap = {
-    [EMIT_CUSTOM_STATE_UPDATE]: { action: { stateUpdates: {} } },
+    [EMIT_CUSTOM_STATE_UPDATE]: { foo: false, action: { path: 'httpRequests.foo', stateUpdates: { bizzBazzKey: true } } },
     [EMIT_REGISTER_SPOTIFY_DEVICES]: { action: { data: {} } },
     [EMIT_REGISTER_SPOTIFY_PLAYER]: { action: { data: {} }, spotifyPlayer: {} },
     [EMIT_SAVE_QUEUED_EVENTS]: { action: {} },
