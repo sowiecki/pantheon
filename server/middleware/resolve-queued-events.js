@@ -26,9 +26,9 @@ const resolveQueuedEvents = async (action) => {
       const fireEvent = async () => {
         await sleep(queuedEvent.delay);
         store.dispatch(queuedEvent);
-        queuedEvent.resolved = true;
       };
 
+      queuedEvent.resolved = true;
       fireEvent();
     }
 
