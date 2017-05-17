@@ -13,9 +13,6 @@ import {
 import getEventHandlers from 'handlers';
 import { logger, errorNoHandler } from 'utils';
 
-let interval;
-let webSocket;
-
 const proxyController = {
   displayName: 'Proxy Controller',
 
@@ -24,14 +21,14 @@ const proxyController = {
   initialize(id = ENV.id) {
     this.id = id;
 
-    clearInterval(interval);
+    clearInterval(this.interval);
 
-    webSocket = new WebSocket(ENV.proxyHost, WEBSOCKET_PROTOCOL);
+    this.webSocket = new WebSocket(ENV.proxyHost, WEBSOCKET_PROTOCOL);
 
-    webSocket.onopen = this.handleConnection.bind(this);
-    webSocket.onmessage = this.parseEvent.bind(this);
-    webSocket.onclose = this.reconnect;
-    webSocket.onerror = this.handleConnectionError;
+    this.webSocket.onopen = this.handleConnection.bind(this);
+    this.webSocket.onmessage = this.parseEvent.bind(this);
+    this.webSocket.onclose = this.reconnect.bind(this);
+    this.webSocket.onerror = this.handleConnectionError;
   },
 
   isAuthorized(id, payload) {
@@ -51,7 +48,7 @@ const proxyController = {
   handleConnection() {
     const payload = { headers: { id: this.id } };
 
-    webSocket.send(JSON.stringify({ event: HANDSHAKE, payload }));
+    this.webSocket.send(JSON.stringify({ event: HANDSHAKE, payload }));
   },
 
   handleConnectionError(e) {
@@ -59,8 +56,8 @@ const proxyController = {
   },
 
   send(event, payload) {
-    if (webSocket.readyState) {
-      webSocket.send(JSON.stringify({ event, payload }));
+    if (this.webSocket.readyState) {
+      this.webSocket.send(JSON.stringify({ event, payload }));
     } else {
       logger.log('error', 'WebSocket is not currently open');
     }
@@ -73,7 +70,7 @@ const proxyController = {
     const event = get(payload, 'headers.event', payloadEventHeader);
 
     const proxyHandlers = {
-      [HANDSHAKE]: () => logger.log('info', payload.message),
+      [HANDSHAKE]: () => logger.log('info', `${this.id} - ${payload.message}`),
       [RECONNECTED]: () => logger.log('info', payload.message)
     };
 
@@ -89,14 +86,13 @@ const proxyController = {
   },
 
   reconnect() {
-    interval = setInterval(() => {
-      proxyController.initialize();
+    this.interval = setInterval(() => {
+      this.initialize(this.id);
     }, WEBSOCKET_RECONNECT_INTERVAL);
   },
 
   terminate() {
-    console.log(`${this.id} proxy terminated.`);
-    webSocket.close();
+    this.webSocket.close();
   }
 };
 
