@@ -3,13 +3,13 @@ import send from 'koa-send';
 import queryString from 'query-string';
 
 import getEventHandlers from 'handlers';
-import { SPOTIFY_CODE_REFRESH_INVERVAL } from 'constants';
 import { ENV, PUBLIC_DIR } from 'config';
 import {
   FETCH_SPOTIFY_TOKEN,
   EMIT_SPOTIFY_REFRESH_TOKEN_UPDATE
 } from 'ducks/devices';
 import store from 'store';
+import { SPOTIFY_CODE_REFRESH_INVERVAL } from 'constants';
 import { setResponse, errorNoHandler, filterSensativeState, getHueStates } from 'utils';
 
 const router = new Router();
