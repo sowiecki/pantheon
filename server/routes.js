@@ -3,10 +3,10 @@ import send from 'koa-send';
 import queryString from 'query-string';
 
 import getEventHandlers from 'handlers';
-import { SPOTIFY_TOKEN_REFRESH_INVERVAL } from 'constants';
+import { SPOTIFY_CODE_REFRESH_INVERVAL } from 'constants';
 import { ENV, PUBLIC_DIR } from 'config';
 import {
-  FETCH_SPOTIFY_CODE,
+  FETCH_SPOTIFY_TOKEN,
   EMIT_REFRESH_SPOTIFY_CODE
 } from 'ducks/devices';
 import store from 'store';
@@ -49,13 +49,13 @@ router.get('/api/register-spotify', async (ctx) => {
   const code = queryString.parse(ctx.request.url)['/api/register-spotify?code'];
 
   store.dispatch({
-    type: FETCH_SPOTIFY_CODE,
+    type: FETCH_SPOTIFY_TOKEN,
     code
   });
 
   setInterval(() => store.dispatch({
     type: EMIT_REFRESH_SPOTIFY_CODE
-  }), SPOTIFY_TOKEN_REFRESH_INVERVAL);
+  }), SPOTIFY_CODE_REFRESH_INVERVAL);
 
   await send(ctx, '/spotify-auth.html', { root: PUBLIC_DIR });
 });

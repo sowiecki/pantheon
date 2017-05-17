@@ -1,4 +1,4 @@
-import { FETCH_UNIFIED_ID, FETCH_SPOTIFY_CODE } from 'ducks/devices';
+import { FETCH_UNIFIED_ID, FETCH_SPOTIFY_TOKEN } from 'ducks/devices';
 import {
   RESOLVE_CUSTOM_STATE_UPDATE,
   EMIT_QUEUE_EVENT,
@@ -16,7 +16,7 @@ import triggerPhotonFunction from './trigger-photon-function';
 import forwardHTTPRequest from './forward-http-request';
 import fetchUnified from './fetch-unified';
 import sendUnifiedCommand from './send-unified-command';
-import fetchSpotifyCode from './fetch-spotify-code';
+import fetchSpotifyToken from './fetch-spotify-token';
 import sendSpotifyCommand from './send-spotify-command';
 
 export default (store) => (next) => (action) => {
@@ -48,11 +48,11 @@ export default (store) => (next) => (action) => {
     },
 
     [EMIT_REGISTER_SPOTIFY_CLIENT]() {
-      next({ type: FETCH_SPOTIFY_CODE, code: action.code });
+      next({ type: FETCH_SPOTIFY_TOKEN, code: action.code });
     },
 
-    [FETCH_SPOTIFY_CODE]() {
-      fetchSpotifyCode(store, action, next);
+    [FETCH_SPOTIFY_TOKEN]() {
+      fetchSpotifyToken(store, action, next);
     },
 
     [EMIT_REFRESH_SPOTIFY_CODE]() {

@@ -17,5 +17,7 @@ export const SPOTIFY_PERMISSION_SCOPES = [
   'streaming',
   'user-top-read'
 ];
+
+export const SPOTIFY_CODE_REFRESH_INVERVAL = 3300000; // 55 minutes
 export const SPOTIFY_TOKEN_REFRESH_INVERVAL = 1140000; // 19 minutes
 export const SPOTIFY_SYNC_STATE_TIMEOUT = 250;
