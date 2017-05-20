@@ -11,7 +11,7 @@ import {
   FETCH_SPOTIFY_TOKEN,
   EMIT_REGISTER_SPOTIFY_CLIENT,
   EMIT_SPOTIFY_REFRESH_TOKEN_UPDATE,
-  EMIT_SPOTIFY_EXPIRATION_UPDATE
+  EMIT_REGISTER_SPOTIFY_TOKENS
 } from 'ducks/devices';
 import { handleAction } from 'utils';
 
@@ -58,9 +58,11 @@ export default (store) => (next) => (action) => {
     },
 
     [EMIT_SPOTIFY_REFRESH_TOKEN_UPDATE]() {
+      console.log(store.getState().meta)
       store.getState().meta.spotifyApi.refreshAccessToken().then(({ body }) => {
         store.dispatch({
-          type: EMIT_SPOTIFY_EXPIRATION_UPDATE,
+          type: EMIT_REGISTER_SPOTIFY_TOKENS,
+          spotifyAccessToken: body.access_token,
           spotifyTokenTimeLeft: body.expires_in
         });
       });

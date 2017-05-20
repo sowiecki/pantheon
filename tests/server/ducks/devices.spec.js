@@ -7,8 +7,7 @@ import reducer, {
   EMIT_REGISTER_SPOTIFY_PLAYER,
   EMIT_REGISTER_SPOTIFY_DEVICES,
   EMIT_REGISTER_SPOTIFY_TOKENS,
-  EMIT_REGISTER_UNIFIED_ID,
-  EMIT_SPOTIFY_EXPIRATION_UPDATE
+  EMIT_REGISTER_UNIFIED_ID
 } from 'ducks/devices';
 import { mockBridge } from 'tests/mocks';
 
@@ -23,8 +22,7 @@ describe('Devices reducer', () => {
       spotifyRefreshToken: undefined,
       spotifyTokenTimeLeft: '0 minutes',
     },
-    [EMIT_REGISTER_UNIFIED_ID]: {},
-    [EMIT_SPOTIFY_EXPIRATION_UPDATE]: { spotifyTokenTimeLeft: '0 minutes' }
+    [EMIT_REGISTER_UNIFIED_ID]: {}
   };
 
   it('should return the initial state', () => {

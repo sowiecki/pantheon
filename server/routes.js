@@ -59,7 +59,7 @@ router.get('/api/register-spotify', async (ctx) => {
   });
 
   setInterval(() => store.dispatch({
-    type: EMIT_SPOTIFY_REFRESH_TOKEN_UPDATE
+    type: EMIT_SPOTIFY_REFRESH_TOKEN_UPDATE,
   }), SPOTIFY_TOKEN_REFRESH_INVERVAL);
 
   await send(ctx, '/spotify-auth.html', { root: PUBLIC_DIR });
