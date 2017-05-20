@@ -18,10 +18,6 @@ export const EMIT_SEND_UNIFIED_COMMAND = 'EMIT_SEND_UNIFIED_COMMAND';
 export const EMIT_SEND_SPOTIFY_COMMAND = 'EMIT_SEND_SPOTIFY_COMMAND';
 export const EMIT_CUSTOM_STATE_UPDATE = 'EMIT_CUSTOM_STATE_UPDATE';
 export const RESOLVE_CUSTOM_STATE_UPDATE = 'RESOLVE_CUSTOM_STATE_UPDATE';
-
-// Spotify onSuccess types
-export const EMIT_REGISTER_SPOTIFY_PLAYER = 'EMIT_REGISTER_SPOTIFY_PLAYER';
-export const EMIT_REGISTER_SPOTIFY_DEVICES = 'EMIT_REGISTER_SPOTIFY_DEVICES';
 export const EMIT_SPOTIFY_PLAYLISTS_UPDATE = 'EMIT_SPOTIFY_PLAYLISTS_UPDATE';
 
 const occurrencesReducer = (state, action) => ({
@@ -75,16 +71,6 @@ const occurrencesReducer = (state, action) => ({
   [EMIT_SAVE_QUEUED_EVENTS]: () => ({
     ...state,
     queuedEvents: action.queuedEvents
-  }),
-
-  [EMIT_REGISTER_SPOTIFY_PLAYER]: () => ({
-    ...state,
-    spotifyPlayer: action.data
-  }),
-
-  [EMIT_REGISTER_SPOTIFY_DEVICES]: () => ({
-    ...state,
-    spotifyDevices: action.data.devices
   }),
 
   [EMIT_SPOTIFY_PLAYLISTS_UPDATE]: () => ({
