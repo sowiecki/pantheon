@@ -1,7 +1,7 @@
 /* eslint new-cap:0, no-console:0 */
 /* globals console */
 import WebSocket from 'ws';
-import { get } from 'lodash';
+import { get, map, intersection, uniq } from 'lodash';
 
 import { ENV } from 'config';
 import {
@@ -12,31 +12,43 @@ import {
 } from 'constants';
 import getEventHandlers from 'handlers';
 import { logger, errorNoHandler } from 'utils';
-import Controller from './controller';
 
-let interval;
-let webSocket;
-
-const proxyController = new Controller({
+const proxyController = {
   displayName: 'Proxy Controller',
 
   shouldInit: () => !!ENV.proxyHost,
 
-  initialize() {
-    clearInterval(interval);
+  initialize(id = ENV.id) {
+    this.id = id;
 
-    webSocket = new WebSocket(ENV.proxyHost, WEBSOCKET_PROTOCOL);
+    clearInterval(this.interval);
 
-    webSocket.onopen = this.handleConnection;
-    webSocket.onmessage = this.parseEvent;
-    webSocket.onclose = this.reconnect;
-    webSocket.onerror = this.handleConnectionError;
+    this.webSocket = new WebSocket(ENV.proxyHost, WEBSOCKET_PROTOCOL);
+
+    this.webSocket.onopen = this.handleConnection.bind(this);
+    this.webSocket.onmessage = this.parseEvent.bind(this);
+    this.webSocket.onclose = this.reconnect.bind(this);
+    this.webSocket.onerror = this.handleConnectionError;
+  },
+
+  isAuthorized(id, payload) {
+    const isGuest = this.id !== ENV.id;
+    const isAuthorizedGuest = () => {
+      const events = uniq(map(payload.body, 'type'));
+      const allowedEvents = intersection(ENV.guest.allowedEvents, events);
+      const noUnallowedEvents = allowedEvents.length === events.length;
+      const pendingConnection = [HANDSHAKE, RECONNECTED].includes(payload.event);
+
+      return !pendingConnection && noUnallowedEvents;
+    };
+
+    return isGuest ? isAuthorizedGuest() : id === this.id;
   },
 
   handleConnection() {
-    const payload = { headers: { id: ENV.id } };
+    const payload = { headers: { id: this.id } };
 
-    webSocket.send(JSON.stringify({ event: HANDSHAKE, payload }));
+    this.webSocket.send(JSON.stringify({ event: HANDSHAKE, payload }));
   },
 
   handleConnectionError(e) {
@@ -44,8 +56,8 @@ const proxyController = new Controller({
   },
 
   send(event, payload) {
-    if (webSocket.readyState) {
-      webSocket.send(JSON.stringify({ event, payload }));
+    if (this.webSocket.readyState) {
+      this.webSocket.send(JSON.stringify({ event, payload }));
     } else {
       logger.log('error', 'WebSocket is not currently open');
     }
@@ -58,11 +70,11 @@ const proxyController = new Controller({
     const event = get(payload, 'headers.event', payloadEventHeader);
 
     const proxyHandlers = {
-      [HANDSHAKE]: () => logger.log('info', payload.message),
+      [HANDSHAKE]: () => logger.log('info', `${this.id} - ${payload.message}`),
       [RECONNECTED]: () => logger.log('info', payload.message)
     };
 
-    const isAuthorized = id === ENV.id;
+    const isAuthorized = this.isAuthorized(id, payload);
     const handlers = isAuthorized ? getEventHandlers(payload) : proxyHandlers;
     const eventHandler = handlers[event];
 
@@ -74,10 +86,15 @@ const proxyController = new Controller({
   },
 
   reconnect() {
-    interval = setInterval(() => {
-      proxyController.initialize();
+    this.interval = setInterval(() => {
+      this.initialize(this.id);
     }, WEBSOCKET_RECONNECT_INTERVAL);
+  },
+
+  terminate() {
+    clearInterval(this.interval);
+    this.webSocket.terminate();
   }
-});
+};
 
 export default proxyController;

@@ -8,6 +8,7 @@ import { PORT } from 'config';
 import { logger } from 'utils';
 import router from './routes';
 import controllers from './controllers';
+import Controller from './controllers/controller';
 
 const server = new Koa();
 
@@ -18,11 +19,12 @@ const run = async () => {
   logger.log('info', `Listening on port ${PORT}`);
 
   Object.keys(controllers).forEach((key) => {
-    const shouldInit = controllers[key].shouldInit();
-    const hasInitializeMethod = typeof controllers[key].initialize === 'function';
+    const controller = new Controller(controllers[key]);
+    const shouldInit = controller.shouldInit();
+    const hasInitializeMethod = typeof controller.initialize === 'function';
 
     if (shouldInit && hasInitializeMethod) {
-      const controllerName = colors.bold(controllers[key].displayName);
+      const controllerName = colors.bold(controller.displayName);
       logger.log('info', `Initializing ${controllerName}`);
 
       try {

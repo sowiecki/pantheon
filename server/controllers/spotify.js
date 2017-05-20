@@ -9,9 +9,8 @@ import { SPOTIFY_PERMISSION_SCOPES, SPOTIFY_SYNC_STATE_TIMEOUT } from 'constants
 import { EMIT_REGISTER_SPOTIFY_CLIENT } from 'ducks/devices';
 import { EMIT_SEND_SPOTIFY_COMMAND } from 'ducks/occurrences';
 import store from 'store';
-import Controller from './controller';
 
-const spotifyController = new Controller({
+const spotifyController = {
   displayName: 'Spotify Controller',
 
   shouldInit: () => !!ENV.spotify,
@@ -75,6 +74,6 @@ const spotifyController = new Controller({
 
     require('child_process').exec(cmd);
   }
-});
+};
 
 export default spotifyController;

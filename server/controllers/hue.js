@@ -4,9 +4,8 @@ import { ENV } from 'config';
 import { EMIT_REGISTER_BRIDGE } from 'ducks/devices';
 import store from 'store';
 import { errorNoUserIDFound } from 'utils';
-import Controller from './controller';
 
-const hueController = new Controller({
+const hueController = {
   displayName: 'Hue Controller',
 
   shouldInit: () => !!ENV.hueUserIDs,
@@ -28,6 +27,6 @@ const hueController = new Controller({
       });
     }).done();
   }
-});
+};
 
 export default hueController;

@@ -11,14 +11,13 @@ export const setResponse = (action, code) => set(action, 'next.body', code);
 export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const handleEvent = async (store, event) => {
-  await sleep(event.delay);
-
   if (!isEmpty(event.conditions)) {
     await store.dispatch({
       type: EMIT_QUEUE_EVENT,
       event
     });
   } else {
+    await sleep(event.delay);
     await store.dispatch(event);
 
     // The state needs to be rechecked to see if any queued event's conditions have been met

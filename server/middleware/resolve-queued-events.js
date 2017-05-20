@@ -2,6 +2,7 @@ import { cloneDeep } from 'lodash';
 
 import { EMIT_SAVE_QUEUED_EVENTS } from 'ducks/occurrences';
 import store from 'store';
+import { sleep } from 'utils';
 
 const resolveQueuedEvents = async (action) => {
   const state = cloneDeep(store.getState().meta);
@@ -22,8 +23,13 @@ const resolveQueuedEvents = async (action) => {
     const allConditionsMet = !conditionValidations.includes(false);
 
     if (allConditionsMet) {
-      store.dispatch(queuedEvent);
+      const fireEvent = async () => {
+        await sleep(queuedEvent.delay);
+        store.dispatch(queuedEvent);
+      };
+
       queuedEvent.resolved = true;
+      fireEvent();
     }
 
     return queuedEvent;

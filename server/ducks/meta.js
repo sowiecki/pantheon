@@ -4,6 +4,7 @@ import { mapValues, get } from 'lodash';
 import { ENV } from 'config';
 import { initCustomState, generateReducers, handleAction, logActionType } from 'utils';
 import devicesReducer from './devices';
+import guestReducer from './guest';
 import occurrencesReducer from './occurrences';
 
 const initialState = {
@@ -12,7 +13,8 @@ const initialState = {
     userIDs: get(ENV, 'hueUserIDs', {})
   },
   lightState,
-  queuedEvents: []
+  queuedEvents: [],
+  guestEnabled: false
 };
 
 const metaReducer = (state = initialState, action) => {
@@ -20,6 +22,7 @@ const metaReducer = (state = initialState, action) => {
 
   const reducers = generateReducers(state, action, [
     devicesReducer,
+    guestReducer,
     occurrencesReducer
   ]);
 
