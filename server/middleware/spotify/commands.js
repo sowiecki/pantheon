@@ -3,10 +3,12 @@ import { get } from 'lodash';
 
 import { SPOTIFY_API } from 'constants';
 import {
-  EMIT_REGISTER_SPOTIFY_PLAYER,
-  EMIT_REGISTER_SPOTIFY_DEVICES,
   EMIT_SPOTIFY_PLAYLISTS_UPDATE
 } from 'ducks/occurrences';
+import {
+  EMIT_REGISTER_SPOTIFY_DEVICES,
+  EMIT_REGISTER_SPOTIFY_PLAYER
+} from 'ducks/devices';
 
 const prependAPI = (path) => `${SPOTIFY_API}${path}`;
 const appendParams = (params) => `?${queryString.stringify(params)}`;

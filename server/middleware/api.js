@@ -1,14 +1,18 @@
-import { FETCH_UNIFIED_ID, FETCH_SPOTIFY_TOKEN } from 'ducks/devices';
 import {
   RESOLVE_CUSTOM_STATE_UPDATE,
   EMIT_QUEUE_EVENT,
   EMIT_TRIGGER_PHOTON_FUNCTION,
   EMIT_FORWARD_HTTP_REQUEST,
   EMIT_SEND_UNIFIED_COMMAND,
-  EMIT_REGISTER_SPOTIFY_CLIENT,
-  EMIT_REFRESH_SPOTIFY_CODE,
   EMIT_SEND_SPOTIFY_COMMAND
 } from 'ducks/occurrences';
+import {
+  FETCH_UNIFIED_ID,
+  FETCH_SPOTIFY_TOKEN,
+  EMIT_REGISTER_SPOTIFY_CLIENT,
+  EMIT_SPOTIFY_REFRESH_TOKEN_UPDATE,
+  EMIT_SPOTIFY_EXPIRATION_UPDATE
+} from 'ducks/devices';
 import { handleAction } from 'utils';
 
 import resolveQueuedEvents from './resolve-queued-events';
@@ -23,8 +27,6 @@ export default (store) => (next) => (action) => {
   const reducers = {
     [RESOLVE_CUSTOM_STATE_UPDATE]() {
       resolveQueuedEvents(action);
-      // const waitForStateUpdate = () => resolveQueuedEvents(action);
-      // setTimeout(waitForStateUpdate, 100);
     },
 
     [EMIT_QUEUE_EVENT]: () => {
@@ -55,8 +57,14 @@ export default (store) => (next) => (action) => {
       fetchSpotifyToken(store, action, next);
     },
 
-    [EMIT_REFRESH_SPOTIFY_CODE]() {
-      store.getState().meta.spotifyApi.refreshAccessToken();
+    [EMIT_SPOTIFY_REFRESH_TOKEN_UPDATE]() {
+      store.getState().meta.spotifyApi.refreshAccessToken().then(({ body }) => {
+        store.dispatch({
+          type: EMIT_SPOTIFY_EXPIRATION_UPDATE,
+          spotifyTokenTimeLeft: body.expires_in
+        })
+        console.log(body.expires_in)
+      });
     },
 
     [EMIT_SEND_SPOTIFY_COMMAND]() {

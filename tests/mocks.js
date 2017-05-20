@@ -32,3 +32,27 @@ export const mockConfig = {
     }
   }
 };
+
+export const mockBridge = {
+  action: {
+    bridge: { ipaddress: '0.0.0.0' }
+  },
+  hue: {
+    '0.0.0.0': {
+      bridge: {
+        _config: {
+          hostname: '0.0.0.0', port: 80, timeout: 10000, username: undefined
+        }
+      },
+      userID: undefined
+    },
+    bridge: {
+      '0.0.0.0': {
+        _config: {
+          hostname: '0.0.0.0', port: 80, timeout: 10000, username: undefined
+        }
+      }
+    },
+    userIDs: {}
+  }
+};

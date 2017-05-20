@@ -7,7 +7,7 @@ import { SPOTIFY_CODE_REFRESH_INVERVAL } from 'constants';
 import { ENV, PUBLIC_DIR } from 'config';
 import {
   FETCH_SPOTIFY_TOKEN,
-  EMIT_REFRESH_SPOTIFY_CODE
+  EMIT_SPOTIFY_REFRESH_TOKEN_UPDATE
 } from 'ducks/devices';
 import store from 'store';
 import { setResponse, errorNoHandler, filterSensativeState, getHueStates } from 'utils';
@@ -54,7 +54,7 @@ router.get('/api/register-spotify', async (ctx) => {
   });
 
   setInterval(() => store.dispatch({
-    type: EMIT_REFRESH_SPOTIFY_CODE
+    type: EMIT_SPOTIFY_REFRESH_TOKEN_UPDATE
   }), SPOTIFY_CODE_REFRESH_INVERVAL);
 
   await send(ctx, '/spotify-auth.html', { root: PUBLIC_DIR });
