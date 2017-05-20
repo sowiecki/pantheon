@@ -92,7 +92,8 @@ const proxyController = {
   },
 
   terminate() {
-    this.webSocket.close();
+    clearInterval(this.interval);
+    this.webSocket.terminate();
   }
 };
 
