@@ -38,12 +38,12 @@
     "node-hue-api": "^2.4.2",
     "nodejs-dashboard": "^0.4.1",
     "opn": "^5.0.0",
-    "particle-api-js": "6.4.3",
+    "particle-api-js": "^6.5.0",
     "query-string": "^4.3.4",
     "redux": "3.6.0",
     "spotify-web-api-node": "^2.3.6",
     "winston": "2.3.1",
-    "ws": "^2.3.1"
+    "ws": "^3.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
