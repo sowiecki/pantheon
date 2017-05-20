@@ -62,8 +62,7 @@ export default (store) => (next) => (action) => {
         store.dispatch({
           type: EMIT_SPOTIFY_EXPIRATION_UPDATE,
           spotifyTokenTimeLeft: body.expires_in
-        })
-        console.log(body.expires_in)
+        });
       });
     },
 
