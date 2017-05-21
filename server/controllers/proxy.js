@@ -92,8 +92,8 @@ const proxyController = {
   },
 
   terminate() {
-    clearInterval(this.interval);
     this.webSocket.terminate();
+    clearInterval(this.interval); // Must be after terminate to prevent reconnection
   }
 };
 
