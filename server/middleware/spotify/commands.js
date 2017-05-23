@@ -70,6 +70,20 @@ export const playerPlayPause = (action, state) => {
   };
 };
 
+export const playerShuffle = ({ state = true, deviceId }) => ({
+  options: {
+    method: 'PUT',
+    path: prependAPI('me/player/shuffle') + appendParams({ state, device_id: deviceId })
+  }
+});
+
+export const playerRepeat = ({ state = 'context', deviceId }) => ({
+  options: {
+    method: 'PUT',
+    path: prependAPI('me/player/repeat') + appendParams({ state, device_id: deviceId })
+  }
+});
+
 export const playerVolume = ({ volumePercent, deviceId }) => ({
   options: {
     method: 'PUT',
