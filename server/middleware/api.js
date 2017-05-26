@@ -58,7 +58,6 @@ export default (store) => (next) => (action) => {
     },
 
     [EMIT_SPOTIFY_REFRESH_TOKEN_UPDATE]() {
-      console.log(store.getState().meta)
       store.getState().meta.spotifyApi.refreshAccessToken().then(({ body }) => {
         store.dispatch({
           type: EMIT_REGISTER_SPOTIFY_TOKENS,

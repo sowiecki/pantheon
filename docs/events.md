@@ -30,6 +30,12 @@ This is useful as a workaround for use cases like [Particle Photon Webhooks](htt
 Be sure to set the header key as "body" and the value as a JSON-serialized string of an array of event objects.
 
 ## Supported Events
+All events accept these properties for convenience:
+
+* `delay`: Delays firing the event for given milliseconds
+* `duplicate`: Duplicates the event a given number of times. Every duplicate event runs immediately after any delay.
+* `repeat`: Repeats the event *with any given delay* between each repeated event.
+
 ### Hue Lighting
 *Important*: If your network has multiple discoverable Hue bridges,
 you must specify the ip address of the bridge you wish to communicate with

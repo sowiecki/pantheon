@@ -17,8 +17,12 @@ export const handleEvent = async (store, event) => {
       event
     });
   } else {
-    await sleep(event.delay);
-    await store.dispatch(event);
+    const repeat = get(event, 'repeat', 1);
+
+    for (let i = 0; i < repeat; i++) {
+      await sleep(event.delay);
+      await store.dispatch(event);
+    }
 
     // The state needs to be rechecked to see if any queued event's conditions have been met
     await store.dispatch({ type: RESOLVE_CUSTOM_STATE_UPDATE });
