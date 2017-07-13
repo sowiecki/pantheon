@@ -2,6 +2,6 @@ language: node_js
 node_js:
   - "7.7.1"
 script:
-  - travis_wait yarn coveralls
+  - travis_wait npm run coveralls
 env:
   - NODE_ENV=test
