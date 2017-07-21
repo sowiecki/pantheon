@@ -62,11 +62,12 @@ For example,
     "auth": "765890567890"
   },
 
-  // Wait 60 seconds, then trigger script on the PC to open and play music
+  // Wait 60 seconds, then trigger script (through Unified Remote) on the PC to open and play music
   {
     "type": "EMIT_SEND_UNIFIED_COMMAND",
     "name": "triggerCommand",
-    "value": 3,
+    "id": "Bob.CustomRun",
+    "command": "action3",
     "delay": 60000
   }
 ]

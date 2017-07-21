@@ -28,12 +28,12 @@ export const focusAddress = () => JSON.stringify({
   }
 });
 
-export const triggerCommand = ({ value }) => JSON.stringify({
-  ID: 'NA.CustomRun',
+export const triggerCommand = ({ id, commandName }) => JSON.stringify({
+  ID: id,
   Action: 7,
   Request: 7,
   Run: {
-    Name: `command${value}`
+    Name: commandName
   }
 });
 
