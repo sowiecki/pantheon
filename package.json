@@ -1,11 +1,11 @@
 {
   "name": "pantheon",
-  "version": "0.0.1-alpha",
+  "version": "1.0.0-beta",
   "description": "",
   "private": true,
   "engines": {
-    "node": "^8.1.4",
-    "npm": "^5.2.0"
+    "node": "^8.3.0",
+    "npm": "^5.3.0"
   },
   "main": "index.js",
   "scripts": {
@@ -37,13 +37,13 @@
     "moment": "^2.17.1",
     "node-hue-api": "^2.4.2",
     "nodejs-dashboard": "^0.4.1",
-    "opn": "^5.0.0",
+    "opn": "^5.1.0",
     "particle-api-js": "^6.5.0",
     "query-string": "^4.3.4",
-    "redux": "3.6.0",
+    "redux": "3.7.2",
     "spotify-web-api-node": "^2.4.0",
     "winston": "2.3.1",
-    "ws": "^3.0.0"
+    "ws": "^3.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
