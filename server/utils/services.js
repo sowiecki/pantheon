@@ -14,7 +14,7 @@ export const handleEvent = async (store, event) => {
   if (!isEmpty(event.conditions)) {
     await store.dispatch({
       type: EMIT_QUEUE_EVENT,
-      event
+      event,
     });
   } else {
     const repeat = get(event, 'repeat', 1);
@@ -50,7 +50,7 @@ export const getHueStates = async (store) => {
 
   for (let i = 0; i < ipaddresses.length; i++) {
     const ipaddress = ipaddresses[i];
-    const bridge = state.hue[ipaddress].bridge;
+    const { bridge } = state.hue[ipaddress];
 
     await bridge.groups().then((result) => {
       lightStates[ipaddress] = result;
