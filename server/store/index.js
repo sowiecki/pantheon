@@ -1,6 +1,4 @@
-import { createStore,
-         applyMiddleware,
-         combineReducers } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 
 import reducers from 'ducks';
 import api from '../middleware/api';
