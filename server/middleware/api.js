@@ -13,7 +13,7 @@ import {
   EMIT_SPOTIFY_REFRESH_TOKEN_UPDATE,
   EMIT_REGISTER_SPOTIFY_TOKENS
 } from 'ducks/devices';
-import { handleAction } from 'utils';
+import { handleAction, logger } from 'utils';
 
 import resolveQueuedEvents from './resolve-queued-events';
 import triggerPhotonFunction from './trigger-photon-function';
@@ -72,7 +72,11 @@ export default (store) => (next) => (action) => {
     }
   };
 
-  handleAction(store, action, reducers);
+  try {
+    handleAction(store, action, reducers);
+  } catch (e) {
+    logger.log(`Problem with ${action}`, e);
+  }
 
   next(action);
 };
