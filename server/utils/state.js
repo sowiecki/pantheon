@@ -1,3 +1,4 @@
+/* eslint no-console:0 */
 import { flatMap, map, reduce, omit } from 'lodash';
 
 /**
@@ -14,14 +15,19 @@ export const handleAction = (state, action, reducers) => {
 };
 
 export const toggleLight = (hueBridge, state, light) => {
-  hueBridge.lightStatus(light).then((lightResult) => {
-    if (lightResult.state.on) {
-      hueBridge.setLightState(light, state.lightState.create().off());
-    } else {
-      hueBridge.setLightState(light, state.lightState.create().on());
-      hueBridge.setLightState(light, state.lightState.create().bri(255));
-    }
-  });
+  try {
+    hueBridge.lightStatus(light).then((lightResult) => {
+      if (lightResult.state.on) {
+        hueBridge.setLightState(light, state.lightState.create().off());
+      } else {
+        hueBridge.setLightState(light, state.lightState.create().on());
+        hueBridge.setLightState(light, state.lightState.create().bri(255));
+      }
+    });
+  } catch (e) {
+    console.error(`hueBridge is ${hueBridge}`);
+    console.error(e);
+  }
 };
 
 /**
