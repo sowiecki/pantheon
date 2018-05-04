@@ -29,16 +29,26 @@ const sendSpotifyCommand = (store, action, next) => {
   }
 
   const request = https.request(options, (response) => {
+    let body = '';
+
     response.setEncoding('utf8');
 
     response.on('data', (data) => {
+      body += data;
+    });
+
+    response.on('end', () => {
       setResponse({ next }, 200);
 
       if (commandProperties.type) {
-        next({
-          type: commandProperties.type,
-          data: JSON.parse(data)
-        });
+        try {
+          next({
+            type: commandProperties.type,
+            data: JSON.parse(body)
+          });
+        } catch (e) {
+          console.error(e);
+        }
       }
     });
   });
