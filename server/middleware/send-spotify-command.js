@@ -28,9 +28,9 @@ const sendSpotifyCommand = (store, action, next) => {
     spotifyController.syncState();
   }
 
-  const request = https.request(options, (response) => {
-    let body = '';
+  let body = '';
 
+  const request = https.request(options, (response) => {
     response.setEncoding('utf8');
 
     response.on('data', (data) => {
@@ -39,17 +39,6 @@ const sendSpotifyCommand = (store, action, next) => {
 
     response.on('end', () => {
       setResponse({ next }, 200);
-
-      if (commandProperties.type) {
-        try {
-          next({
-            type: commandProperties.type,
-            data: JSON.parse(body)
-          });
-        } catch (e) {
-          console.error(e);
-        }
-      }
     });
   });
 
@@ -59,6 +48,19 @@ const sendSpotifyCommand = (store, action, next) => {
 
   if (!isEmpty(commandProperties.body)) {
     request.write(JSON.stringify(commandProperties.body));
+
+    if (commandProperties.type) {
+      try {
+        const data = JSON.parse(body);
+
+        next({
+          type: commandProperties.type,
+          data
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }
 
   request.end();
