@@ -41,6 +41,7 @@ const occurrencesReducer = (state, action) => ({
 
         hueBridge.setLightState(action.id, newLightState);
       } catch (e) {
+        console.error(e);
         errorLightStatus();
       }
     }
@@ -61,6 +62,7 @@ const occurrencesReducer = (state, action) => ({
 
         state[customStateKey] = customStateHandler(value);
       } catch (e) {
+        console.error(e);
         logUndefinedHandler(e);
       }
     });
