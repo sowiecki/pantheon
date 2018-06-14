@@ -6,6 +6,7 @@ import { get, map, intersection, uniq } from 'lodash';
 import { ENV } from 'config';
 import {
   WEBSOCKET_PROTOCOL,
+  WEBSOCKET_REFRESH_INTERVAL,
   WEBSOCKET_RECONNECT_INTERVAL,
   HANDSHAKE,
   RECONNECTED
@@ -29,6 +30,8 @@ const proxyController = {
     this.webSocket.onmessage = this.parseEvent.bind(this);
     this.webSocket.onclose = this.reconnect.bind(this);
     this.webSocket.onerror = this.handleConnectionError;
+
+    this.reconnect(WEBSOCKET_REFRESH_INTERVAL);
   },
 
   isAuthorized(id, payload) {
@@ -64,31 +67,35 @@ const proxyController = {
   },
 
   parseEvent({ data }) {
-    const { payload } = JSON.parse(data);
-    const id = get(payload, 'headers.id');
-    const payloadEventHeader = get(JSON.parse(data), 'payload.event');
-    const event = get(payload, 'headers.event', payloadEventHeader);
+    try {
+      const { payload } = JSON.parse(data);
+      const id = get(payload, 'headers.id');
+      const payloadEventHeader = get(JSON.parse(data), 'payload.event');
+      const event = get(payload, 'headers.event', payloadEventHeader);
 
-    const proxyHandlers = {
-      [HANDSHAKE]: () => logger.log('info', `${this.id} - ${payload.message}`),
-      [RECONNECTED]: () => logger.log('info', payload.message)
-    };
+      const proxyHandlers = {
+        [HANDSHAKE]: () => logger.log('info', `${this.id} - ${payload.message}`),
+        [RECONNECTED]: () => logger.log('info', payload.message)
+      };
 
-    const isAuthorized = this.isAuthorized(id, payload);
-    const handlers = isAuthorized ? getEventHandlers(payload) : proxyHandlers;
-    const eventHandler = handlers[event];
+      const isAuthorized = this.isAuthorized(id, payload);
+      const handlers = isAuthorized ? getEventHandlers(payload) : proxyHandlers;
+      const eventHandler = handlers[event];
 
-    if (eventHandler) {
-      eventHandler();
-    } else if (event) {
-      errorNoHandler(event);
+      if (eventHandler) {
+        eventHandler();
+      } else if (event) {
+        errorNoHandler(event);
+      }
+    } catch (e) {
+      console.error(e);
     }
   },
 
-  reconnect() {
+  reconnect(timeout = WEBSOCKET_RECONNECT_INTERVAL) {
     this.interval = setInterval(() => {
       this.initialize(this.id);
-    }, WEBSOCKET_RECONNECT_INTERVAL);
+    }, timeout);
   },
 
   terminate() {
