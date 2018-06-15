@@ -35,15 +35,12 @@ const occurrencesReducer = (state, action) => ({
           errorLightStatus();
           break;
       }
-    } else {
-      try {
-        const newLightState = state.lightState.create()[action.func](action.arg);
+    } else if (state.lightState) {
+      const newLightState = state.lightState.create()[action.func](action.arg);
 
-        hueBridge.setLightState(action.id, newLightState);
-      } catch (e) {
-        console.error(e);
-        errorLightStatus();
-      }
+      hueBridge.setLightState(action.id, newLightState);
+    } else {
+      errorLightStatus('state.lightState.create is not a function');
     }
 
     return { ...state };

@@ -40,11 +40,12 @@ export const errorNoHandler = (event) => {
   logger.log('error', withTime(message));
 };
 
-export const errorLightStatus = () => {
+export const errorLightStatus = (e) => {
   const alert = colors.red('Could not alter light state');
   const message = `${alert}; did you use the correct IP address or trigger a valid function?`;
 
   logger.log('error', withTime(message));
+  if (e) logger.log('error', withTime(e));
 };
 
 export const errorNoUserIDFound = (ipaddress) => {
