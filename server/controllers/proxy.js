@@ -93,7 +93,9 @@ const proxyController = {
   },
 
   reconnect(timeout = WEBSOCKET_RECONNECT_INTERVAL) {
-    this.webSocket.clients.forEach((ws) => ws.terminate());
+    if (this.webSocket) {
+      this.webSocket.clients.forEach((ws) => ws.terminate());
+    }
 
     this.interval = setInterval(() => {
       this.initialize(this.id);
