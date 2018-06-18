@@ -6,7 +6,6 @@ import { get, map, intersection, uniq } from 'lodash';
 import { ENV } from 'config';
 import {
   WEBSOCKET_PROTOCOL,
-  WEBSOCKET_HEARTBEAT_INTERVAL,
   WEBSOCKET_RECONNECT_INTERVAL,
   HANDSHAKE,
   RECONNECTED
@@ -29,9 +28,7 @@ const proxyController = {
     this.webSocket.onopen = this.handleConnection.bind(this);
     this.webSocket.onmessage = this.parseEvent.bind(this);
     this.webSocket.onclose = this.reconnect.bind(this);
-    this.webSocket.onerror = this.handleConnectionError;
-
-    this.reconnect(WEBSOCKET_HEARTBEAT_INTERVAL);
+    this.webSocket.onerror = this.reconnect.bind(this);
   },
 
   isAuthorized(id, payload) {
@@ -52,10 +49,6 @@ const proxyController = {
     const payload = { headers: { id: this.id } };
 
     this.webSocket.send(JSON.stringify({ event: HANDSHAKE, payload }));
-  },
-
-  handleConnectionError(e) {
-    throw new Error(e);
   },
 
   send(event, payload) {
@@ -92,13 +85,13 @@ const proxyController = {
     }
   },
 
-  reconnect(timeout = WEBSOCKET_RECONNECT_INTERVAL) {
+  reconnect(e) {
+    console.log(e);
+
     this.interval = setInterval(() => {
-      if (this.isAlive !== true) {
-        this.webSocket.terminate();
-        this.initialize(this.id);
-      }
-    }, timeout);
+      this.webSocket.terminate();
+      this.initialize(this.id);
+    }, WEBSOCKET_RECONNECT_INTERVAL);
   },
 
   terminate() {

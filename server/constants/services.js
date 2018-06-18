@@ -1,7 +1,6 @@
 export const DEVICE_TYPES = ['hue', 'photons', 'httpRequests', 'unified'];
 
 export const WEBSOCKET_PROTOCOL = 'protocolOne';
-export const WEBSOCKET_HEARTBEAT_INTERVAL = 1200000; // 20 minutes
 export const WEBSOCKET_RECONNECT_INTERVAL = 2000; // 2 seconds
 
 export const UNIFIED_REMOTE_PORT = 9510;
