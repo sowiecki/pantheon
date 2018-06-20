@@ -2,11 +2,13 @@
 /* globals console */
 import WebSocket from 'ws';
 import { get, map, intersection, uniq } from 'lodash';
+import moment from 'moment';
 
 import { ENV } from 'config';
 import {
   WEBSOCKET_PROTOCOL,
   WEBSOCKET_RECONNECT_INTERVAL,
+  WEBSOCKET_EXPIRATION_COUNTDOWN_INTERVAL,
   HANDSHAKE,
   RECONNECTED
 } from 'constants';
@@ -15,6 +17,8 @@ import { logger, errorNoHandler } from 'utils';
 
 const proxyController = {
   displayName: 'Proxy Controller',
+
+  expirationCounter: 2,
 
   shouldInit: () => !!ENV.proxyHost,
 
@@ -29,6 +33,9 @@ const proxyController = {
     this.webSocket.onmessage = this.parseEvent.bind(this);
     this.webSocket.onclose = this.reconnect.bind(this);
     this.webSocket.onerror = this.reconnect.bind(this);
+
+    this.webSocket.on('ping', this.resetExpirationCounter);
+    this.beginExpirationCounter();
   },
 
   isAuthorized(id, payload) {
@@ -81,12 +88,12 @@ const proxyController = {
         errorNoHandler(event);
       }
     } catch (e) {
-      console.error(e);
+      logger.log('error', e);
     }
   },
 
-  reconnect(e) {
-    console.log(e);
+  reconnect() {
+    clearInterval(this.interval);
 
     this.interval = setInterval(() => {
       this.webSocket.terminate();
@@ -97,6 +104,29 @@ const proxyController = {
   terminate() {
     this.webSocket.terminate();
     clearInterval(this.interval); // Must be after terminate to prevent reconnection
+  },
+
+  beginExpirationCounter() {
+    this.expirationInterval = setInterval(() => {
+      if (this.expirationCounter === 0) {
+        const timeSinceLastPing = moment
+          .duration(WEBSOCKET_EXPIRATION_COUNTDOWN_INTERVAL * 2, 'ms')
+          .asMinutes();
+
+        logger.log(
+          'error',
+          `No ping from proxy server received in last ${timeSinceLastPing} minutes, reconnecting.`
+        );
+        this.reconnect();
+        this.expirationCounter = 2;
+      } else {
+        this.expirationCounter--;
+      }
+    }, WEBSOCKET_EXPIRATION_COUNTDOWN_INTERVAL);
+  },
+
+  resetExpirationCounter(message) {
+    this.expirationCounter = 0;
   }
 };
 
