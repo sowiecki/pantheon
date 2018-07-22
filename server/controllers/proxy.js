@@ -10,7 +10,7 @@ import {
   WEBSOCKET_RECONNECT_INTERVAL,
   WEBSOCKET_EXPIRATION_COUNTDOWN_INTERVAL,
   HANDSHAKE,
-  RECONNECTED,
+  RECONNECTED
 } from 'constants';
 import getEventHandlers from 'handlers';
 import { logger, errorNoHandler, hash } from 'utils';
