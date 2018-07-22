@@ -1,6 +1,7 @@
 import { get } from 'lodash';
 
 import { ENV } from 'config';
+import { GUEST_ACCESS_REVOKE_INTERVAL } from 'constants';
 import store from 'store';
 import proxyController from './proxy';
 import Controller from './controller';
@@ -13,19 +14,28 @@ const guestController = {
   initialize() {
     const manageGuestProxy = () => {
       const { guestEnabled } = store.getState().meta;
+
       if (guestEnabled && this.guestProxy) {
         this.guestProxyController = new Controller(proxyController);
-        this.guestProxyController.initialize(ENV.guest.id);
-      } else if (!guestEnabled) {
-        if (get(this, 'guestProxyController.terminate')) {
-          this.guestProxyController.terminate();
-        }
+        this.guestProxyController.initialize(ENV.guest.id, ENV.guest.password);
 
-        delete this.guestProxyController;
+        if (!ENV.guest.indefinite) {
+          setInterval(this.terminate, GUEST_ACCESS_REVOKE_INTERVAL);
+        }
+      } else if (!guestEnabled) {
+        this.terminate();
       }
     };
 
-    store.subscribe(manageGuestProxy);
+    this.storeListener = store.subscribe(manageGuestProxy);
+  },
+
+  terminate() {
+    if (get(this, 'guestProxyController.terminate')) {
+      this.guestProxyController.terminate();
+    }
+
+    delete this.guestProxyController;
   }
 };
 

@@ -10,15 +10,22 @@ import {
 } from 'ducks/devices';
 import store from 'store';
 import { SPOTIFY_TOKEN_REFRESH_INVERVAL } from 'constants';
-import { setResponse, errorNoHandler, filterSensativeState, getHueStates } from 'utils';
+import { setResponse, errorNoHandler, filterSensativeState, getHueStates, hash } from 'utils';
 
 const router = new Router();
 
-const isAllowedGuest = (id) => id === ENV.guest.id && store.getState().meta.guestEnabled;
-const isAuthorized = ({ request }) => {
-  const idMatch = request.headers.id === ENV.id;
+const isAuthorizedGuest = (password) => {
+  const { guestEnabled } = store.getState().meta;
+  const passwordMatch = guestEnabled && password === ENV.guest.password;
 
-  return idMatch || isAllowedGuest(request.headers.id);
+  return ENV.allowUnsecuredLAN && (passwordMatch || hash(password) === hash(ENV.guest.password));
+};
+
+const isAuthorized = ({ request }) => {
+  const unsecured = ENV.allowUnsecuredLAN && request.headers.password === ENV.password;
+  const passwordMatch = unsecured || hash(request.headers.password) === hash(ENV.password);
+
+  return passwordMatch || isAuthorizedGuest(request.headers.password);
 };
 
 router.post('/api/state', async (ctx) => {
