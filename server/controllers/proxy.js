@@ -117,6 +117,7 @@ const proxyController = {
   beginExpirationCounter() {
     this.expirationInterval = setInterval(() => {
       if (this.expirationCounter === 0) {
+        this.terminate();
         this.reconnect();
         this.expirationCounter = 2;
       } else {
