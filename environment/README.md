@@ -9,8 +9,8 @@
 | proxyHost                | string  | Address of webSocket proxy to connect to             | No        |         |
 | allowUnsecuredLAN        | boolean | Check LAN requests against unhashed password         | No        | false   |
 | guest                    | object  | Guest options                                        | No        |         |
-| - password               | string  | Password provided to guests                          | No        |         |
-| - indefinite             | boolean | Password provided to guests                          | No        |         |
+| - id                     | string  | Id used to identify application over WebSocket proxy | No        |         |
+| - indefinite             | boolean | Keep guest proxy instance alive indefinitely         | No        |         |
 | - password               | string  | Password provided to guests                          | No        |         |
 | spotify                  | object  | [See here](../docs/spotify.md) for more information  | No        |         |
 | - cliendId               | string  | [See here](../docs/spotify.md) for more information  | Yes       |         |

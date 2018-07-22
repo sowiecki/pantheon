@@ -9,7 +9,7 @@ import Controller from './controller';
 const guestController = {
   displayName: 'Guest Controller',
 
-  shouldInit: () => !!ENV.guest,
+  shouldInit: () => !!ENV.guest.id && !!ENV.guest.password,
 
   initialize() {
     const manageGuestProxy = () => {

@@ -2,7 +2,6 @@
 /* globals console */
 import WebSocket from 'ws';
 import { get, map, intersection, uniq } from 'lodash';
-import moment from 'moment';
 
 import { ENV } from 'config';
 import {
