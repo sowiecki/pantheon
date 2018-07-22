@@ -4,10 +4,6 @@
 [![GitHub Release](https://img.shields.io/github/release/Nase00/pantheon.svg?style=flat-square)](https://github.com/Nase00/pantheon/releases)
 ![license](https://img.shields.io/github/license/Nase00/pantheon.svg?style=flat-square)
 
-[![bitHound](https://img.shields.io/bithound/dependencies/github/nase00/pantheon.svg?style=flat-square)](https://www.bithound.io/github/Nase00/pantheon/master/dependencies/npm)
-[![bitHound](https://img.shields.io/bithound/devDependencies/github/nase00/pantheon.svg?style=flat-square)](https://www.bithound.io/github/Nase00/pantheon/master/dependencies/npm)
-[![bitHound](https://img.shields.io/bithound/code/github/Nase00/pantheon.svg?style=flat-square)](https://www.bithound.io/github/Nase00/pantheon/master/files)
-
 *This software is in **alpha**,
 and is currently undergoing major changes to make it more configurable, modular, and well-documented for wider consumption.*
 
