@@ -75,7 +75,6 @@ const proxyController = {
   },
 
   handleMessage({ data }) {
-    console.log(data)
     try {
       const { payload } = JSON.parse(data);
       const payloadEventHeader = get(JSON.parse(data), 'payload.event');
