@@ -1,3 +1,4 @@
+// TODO re-implement guest protocol
 // import guestController from './guest';
 import hueController from './hue';
 import proxyController from './proxy';
