@@ -12,7 +12,6 @@ import * as commands from './spotify/commands';
 const sendSpotifyCommand = (store, action, next) => {
   const state = store.getState().meta;
   const commandProperties = formatRequestKeys(commands[action.name])(action, state);
-
   const options = {
     ...commandProperties.options,
     method: commandProperties.options.method,
@@ -38,6 +37,13 @@ const sendSpotifyCommand = (store, action, next) => {
     });
 
     response.on('end', () => {
+      if (commandProperties.type) {
+        next({
+          type: commandProperties.type,
+          data: JSON.parse(body)
+        });
+      }
+
       setResponse({ next }, 200);
     });
   });
