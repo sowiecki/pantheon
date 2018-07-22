@@ -40,6 +40,7 @@
     "particle-api-js": "^7.0.1",
     "query-string": "^5.0.1",
     "redux": "3.7.2",
+    "scrypt": "^6.0.3",
     "spotify-web-api-node": "^2.5.0",
     "winston": "2.4.0",
     "ws": "^3.3.2"

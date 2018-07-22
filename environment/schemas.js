@@ -5,6 +5,7 @@ export default [
     type: 'object',
     properties: {
       id: { type: 'string' },
+      password: { type: 'string' },
       proxyHost: { type: 'string' },
       hueUserIDs: {
         type: 'object',

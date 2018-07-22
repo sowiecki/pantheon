@@ -1,6 +1,7 @@
 /* eslint new-cap:0, no-console:0 */
 /* globals console */
 import WebSocket from 'ws';
+import scrypt from 'scrypt';
 import { get, map, intersection, uniq } from 'lodash';
 import moment from 'moment';
 
@@ -10,7 +11,8 @@ import {
   WEBSOCKET_RECONNECT_INTERVAL,
   WEBSOCKET_EXPIRATION_COUNTDOWN_INTERVAL,
   HANDSHAKE,
-  RECONNECTED
+  RECONNECTED,
+  SCRYPT_SETTINGS
 } from 'constants';
 import getEventHandlers from 'handlers';
 import { logger, errorNoHandler } from 'utils';
@@ -22,9 +24,7 @@ const proxyController = {
 
   shouldInit: () => !!ENV.proxyHost,
 
-  initialize(id = ENV.id) {
-    this.id = id;
-
+  initialize() {
     clearInterval(this.interval);
 
     this.webSocket = new WebSocket(ENV.proxyHost, WEBSOCKET_PROTOCOL);
@@ -38,22 +38,23 @@ const proxyController = {
     this.beginExpirationCounter();
   },
 
-  isAuthorized(id, payload) {
-    const isGuest = this.id !== ENV.id;
+  hash: (password) => scrypt.hashSync(password, SCRYPT_SETTINGS, 32, ENV.id).toString('hex'),
+
+  isAuthorized(hashedPassword, payload) {
     const isAuthorizedGuest = () => {
       const events = uniq(map(payload.body, 'type'));
       const allowedEvents = intersection(ENV.guest.allowedEvents, events);
       const noUnallowedEvents = allowedEvents.length === events.length;
       const pendingConnection = [HANDSHAKE, RECONNECTED].includes(payload.event);
 
-      return !pendingConnection && noUnallowedEvents;
+      return !pendingConnection && noUnallowedEvents && hashedPassword === this.hash(get(ENV, 'guest.password'));
     };
-
-    return isGuest ? isAuthorizedGuest() : id === this.id;
+    console.log(hashedPassword, this.hash(ENV.password));
+    return payload.isGuest ? isAuthorizedGuest() : hashedPassword === this.hash(ENV.password);
   },
 
   handleConnection() {
-    const payload = { headers: { id: this.id } };
+    const payload = { headers: { id: ENV.id } };
 
     this.webSocket.send(JSON.stringify({ event: HANDSHAKE, payload }));
   },
@@ -69,16 +70,16 @@ const proxyController = {
   parseEvent({ data }) {
     try {
       const { payload } = JSON.parse(data);
-      const id = get(payload, 'headers.id');
+      const hashedPassword = get(payload, 'headers.hashed_password', '');
       const payloadEventHeader = get(JSON.parse(data), 'payload.event');
       const event = get(payload, 'headers.event', payloadEventHeader);
 
       const proxyHandlers = {
-        [HANDSHAKE]: () => logger.log('info', `${this.id} - ${payload.message}`),
+        [HANDSHAKE]: () => logger.log('info', `${this.password} - ${payload.message}`),
         [RECONNECTED]: () => logger.log('info', payload.message)
       };
 
-      const isAuthorized = this.isAuthorized(id, payload);
+      const isAuthorized = hashedPassword && this.isAuthorized(hashedPassword, payload);
       const handlers = isAuthorized ? getEventHandlers(payload) : proxyHandlers;
       const eventHandler = handlers[event];
 
@@ -97,7 +98,7 @@ const proxyController = {
 
     this.interval = setInterval(() => {
       this.webSocket.terminate();
-      this.initialize(this.id);
+      this.initialize();
     }, WEBSOCKET_RECONNECT_INTERVAL);
   },
 
@@ -125,7 +126,7 @@ const proxyController = {
     }, WEBSOCKET_EXPIRATION_COUNTDOWN_INTERVAL);
   },
 
-  resetExpirationCounter(message) {
+  resetExpirationCounter() {
     this.expirationCounter = 0;
   }
 };
