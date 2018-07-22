@@ -99,7 +99,7 @@ const proxyController = {
     }
   },
 
-  reconnect(e) {
+  reconnect() {
     clearInterval(this.interval);
 
     this.interval = setInterval(() => {

@@ -70,6 +70,7 @@ export const formatRequestKeys = (command) => (action, state) => {
 
 export const hash = (password, salt) => {
   if (!isString(password)) console.error('No password provided.');
+  if (!isString(salt)) console.error('No salt provided.');
 
   return scrypt.hashSync(password, SCRYPT_SETTINGS, 32, salt).toString('hex');
 };
