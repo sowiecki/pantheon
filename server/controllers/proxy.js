@@ -117,14 +117,6 @@ const proxyController = {
   beginExpirationCounter() {
     this.expirationInterval = setInterval(() => {
       if (this.expirationCounter === 0) {
-        const timeSinceLastPing = moment
-          .duration(WEBSOCKET_EXPIRATION_COUNTDOWN_INTERVAL * 2, 'ms')
-          .asMinutes();
-
-        logger.log(
-          'error',
-          `No ping from proxy server received in last ${timeSinceLastPing} minutes, reconnecting.`
-        );
         this.reconnect();
         this.expirationCounter = 2;
       } else {
