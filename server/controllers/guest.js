@@ -15,7 +15,7 @@ const guestController = {
     const manageGuestProxy = () => {
       const { guestEnabled } = store.getState().meta;
 
-      if (guestEnabled && this.guestProxy) {
+      if (guestEnabled && !this.guestProxyController) {
         this.guestProxyController = new Controller(proxyController);
         this.guestProxyController.initialize(ENV.guest.id, ENV.guest.password);
 

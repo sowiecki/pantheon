@@ -54,10 +54,10 @@ const proxyController = {
       const noUnallowedEvents = allowedEvents.length === events.length;
       const pendingConnection = [HANDSHAKE, RECONNECTED].includes(payload.event);
 
-      return !pendingConnection && noUnallowedEvents && hashedPassword === hash(get(ENV, 'guest.password'));
+      return !pendingConnection && noUnallowedEvents && hashedPassword === hash(get(ENV, 'guest.password'), get(ENV, 'guest.id'));
     };
 
-    return hashedPassword === hash(this.password) || isAuthorizedGuest();
+    return hashedPassword === hash(ENV.password, ENV.id) || isAuthorizedGuest();
   },
 
   handleConnection() {
@@ -75,6 +75,7 @@ const proxyController = {
   },
 
   handleMessage({ data }) {
+    console.log(data)
     try {
       const { payload } = JSON.parse(data);
       const payloadEventHeader = get(JSON.parse(data), 'payload.event');
@@ -99,7 +100,7 @@ const proxyController = {
     }
   },
 
-  reconnect() {
+  reconnect(e) {
     clearInterval(this.interval);
 
     this.interval = setInterval(() => {

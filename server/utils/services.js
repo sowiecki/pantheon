@@ -2,7 +2,6 @@
 import { set, get, isEmpty, isString, mapKeys, camelCase } from 'lodash';
 import scrypt from 'scrypt';
 
-import { ENV } from 'config';
 import { SCRYPT_SETTINGS } from 'constants';
 import { EMIT_QUEUE_EVENT, RESOLVE_CUSTOM_STATE_UPDATE } from 'ducks/occurrences';
 
@@ -69,8 +68,8 @@ export const formatRequestKeys = (command) => (action, state) => {
   return command(formattedAction, state);
 };
 
-export const hash = (password) => {
+export const hash = (password, salt) => {
   if (!isString(password)) console.error('No password provided.');
 
-  return scrypt.hashSync(password, SCRYPT_SETTINGS, 32, ENV.id).toString('hex');
+  return scrypt.hashSync(password, SCRYPT_SETTINGS, 32, salt).toString('hex');
 };
