@@ -7,6 +7,8 @@ import proxyController from './proxy';
 import Controller from './controller';
 
 const guestController = {
+  guestAlreadyEnabled: false,
+
   displayName: 'Guest Controller',
 
   shouldInit: () => !!ENV.guest.id && !!ENV.guest.password,
@@ -15,7 +17,8 @@ const guestController = {
     const manageGuestProxy = () => {
       const { guestEnabled } = store.getState().meta;
 
-      if (guestEnabled && !this.guestProxyController) {
+      if (guestEnabled && !this.guestAlreadyEnabled) {
+        this.guestAlreadyEnabled = true;
         this.guestProxyController = new Controller(proxyController);
         this.guestProxyController.initialize(ENV.guest.id, ENV.guest.password);
 
@@ -35,6 +38,7 @@ const guestController = {
       this.guestProxyController.terminate();
     }
 
+    this.guestAlreadyEnabled = false;
     delete this.guestProxyController;
   }
 };
