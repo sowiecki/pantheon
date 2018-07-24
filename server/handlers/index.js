@@ -19,7 +19,6 @@ const getEventHandlers = (payload) => ({
     const parsedData = JSON.parse(data);
 
     if (typeof parsedData === 'string') {
-      console.log(JSON.parse(parsedData))
       // Parse again, because the C++ library wrapped in a second set of quotes
       batchEvents(store, JSON.parse(parsedData));
     } else {
