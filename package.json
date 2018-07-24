@@ -5,7 +5,7 @@
   "private": true,
   "engines": {
     "node": "^8.9.3",
-    "npm": "^5.6.0"
+    "npm": "^6.2.0"
   },
   "main": "index.js",
   "scripts": {
