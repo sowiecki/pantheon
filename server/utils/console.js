@@ -34,8 +34,8 @@ export const logUndefinedHandler = (e) => {
   logger.log('error', withTime(colors.red(e.message)));
 };
 
-export const errorNoHandler = (event) => {
-  const message = `${colors.red('Unhandled or unauthorized event')}: ${event}`;
+export const errorNoHandler = (data) => {
+  const message = `${colors.red('Unhandled or unauthorized event')}: ${data}`;
 
   logger.log('error', withTime(message));
 };

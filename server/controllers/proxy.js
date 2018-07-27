@@ -92,7 +92,7 @@ const proxyController = {
       if (eventHandler) {
         eventHandler();
       } else if (event) {
-        errorNoHandler(event);
+        errorNoHandler(data);
       }
     } catch (e) {
       logger.log('error', e);
@@ -114,6 +114,8 @@ const proxyController = {
   },
 
   beginExpirationCounter() {
+    clearInterval(this.expirationInterval);
+
     this.expirationInterval = setInterval(() => {
       if (this.expirationCounter === 0) {
         this.terminate();
