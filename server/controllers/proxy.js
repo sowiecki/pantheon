@@ -104,7 +104,7 @@ const proxyController = {
 
     this.interval = setInterval(() => {
       this.webSocket.terminate();
-      this.initialize();
+      this.initialize(this.id, this.password);
     }, WEBSOCKET_RECONNECT_INTERVAL);
   },
 

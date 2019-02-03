@@ -16,8 +16,6 @@ server.use(bodyParser({ multipart: true }));
 server.use(router.routes());
 
 const run = async () => {
-  logger.log('info', `Listening on port ${PORT}`);
-
   Object.keys(controllers).forEach((key) => {
     const controller = new Controller(controllers[key]);
     const shouldInit = controller.shouldInit();
@@ -39,6 +37,8 @@ const run = async () => {
   });
 
   await server.listen(PORT);
+
+  logger.log('info', `Listening on port ${PORT}`);
 };
 
 run();
