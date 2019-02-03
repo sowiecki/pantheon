@@ -1,6 +1,8 @@
 /* eslint no-console:0 */
-import { set, get, isEmpty, mapKeys, camelCase } from 'lodash';
+import { set, get, isEmpty, isString, mapKeys, camelCase } from 'lodash';
+import scrypt from 'scrypt';
 
+import { SCRYPT_SETTINGS } from 'constants';
 import { EMIT_QUEUE_EVENT, RESOLVE_CUSTOM_STATE_UPDATE } from 'ducks/occurrences';
 
 /**
@@ -62,5 +64,13 @@ export const getHueStates = async (store) => {
 
 export const formatRequestKeys = (command) => (action, state) => {
   const formattedAction = mapKeys(action, (value, key) => camelCase(key));
+
   return command(formattedAction, state);
+};
+
+export const hash = (password, salt) => {
+  if (!isString(password)) console.error('No password provided.');
+  if (!isString(salt)) console.error('No salt provided.');
+
+  return scrypt.hashSync(password, SCRYPT_SETTINGS, 32, salt).toString('hex');
 };

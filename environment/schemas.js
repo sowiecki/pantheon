@@ -5,7 +5,17 @@ export default [
     type: 'object',
     properties: {
       id: { type: 'string' },
+      password: { type: 'string' },
+      allowUnsecuredLAN: { type: 'boolean' },
       proxyHost: { type: 'string' },
+      guest: {
+        type: 'object',
+        properties: {
+          indefinite: { type: 'boolean' },
+          password: { type: 'string' },
+          allowedEvents: { type: 'array' }
+        }
+      },
       hueUserIDs: {
         type: 'object',
         properties: {
@@ -32,7 +42,7 @@ export default [
         required: ['hostname']
       }
     },
-    required: ['id']
+    required: ['id', 'password']
   },
 
   {

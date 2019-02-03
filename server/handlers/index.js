@@ -15,7 +15,15 @@ const getEventHandlers = (payload) => ({
    * Workaround due to Particle Photon webhooks poor support of custom request bodies
    */
   [BATCH_EVENTS_FROM_WEBHOOK]() {
-    batchEvents(store, JSON.parse(payload.headers.webhookbody));
+    const data = payload.headers.webhookbody.replace('//', '/');
+    const parsedData = JSON.parse(data);
+
+    if (typeof parsedData === 'string') {
+      // Parse again, because the C++ library wrapped in a second set of quotes
+      batchEvents(store, JSON.parse(parsedData));
+    } else {
+      batchEvents(store, parsedData);
+    }
   }
 });
 

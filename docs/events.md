@@ -14,7 +14,8 @@ method: `POST`
 headers:
 ```json
 {
-  "id": "yourSecretPasscodeDefinedInTheConfig",
+  "id": "yourSecretIdDefinedInTheConfig",
+  "password": "yourSecretPasscodeDefinedInTheConfig",
   "event": "BATCH_EVENTS",
   "Content-Type": "application/json"
 }

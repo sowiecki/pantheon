@@ -4,9 +4,6 @@
 [![GitHub Release](https://img.shields.io/github/release/Nase00/pantheon.svg?style=flat-square)](https://github.com/Nase00/pantheon/releases)
 ![license](https://img.shields.io/github/license/Nase00/pantheon.svg?style=flat-square)
 
-*This software is in **alpha**,
-and is currently undergoing major changes to make it more configurable, modular, and well-documented for wider consumption.*
-
 Pantheon is an application for managing control of multiple "Internet of Things" (IoT) devices.
 It serves a hub or central point of access for multiple, diverse types of services and devices.
 
@@ -104,3 +101,4 @@ npm start
 * [Environment Configuration](./environment/README.md)
 * [Triggering Events](./docs/events.md)
 * [Custom State](./docs/state.md)
+* [Security](./docs/security.md)

@@ -5,14 +5,13 @@ import { isEmpty } from 'lodash';
 
 import spotifyController from 'controllers/spotify';
 import { SPOTIFY_HOST } from 'constants';
-import { formatRequestKeys, setResponse } from 'utils';
+import { formatRequestKeys, setResponse, logger } from 'utils';
 
 import * as commands from './spotify/commands';
 
 const sendSpotifyCommand = (store, action, next) => {
   const state = store.getState().meta;
   const commandProperties = formatRequestKeys(commands[action.name])(action, state);
-
   const options = {
     ...commandProperties.options,
     method: commandProperties.options.method,
@@ -38,6 +37,15 @@ const sendSpotifyCommand = (store, action, next) => {
     });
 
     response.on('end', () => {
+      if (commandProperties.type && body.length !== 0) {
+        next({
+          type: commandProperties.type,
+          data: JSON.parse(body)
+        });
+      } else {
+        logger.log('Problem with response from Spotify authentication');
+      }
+
       setResponse({ next }, 200);
     });
   });
