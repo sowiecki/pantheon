@@ -1,7 +1,7 @@
 # Advanced Spotify Integration
 
 For more advanced Spotify control, Pantheon uses Spotify's [authorization code flow](https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow)
-to obtain the highest level user permissions. This gives Pantheon the capability to directly control music any of your Spotify devices.
+to obtain the highest level user permissions. This gives Pantheon the capability to directly control music on any of your Spotify devices.
 
 For basic Spotify control, that does not require special permissions,
 consult the [Unified Remote](../docs/events.md) integration for indirect control of Spotify applications on Windows, OSX, and Linux devices.
