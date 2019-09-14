@@ -43,7 +43,11 @@ const forwardHTTPRequest = (action, next) => {
     response.on('data', (chunk) => {
       console.log(`Response: ${chunk}`);
 
-      setResponse(next, JSON.parse(chunk).status);
+      try {
+        setResponse(next, JSON.parse(chunk).status);
+      } catch(e) {
+        console.log('Problem with request, e');
+      }
     });
   });
 
