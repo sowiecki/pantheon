@@ -38,10 +38,15 @@ const spotifyController = {
     // Assuming the correct callback URL was registered for the application,
     // this will begin the process to loop back to this server and register an auth token.
     // Register your callback URL here https://developer.spotify.com/my-applications
-    try {
-      open(authorizeURL);
-    } catch(e) {
-      spotifyController.handleOpenFailure('e', authorizeURL);
+    if (ENV.spotify.display || ENV.spotify.browser) {
+      spotifyController.open(authorizeURL);
+    } else {
+      try {
+        open(authorizeURL);
+      } catch(e) {
+        console.log(e, 'Failed to open Spotify authorize URL, trying alternative method');
+        spotifyController.open(authorizeURL);
+      }
     }
 
     store.dispatch({
@@ -68,9 +73,7 @@ const spotifyController = {
    * Since open wraps xdg-open on Linux, which does not work over SSH,
    * we must use an alternative method to launch the authorization URL.
    */
-  handleOpenFailure(e, authorizeURL) {
-    console.log(e, 'Failed to open Spotify authorize URL, trying alternative method');
-
+  open(authorizeURL) {
     const display = ENV.spotify.display || '0';
     const browser = ENV.spotify.browser || 'chromium';
     const cmd = `DISPLAY=:${display} ${browser} '${authorizeURL}'`;
