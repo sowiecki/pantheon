@@ -1,7 +1,7 @@
 /* eslint no-console:0 */
 /* globals console */
 import SpotifyWebApi from 'spotify-web-api-node';
-import opn from 'opn';
+import open from 'open';
 import { get } from 'lodash';
 
 import { ENV, PORT } from 'config';
@@ -25,7 +25,7 @@ const spotifyController = {
     return permissionScopes;
   },
 
-  initialize() {
+  initialize: () => {
     const { clientId, clientSecret } = ENV.spotify;
     const spotifyApi = new SpotifyWebApi({
       clientId,
@@ -34,12 +34,15 @@ const spotifyController = {
     });
 
     const authorizeURL = spotifyApi.createAuthorizeURL(spotifyController.getPermissionScopes());
-    const handleOpnFailure = spotifyController.handleOpnFailure.bind(this, authorizeURL);
 
     // Assuming the correct callback URL was registered for the application,
     // this will begin the process to loop back to this server and register an auth token.
     // Register your callback URL here https://developer.spotify.com/my-applications
-    opn(authorizeURL).catch(handleOpnFailure);
+    try {
+      open(authorizeURL);
+    } catch(e) {
+      spotifyController.handleOpenFailure('e', authorizeURL);
+    }
 
     store.dispatch({
       type: EMIT_REGISTER_SPOTIFY_CLIENT,
@@ -62,15 +65,17 @@ const spotifyController = {
   },
 
   /**
-   * Since opn wraps xdg-open on Linux, which does not work over SSH,
+   * Since open wraps xdg-open on Linux, which does not work over SSH,
    * we must use an alternative method to launch the authorization URL.
    */
-  handleOpnFailure(authorizeURL) {
-    console.log('Failed to open Spotify authorize URL, trying alternative method');
+  handleOpenFailure(e, authorizeURL) {
+    console.log(e, 'Failed to open Spotify authorize URL, trying alternative method');
 
     const display = ENV.spotify.display || '0';
-    const browser = ENV.spotify.browser || 'chromium-browser';
+    const browser = ENV.spotify.browser || 'chromium';
     const cmd = `DISPLAY=:${display} ${browser} '${authorizeURL}'`;
+
+    console.log(`Executing '${cmd}'`);
 
     require('child_process').exec(cmd);
   }
