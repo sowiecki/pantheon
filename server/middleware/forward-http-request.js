@@ -45,7 +45,7 @@ const forwardHTTPRequest = (action, next) => {
 
       try {
         setResponse(next, JSON.parse(chunk).status);
-      } catch(e) {
+      } catch (e) {
         console.log('Problem with request, e');
       }
     });

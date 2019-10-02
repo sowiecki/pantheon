@@ -7,9 +7,6 @@
       "modules": true
     }
   },
-  "ecmaFeatures": {
-    "experimentalObjectRestSpread": true
-  },
   "env": {
     "es6": true,
     "node": true

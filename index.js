@@ -15,6 +15,6 @@ if (cluster.isMaster && process.env.NODE_ENV !== 'development') {
     console.log(`worker ${worker.process.pid} born`);
   });
 } else {
-  require('nodejs-dashboard');
+//  require('nodejs-dashboard');
   require('./server');
 }
