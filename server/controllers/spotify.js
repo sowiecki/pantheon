@@ -44,7 +44,7 @@ const spotifyController = {
     } else {
       try {
         open(authorizeURL);
-      } catch(e) {
+      } catch (e) {
         console.log(e, 'Failed to open Spotify authorize URL, trying alternative method');
         spotifyController.open(authorizeURL);
       }
