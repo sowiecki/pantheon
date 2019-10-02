@@ -37,8 +37,9 @@ const spotifyController = {
 
     // Assuming the correct callback URL was registered for the application,
     // this will begin the process to loop back to this server and register an auth token.
-    // Register your callback URL here https://developer.spotify.com/my-applications
-    if (ENV.spotify.display || ENV.spotify.browser) {
+    // Register your callback URL here https://developer.spotify.com/my-applications.
+    // This flow can be vastly improved to be more cross-platform compatible!
+    if (ENV.spotify.display !== undefined || ENV.spotify.browser) {
       spotifyController.open(authorizeURL);
     } else {
       try {
