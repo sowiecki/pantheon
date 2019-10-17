@@ -21,6 +21,11 @@ export const SPOTIFY_PERMISSION_SCOPES = [
 
 export const SPOTIFY_TOKEN_REFRESH_INVERVAL = 3300000; // 55 minutes
 export const SPOTIFY_SYNC_STATE_TIMEOUT = 250;
+export const SPOTIFY_FORCE_KILL_TIMEOUT = 7500;
+export const SPOTIFY_CONFIG_DEFAULTS = {
+  DISPLAY:  '0',
+  BROWSER: 'chromium'
+}
 
 export const SCRYPT_SETTINGS = { N: 16, r: 17, p: 18 };
 export const GUEST_ACCESS_REVOKE_INTERVAL = 300000; // 5 minutes

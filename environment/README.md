@@ -16,8 +16,9 @@
 | - cliendId               | string  | [See here](../docs/spotify.md) for more information  | Yes       |         |
 | - clientSecret           | string  | [See here](../docs/spotify.md) for more information  | Yes       |         |
 | - blacklistedPermissions | array   | Spotify permissions to deny Pantheon                 | No        |         |
-| - display                | string  | [See here](../docs/spotify.md) for more information  | No        |         |
-| - browser                | string  | [See here](../docs/spotify.md) for more information  | No        |         |
+| - browser                | string  | Browser to launch Spotify authentication page with   | No        | 'chromium' |
+| - display                | string  | Display to launch browser on                         | No        | 0 |
+| - foreeKill              | boolean | Force kills browser by process name (`spotify.browser` config)  | No        | false |
 | hueUserIDs               | User IDs for Hue bridges - [see here](https://www.developers.meethue.com/documentation/getting-started) on how to register a user to a Hue bridge, and obtain the user ID | No |
 | - [ipaddress]            | string  | User ID registered to bridge on ip address           | No        |         |
 | photons                  | object  | Individually listed Particle Photon devices          | No        |         |
