@@ -82,6 +82,13 @@ const spotifyController = {
     console.log(`Executing '${cmd}'`);
 
     require('child_process').exec(cmd);
+
+    if (ENV.spotify.forceKill) {
+      setTimeout(() => {
+        const killCmd = `pkill ${browser}`;
+        require('child_process').exec(killCmd);
+      }, 7500);
+    }
   }
 };
 
