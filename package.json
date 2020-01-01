@@ -34,7 +34,7 @@
     "koa-send": "^4.1.2",
     "lodash": "^4.17.15",
     "moment": "^2.19.4",
-    "node-hue-api": "^2.4.4",
+    "node-hue-api": "^4.0.1",
     "node-scrypt": "^0.0.1",
     "nodejs-dashboard": "^0.4.3",
     "open": "^6.4.0",
