@@ -5,7 +5,7 @@ import open from 'open';
 import { get } from 'lodash';
 
 import { ENV, PORT } from 'config';
-import { SPOTIFY_PERMISSION_SCOPES, SPOTIFY_SYNC_STATE_TIMEOUT } from 'constants';
+import { SPOTIFY_PERMISSION_SCOPES, SPOTIFY_SYNC_STATE_TIMEOUT, SPOTIFY_FORCE_KILL_TIMEOUT, SPOTIFY_CONFIG_DEFAULTS } from 'constants';
 import { EMIT_REGISTER_SPOTIFY_CLIENT } from 'ducks/devices';
 import { EMIT_SEND_SPOTIFY_COMMAND } from 'ducks/occurrences';
 import store from 'store';
@@ -75,8 +75,8 @@ const spotifyController = {
    * we must use an alternative method to launch the authorization URL.
    */
   open(authorizeURL) {
-    const display = ENV.spotify.display || '0';
-    const browser = ENV.spotify.browser || 'chromium';
+    const display = ENV.spotify.display || SPOTIFY_CONFIG_DEFAULTS.DISPLAY;
+    const browser = ENV.spotify.browser || SPOTIFY_CONFIG_DEFAULTS.BROWSER;
     const cmd = `DISPLAY=:${display} ${browser} '${authorizeURL}'`;
 
     console.log(`Executing '${cmd}'`);
@@ -87,7 +87,7 @@ const spotifyController = {
       setTimeout(() => {
         const killCmd = `pkill ${browser}`;
         require('child_process').exec(killCmd);
-      }, 7500);
+      }, SPOTIFY_FORCE_KILL_TIMEOUT);
     }
   }
 };
