@@ -39,14 +39,8 @@ const forwardHTTPRequest = async (action, next) => {
   };
 
   try {
-    const { rawData } = await httpRequest({ options, payload });
-    const parsedData = rawData ? JSON.parse(rawData) : '';
-
-    if (!parsedData.error) {
-      return parsedData.access_token;
-    } else {
-      throw Error(rawData);
-    }
+    const response = await httpRequest({ options, payload });
+    console.log(`Received response: ${response}`);
   } catch (e) {
     console.error(e);
   }
