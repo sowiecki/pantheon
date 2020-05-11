@@ -4,13 +4,13 @@ import http from 'http';
 import { get } from 'lodash';
 
 import { ENV } from 'config';
-import { stringifyObjectValues, setResponse } from 'utils';
+import { stringifyObjectValues, setResponse, httpRequest } from 'utils';
 
 /**
  * Forwards an HTTP request using parameters either provided directly by an action,
  * or matches a provided key to pre-defined parameters in ENV.json.
  */
-const forwardHTTPRequest = (action, next) => {
+const forwardHTTPRequest = async (action, next) => {
   const { key } = action;
   const keyIsInvalid = key && !ENV.httpRequests[key];
 
@@ -38,28 +38,12 @@ const forwardHTTPRequest = (action, next) => {
     }
   };
 
-  const request = http.request(options, (response) => {
-    response.setEncoding('utf8');
-    response.on('data', (chunk) => {
-      console.log(`Response: ${chunk}`);
-
-      try {
-        setResponse(next, JSON.parse(chunk).status);
-      } catch (e) {
-        console.log('Problem with request, e');
-      }
-    });
-  });
-
-  request.on('error', ({ message }) => {
-    console.log(`Problem with request: ${message}`);
-  });
-
-  if (payload) {
-    request.write(payload);
+  try {
+    const response = await httpRequest({ options, payload });
+    console.log(`Received response: ${response}`);
+  } catch (e) {
+    console.error(e);
   }
-
-  request.end();
 };
 
 export default forwardHTTPRequest;
