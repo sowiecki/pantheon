@@ -32,7 +32,11 @@ const occurrencesReducer = (state, action) => ({
           toggleLight(hueBridge, state, action.id);
           break;
         default:
-          errorLightStatus();
+          try {
+            hueBridge.setLightState(action.id, state.lightState.create()[action.func]());
+          } catch (e) {
+            errorLightStatus(`state.lightState.create.${action.func} is not a function`);
+          }
           break;
       }
     } else if (state.lightState) {
