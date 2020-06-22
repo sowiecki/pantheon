@@ -43,7 +43,7 @@
     "redux": "3.7.2",
     "scrypt": "^6.0.3",
     "spotify-web-api-node": "^2.5.0",
-    "winston": "2.4.0",
+    "winston": "3.3.1",
     "ws": "^7.1.2"
   },
   "devDependencies": {
