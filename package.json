@@ -32,7 +32,7 @@
     "koa-bodyparser": "^4.1.0",
     "koa-router": "^7.3.0",
     "koa-send": "^4.1.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.20",
     "moment": "^2.19.4",
     "node-hue-api": "^2.4.4",
     "node-scrypt": "^0.0.1",
