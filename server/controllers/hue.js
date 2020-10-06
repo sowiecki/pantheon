@@ -1,12 +1,12 @@
-import hue from "node-hue-api";
+import hue from 'node-hue-api';
 
-import { ENV } from "config";
-import { EMIT_REGISTER_BRIDGE } from "ducks/devices";
-import store from "store";
-import { errorNoUserIDFound } from "utils";
+import { ENV } from 'config';
+import { EMIT_REGISTER_BRIDGE } from 'ducks/devices';
+import store from 'store';
+import { logger, errorNoUserIDFound } from 'utils';
 
 const hueController = {
-  displayName: "Hue Controller",
+  displayName: 'Hue Controller',
 
   shouldInit: () => !!ENV.hueUserIDs,
 
@@ -19,7 +19,7 @@ const hueController = {
           if (!userID) {
             return errorNoUserIDFound(bridge.ipaddress);
           }
-          console.log("Registered Hue bridge", bridge.ipaddress);
+          logger.log('info', 'Registered Hue bridge', bridge.ipaddress);
 
           return store.dispatch({
             type: EMIT_REGISTER_BRIDGE,
