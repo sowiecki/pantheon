@@ -99,8 +99,10 @@ const proxyController = {
     }
   },
 
-  reconnect() {
+  reconnect(e) {
     clearInterval(this.interval);
+
+    console.error('Error establishing proxy connection! ', e.message);
 
     this.interval = setInterval(() => {
       this.webSocket.terminate();

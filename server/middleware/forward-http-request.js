@@ -1,16 +1,15 @@
 /* globals console */
 /* eslint no-console: 0 */
-import http from 'http';
 import { get } from 'lodash';
 
 import { ENV } from 'config';
-import { stringifyObjectValues, setResponse, httpRequest } from 'utils';
+import { stringifyObjectValues, httpRequest } from 'utils';
 
 /**
  * Forwards an HTTP request using parameters either provided directly by an action,
  * or matches a provided key to pre-defined parameters in ENV.json.
  */
-const forwardHTTPRequest = async (action, next) => {
+const forwardHTTPRequest = async (action) => {
   const { key } = action;
   const keyIsInvalid = key && !ENV.httpRequests[key];
 
