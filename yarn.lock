@@ -3656,10 +3656,10 @@ jsonify@~0.0.0:
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
   integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
 
-jsonschema@^1.1.1, jsonschema@^1.2.4:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/jsonschema/-/jsonschema-1.2.4.tgz#a46bac5d3506a254465bc548876e267c6d0d6464"
-  integrity sha512-lz1nOH69GbsVHeVgEdvyavc/33oymY1AZwtePMiMj4HZPMbP5OIKK3zT9INMWjwua/V4Z4yq7wSlBbSG+g4AEw==
+jsonschema@^1.1.1, jsonschema@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/jsonschema/-/jsonschema-1.3.0.tgz#def86ca039b4f4254e76528d173462bc5da36162"
+  integrity sha512-qg48ckmeeQNPyPAUVIb4Qgmg/U2Kgg5SuEyMs8Z72cnxsw5Ra088U/Foi6sMp/cs7sZ+LNrmvX0Ww+ohE2By0g==
 
 jsprim@^1.2.2:
   version "1.4.1"
