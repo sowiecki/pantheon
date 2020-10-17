@@ -39,7 +39,7 @@
     "nodejs-dashboard": "^0.4.3",
     "open": "^6.4.0",
     "particle-api-js": "^7.0.1",
-    "query-string": "^5.0.1",
+    "query-string": "^6.13.6",
     "redux": "3.7.2",
     "scrypt": "^6.0.3",
     "spotify-web-api-node": "^2.5.0",
