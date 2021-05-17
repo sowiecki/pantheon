@@ -37,7 +37,7 @@
     "node-hue-api": "^2.4.4",
     "node-scrypt": "^0.0.1",
     "nodejs-dashboard": "^0.4.3",
-    "open": "^6.4.0",
+    "open": "^8.0.9",
     "particle-api-js": "^7.0.1",
     "query-string": "^5.0.1",
     "redux": "3.7.2",
