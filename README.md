@@ -1,3 +1,5 @@
+I'm no longer maintaining this project. Use [Home Assistant](https://github.com/home-assistant/core)!
+
 [![Build Status](https://img.shields.io/travis/Nase00/pantheon/master.svg?style=flat-square)](https://travis-ci.org/Nase00/pantheon)
 [![Coveralls](https://img.shields.io/coveralls/Nase00/pantheon.svg?style=flat-square)](https://coveralls.io/github/Nase00/pantheon)
 
